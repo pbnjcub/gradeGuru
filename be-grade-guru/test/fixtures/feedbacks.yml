@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  unit_id: 1
+  written_work: 1
+  classwork: 1
+  homework: 1
+
+two:
+  user_id: 1
+  unit_id: 1
+  written_work: 1
+  classwork: 1
+  homework: 1

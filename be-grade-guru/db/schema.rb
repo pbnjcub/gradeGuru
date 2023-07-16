@@ -10,7 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_10_174126) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_16_202516) do
+  create_table "feedbacks", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "unit_id"
+    t.integer "written_work"
+    t.integer "classwork"
+    t.integer "homework"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.text "comment"
+  end
+
+  create_table "skills", force: :cascade do |t|
+    t.integer "unit_id"
+    t.string "title"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "units", force: :cascade do |t|
+    t.string "title"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "last_name"
     t.string "first_name"
@@ -18,6 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_174126) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
+    t.integer "role", default: 0
   end
 
 end
