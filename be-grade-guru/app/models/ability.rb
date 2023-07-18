@@ -4,6 +4,16 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    user ||= User.new
+
+    if user.teacher?
+     
+    elsif user.student?
+    
+    elsif user.parent?
+      
+    else
+    
     # Define abilities for the user here. For example:
     #
     #   return unless user.present?

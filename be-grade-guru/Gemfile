@@ -5,6 +5,8 @@ ruby "2.7.4"
 
 gem "bcrypt"
 gem "cancancan"
+gem 'faker', '~> 2.18'
+
 
 gem 'active_model_serializers'
 

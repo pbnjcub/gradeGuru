@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_16_202516) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_16_212837) do
+  create_table "families", force: :cascade do |t|
+    t.integer "parent_id"
+    t.integer "student_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["parent_id"], name: "index_families_on_parent_id"
+    t.index ["student_id"], name: "index_families_on_student_id"
+  end
+
   create_table "feedbacks", force: :cascade do |t|
     t.integer "user_id"
     t.integer "unit_id"
@@ -47,4 +56,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_202516) do
     t.integer "role", default: 0
   end
 
+  add_foreign_key "families", "users", column: "parent_id"
+  add_foreign_key "families", "users", column: "student_id"
 end
