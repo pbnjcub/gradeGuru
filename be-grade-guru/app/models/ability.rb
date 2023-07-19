@@ -7,12 +7,12 @@ class Ability
     user ||= User.new
 
     if user.teacher?
-     
-    elsif user.student?
-    
-    elsif user.parent?
-      
-    else
+      can :manage, [Unit, Skill]
+    elsif user.student? || user.parent?
+      can :read, [Unit, Skill]
+    end
+  end
+
     
     # Define abilities for the user here. For example:
     #
@@ -38,5 +38,4 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
-  end
 end
