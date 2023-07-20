@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_16_212837) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_20_230050) do
   create_table "families", force: :cascade do |t|
     t.integer "parent_id"
     t.integer "student_id"
@@ -31,6 +31,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_212837) do
     t.text "comment"
   end
 
+  create_table "grades", force: :cascade do |t|
+    t.integer "student_id", null: false
+    t.integer "teacher_id", null: false
+    t.integer "skill_id", null: false
+    t.integer "grade"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["skill_id"], name: "index_grades_on_skill_id"
+    t.index ["student_id"], name: "index_grades_on_student_id"
+    t.index ["teacher_id"], name: "index_grades_on_teacher_id"
+  end
+
   create_table "skills", force: :cascade do |t|
     t.integer "unit_id"
     t.string "title"
@@ -41,7 +53,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_212837) do
 
   create_table "units", force: :cascade do |t|
     t.string "title"
-    t.string "description"
+    t.text "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -53,9 +65,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_16_212837) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
-    t.integer "role", default: 0
+    t.string "role", default: "teacher"
   end
 
   add_foreign_key "families", "users", column: "parent_id"
   add_foreign_key "families", "users", column: "student_id"
+  add_foreign_key "grades", "skills"
+  add_foreign_key "grades", "users", column: "student_id"
+  add_foreign_key "grades", "users", column: "teacher_id"
 end

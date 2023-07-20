@@ -1,9 +1,12 @@
 class Unit < ApplicationRecord
     has_many :skills
     has_many :feedbacks
-    has_many :teachers, through: :feedbacks, source: :user, conditions: { role: :teacher }
-    has_many :students, through: :feedbacks, source: :user, conditions: { role: :student }
-    has_many :parents, through: :feedbacks, source: :user, conditions: { role: :parent }
+    has_many :teachers, -> { where(role: 'teacher') }, through: :feedbacks, source: :user
+    has_many :students, -> { where(role: 'student') }, through: :feedbacks, source: :user
+    has_many :parents, -> { where(role: 'parent') }, through: :feedbacks, source: :user
+
+    validates :title, presence: true, uniqueness: true
+    validates :description, presence: true
   
     
 end
