@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_20_230050) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_21_150842) do
   create_table "families", force: :cascade do |t|
     t.integer "parent_id"
     t.integer "student_id"
@@ -21,7 +21,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_230050) do
   end
 
   create_table "feedbacks", force: :cascade do |t|
-    t.integer "user_id"
     t.integer "unit_id"
     t.integer "written_work"
     t.integer "classwork"
@@ -29,6 +28,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_20_230050) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "comment"
+    t.integer "teacher_id"
+    t.integer "student_id"
   end
 
   create_table "grades", force: :cascade do |t|

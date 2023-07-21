@@ -7,9 +7,9 @@ class Ability
     user ||= User.new
 
     if user.teacher?
-      can :manage, [Unit, Skill]
+      can :manage, [Feedback, Unit, Skill]
     elsif user.student? || user.parent?
-      can :read, [Unit, Skill]
+      can :read, [Feedback, Unit, Skill]
     end
   end
 

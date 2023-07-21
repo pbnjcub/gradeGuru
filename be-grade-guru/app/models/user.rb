@@ -19,7 +19,8 @@ class User < ApplicationRecord
         role == 'parent'
     end
 
-    has_many :feedbacks
+    has_many :feedbacks, foreign_key: :teacher_id, class_name: 'Feedback', dependent: :destroy
+    has_many :assigned_feedbacks, foreign_key: :student_id, class_name: 'Feedback', dependent: :destroy
     has_many :families, dependent: :destroy, foreign_key: :parent_id
     has_many :students, through: :families, source: :student
 
