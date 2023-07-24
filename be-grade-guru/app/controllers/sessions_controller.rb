@@ -1,7 +1,4 @@
 class SessionsController < ApplicationController
-  def new
-  end
-
   def create
     @user = User.find_by(email: params[:email].downcase)
     # If the user exists AND the password entered is correct.
@@ -17,7 +14,6 @@ class SessionsController < ApplicationController
   end
 
   def destroy
-    session[:user_id] = nil
-    redirect_to '/home'
+    session.clear
   end
 end 
