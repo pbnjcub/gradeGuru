@@ -8,7 +8,7 @@ export const createAccount = async (details, handleCurrentUser) => {
         'Accept': 'application/json',
       },
       body: JSON.stringify(details),
-      withCredentials: true
+      credentials: 'include'
     });
   
     if (resp.ok) {
@@ -29,6 +29,7 @@ export const createAccount = async (details, handleCurrentUser) => {
         "Accept": "application/json"
       },
       body: JSON.stringify(details),
+      credentials: 'include'
     });
   
     if (resp.ok) {
@@ -60,7 +61,7 @@ export const getCurrentUser = async (handleCurrentUser) => {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      withCredentials: true,
+      credentials: 'include'
     });
 
     const data = await response.json();

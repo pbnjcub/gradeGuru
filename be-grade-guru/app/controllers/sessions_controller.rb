@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  #login - creating a new session, not user.
   def create
     @user = User.find_by(email: params[:email].downcase)
     # If the user exists AND the password entered is correct.
@@ -8,8 +9,7 @@ class SessionsController < ApplicationController
       render json: @user, status: :ok
     #   redirect_to '/home'
     else
-    # If user's login doesn't work, send them back to the login form.
-    #   redirect_to '/login'
+        render json: { error: 'Invalid email or password.' }, status: 400
     end
   end
 
