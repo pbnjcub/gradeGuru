@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import UserContext from './components/UserContext';
-// import Signup from './components/Signup';
+import Home from './components/Home';
+import Signup from './components/Signup';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import NavBar from './components/NavBar';
@@ -14,7 +15,7 @@ function App() {
 
   //function to handle current user data
   const handleCurrentUser = (user) => {
-    if (user.username) {
+    if (user.email) {
       setCurrentUser(user);
       setLoggedIn(true);
     }
@@ -38,6 +39,8 @@ function App() {
           <div>
             <NavBar loggedIn={loggedIn} logoutCurrentUser={logoutCurrentUser} />
             <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route exact path="/signup" element={<Signup setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
             </Routes>

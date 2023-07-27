@@ -1,14 +1,14 @@
-const backendUrl = 'http://localhost:3000'
 
 export const createAccount = async (details, handleCurrentUser) => {
-    const resp = await fetch(`${backendUrl}/signup`, {
+    const resp = await fetch('/signup', {
       method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify(details),
-      credentials: 'include'
+      body: JSON.stringify(details)
     });
   
     if (resp.ok) {
@@ -19,22 +19,24 @@ export const createAccount = async (details, handleCurrentUser) => {
       return { errors: errorData.errors };
     }
   };
-  
 
   export const login = async (details, handleCurrentUser) => {
-    const resp = await fetch(`${backendUrl}/login`, {
+    const resp = await fetch('/login', {
       method: "POST",
+      mode: "cors",
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json"
       },
-      body: JSON.stringify(details),
-      credentials: 'include'
+      body: JSON.stringify(details)
     });
   
     if (resp.ok) {
+
       const data = await resp.json();
       handleCurrentUser(data);
+      console.log(data)
     } else {
       const errorData = await resp.json();
       return { errors: errorData.errors };
@@ -43,7 +45,7 @@ export const createAccount = async (details, handleCurrentUser) => {
 
 
 export const logout = async (logoutCurrentUser) => {
-await fetch(`${backendUrl}/logout`, {
+await fetch('/logout', {
   method: "DELETE",
   headers: {
     "Content-Type": "application/json",
@@ -56,16 +58,19 @@ logoutCurrentUser();
 
 
 export const getCurrentUser = async (handleCurrentUser) => {
-    const response = await fetch(`${backendUrl}/current-user`, {
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-      },
-      credentials: 'include'
-    });
+  const resp = await fetch('/current-user', {
+    headers: {
+      "Content-Type": "application/json",
+      "Accept": "application/json"
+    },
+    credentials: 'include',
+    mode: 'cors'
+  });
 
-    const data = await response.json();
-    handleCurrentUser(data);
-  }   
+  const data = await resp.json();
+  console.log(data);
+  handleCurrentUser(data);
+};
+
 
               

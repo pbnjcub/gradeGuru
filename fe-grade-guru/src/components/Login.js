@@ -2,10 +2,10 @@ import React, {useState} from 'react';
 import { login } from '../actions/auth';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({handleCurrentUser, handleTeacherCourses}) => {
+const Login = ({handleCurrentUser}) => {
     //state variables
-    const [userTeacher, setUserTeacher] = useState({
-        username: "",
+    const [user, setUser] = useState({
+        email: "",
         password: "",
     })
     const navigate = useNavigate();
@@ -13,8 +13,8 @@ const Login = ({handleCurrentUser, handleTeacherCourses}) => {
 
     //sets userTeacher state from form data
     const handleChange = (e) => {
-        setUserTeacher({
-            ...userTeacher,
+        setUser({
+            ...user,
             [e.target.name]: e.target.value,
         })
     }
@@ -22,11 +22,11 @@ const Login = ({handleCurrentUser, handleTeacherCourses}) => {
     //submit action => uses login action from auth.js and hadles return
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = login(userTeacher, handleCurrentUser, handleTeacherCourses);
+        const response = login(user, handleCurrentUser);
         if (response.errors) {
             setErrorMessages(response.errors);
         } else {
-          navigate("/teachers/:teacher_id/courses");
+          console.log("Login successful");
           setErrorMessages([]);
       }
     };
@@ -42,10 +42,10 @@ const Login = ({handleCurrentUser, handleTeacherCourses}) => {
             {renderErrors}
             <br />
             <form onSubmit={handleSubmit}>
-                <label>Username</label>
-                <input type="text" name="username" value={userTeacher.username} autoComplete="username" onChange={handleChange} />
+                <label>Email</label>
+                <input type="text" name="email" value={user.email} autoComplete="email" onChange={handleChange} />
                 <label>Password</label>
-                <input type="password" name="password" value={userTeacher.password} autoComplete="current-password" onChange={handleChange} />
+                <input type="password" name="password" value={user.password} autoComplete="current-password" onChange={handleChange} />
                 <input type="submit" value="Submit" />
             </form>
         </div>
