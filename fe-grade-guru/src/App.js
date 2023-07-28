@@ -6,6 +6,7 @@ import Signup from './components/Signup';
 import Login from './components/Login';
 import Logout from './components/Logout';
 import NavBar from './components/NavBar';
+import AdminDashboard from './components/AdminDashboard';
 import { getCurrentUser } from './actions/auth';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
   const handleCurrentUser = (user) => {
     if (user.email) {
       setCurrentUser(user);
+      console.log(user)
       setLoggedIn(true);
     }
   };
@@ -43,6 +45,7 @@ function App() {
               <Route exact path="/signup" element={<Signup setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
+              <Route exact path="/admin" element={<AdminDashboard />} />
             </Routes>
           </div>
         </UserContext.Provider>

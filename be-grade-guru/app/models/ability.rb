@@ -8,6 +8,8 @@ class Ability
 
     if user.teacher?
       can :manage, [Feedback, Unit, Skill]
+    elsif user.admin?
+      can :manage, :all
     elsif user.student? || user.parent?
       can :read, [Feedback, Unit, Skill]
     end

@@ -32,9 +32,6 @@ const NavBar = ({loggedIn}) => {
                         <NavLink className="pure-menu-link" to="/">Home</NavLink>
                     </li>
                     <li className="pure-menu-item">
-                        <NavLink className="pure-menu-link" to="/signup">Create Account</NavLink>
-                    </li>
-                    <li className="pure-menu-item">
                         <NavLink className="pure-menu-link" to="/login">Login</NavLink>
                     </li>
                 </ul>

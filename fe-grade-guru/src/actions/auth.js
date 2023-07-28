@@ -21,7 +21,7 @@ export const createAccount = async (details, handleCurrentUser) => {
     }
   };
 
-  export const login = async (details, handleCurrentUser) => {
+  export const login = async (details, handleCurrentUser, handleNavigation) => {
     const resp = await fetch('/login', {
       method: "POST",
       mode: "cors",
@@ -37,7 +37,7 @@ export const createAccount = async (details, handleCurrentUser) => {
 
       const data = await resp.json();
       handleCurrentUser(data);
-      console.log(data)
+      handleNavigation(data.role);
     } else {
       const errorData = await resp.json();
       return { errors: errorData.errors };

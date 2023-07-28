@@ -4,12 +4,16 @@ class User < ApplicationRecord
     validates :password, presence: true
 
 
-    ROLES = ['teacher', 'student', 'parent'].freeze
+    ROLES = ['teacher', 'admin', 'student', 'parent'].freeze
 
     validates :role, presence: true, inclusion: { in: ROLES }
 
     def teacher?
         role == 'teacher'
+    end
+
+    def admin?
+        role == 'admin'
     end
 
     def student?

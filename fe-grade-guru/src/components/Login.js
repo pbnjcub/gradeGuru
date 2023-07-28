@@ -11,27 +11,42 @@ const Login = ({handleCurrentUser}) => {
     const navigate = useNavigate();
     const [errorMessages, setErrorMessages] = useState([]);
 
-    //sets userTeacher state from form data
     const handleChange = (e) => {
         setUser({
             ...user,
             [e.target.name]: e.target.value,
         })
     }
+
+    const handleNavigation = (role) => {
+        if (role === 'admin') {
+            navigate("/admin");
+            } else if (role === 'teacher') {
+            navigate("/teacher-dashboard");
+            } else if (role === 'student' || role === 'parent') {
+            navigate("/student-dashboard");
+            } else {
+            navigate("/");
+            }
+    }
+
         
-    //submit action => uses login action from auth.js and hadles return
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = login(user, handleCurrentUser);
-        if (response.errors) {
-            setErrorMessages(response.errors);
-        } else {
-          console.log("Login successful");
-          setErrorMessages([]);
-      }
-    };
+        const response = await login(user, handleCurrentUser, handleNavigation);
 
-    //renders the errors if authorization fails
+        if (response && !response.errors) {
+        console.log("Login successful");
+        setErrorMessages([]);
+
+        // const role = response.role;
+        // handleNavigation(role); // Call handleNavigation to navigate based on the role
+        } else {
+        setErrorMessages(response?.errors || ["Error during login. Please try again."]);
+        }
+    };
+      
     const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
 
     
@@ -45,7 +60,7 @@ const Login = ({handleCurrentUser}) => {
                 <label>Email</label>
                 <input type="text" name="email" value={user.email} autoComplete="email" onChange={handleChange} />
                 <label>Password</label>
-                <input type="password" name="password" value={user.password} onChange={handleChange} />
+                <input type="password" name="password" value={user.password} autoComplete="current-password" onChange={handleChange} />
                 <input type="submit" value="Submit" />
             </form>
         </div>
