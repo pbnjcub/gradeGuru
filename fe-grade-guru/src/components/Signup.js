@@ -1,38 +1,42 @@
 import React, {useState} from 'react';
 import { createAccount } from '../actions/auth';
-import { useNavigate } from 'react-router-dom';
 
-const Signup = ({handleCurrentUser, handleTeacherCourses}) => {
+
+const Signup = ({handleCurrentUser}) => {
     //state variables
     const [newUser, setNewUser] = useState({
         email: "",
         password: "",
         last_name: "",
         first_name: "",
-        role: "teacher",
-
+        role: "admin",
+        parent: {
+          email: "",
+          password: "",
+          last_name: "",
+          first_name: "",
+        }
       });
-    const navigate = useNavigate();
+
     const [errorMessages, setErrorMessages] = useState([]);
 
-      //updates state of
-      const handleChange = (e) => {
-        setNewUser({
-            ...newUser,
-            [e.target.name]: e.target.value,
-        })  
-      };
 
+    const handleChange = (e) => {
+      setNewUser({
+          ...newUser,
+          [e.target.name]: e.target.value,
+      })  
       console.log(newUser)
-      // submit action => createAccount from auth.js
+    };
+
     const handleSubmit = async (e) => {
-        e.preventDefault();
-        const response = createAccount(newUser, handleCurrentUser);
-        if (response.errors) {
-            setErrorMessages(response.errors);
-        } else {
-          console.log("Account created")
-          setErrorMessages([]);
+      e.preventDefault();
+      const response = createAccount(newUser, handleCurrentUser);
+      if (response.errors) {
+        setErrorMessages(response.errors);
+      } else {
+        console.log("Account created")
+        setErrorMessages([]);
       }
     };
     //renders errors
@@ -55,10 +59,26 @@ const Signup = ({handleCurrentUser, handleTeacherCourses}) => {
                 <input type="text" name="last_name" value={newUser.last_name} onChange={handleChange} />
                 <label>Role</label>
                 <select name="role" value={newUser.role} onChange={handleChange}>
+                  <option value="admin">Admin</option>
                   <option value="teacher">Teacher</option>
                   <option value="student">Student</option>
-                  <option value="parent">Parent</option>
                 </select>
+                {newUser.role === "student" ? (
+                  <div>
+                    <hr />
+                    <h2>Add Parent Information</h2>
+                    <label>Parent Email</label>
+                    <input type="text" name="email" value={newUser.parent.email} onChange={handleChange} />
+                    <label>Parent Password</label>
+                    <input type="password" name="password" value={newUser.parent.password} onChange={handleChange} />
+                    <label>Parent First Name</label>
+                    <input type="text" name="first_name" value={newUser.parent.first_name} onChange={handleChange} />
+                    <label>Parent Last Name</label>
+                    <input type="text" name="last_name" value={newUser.parent.last_name} onChange={handleChange} />
+                  </div>
+                ) : null
+
+              }
                 <input type="submit" value="Signup" />
             </form>
 

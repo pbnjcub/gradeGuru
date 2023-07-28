@@ -7,6 +7,8 @@ import Login from './components/Login';
 import Logout from './components/Logout';
 import NavBar from './components/NavBar';
 import AdminDashboard from './components/AdminDashboard';
+import TeacherDashboard from './components/TeacherDashboard';
+import StudentDashboard from './components/StudentDashboard';
 import { getCurrentUser } from './actions/auth';
 
 function App() {
@@ -46,6 +48,8 @@ function App() {
               <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
               <Route exact path="/admin" element={<AdminDashboard />} />
+              <Route exact path="/teacher-dashboard" element={<TeacherDashboard />} />
+              <Route exact path="/student-dashboard" element={<StudentDashboard />} />
             </Routes>
           </div>
         </UserContext.Provider>
