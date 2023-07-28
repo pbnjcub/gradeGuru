@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
     include ActionController::Cookies
+    before_action :confirm_authentication
     protect_from_forgery with: :null_session, if: ->{request.format.json?}
     include CanCan::ControllerAdditions
     rescue_from CanCan::AccessDenied, with: :render_unauthorized
@@ -20,5 +21,9 @@ class ApplicationController < ActionController::Base
 
     def current_user
         @current_user ||= User.find_by(id: session[:user_id])
+    end
+
+    def confirm_authentication
+        render json: {error: "You must be logged in to do that."}, status: :unauthorized unless session[:user_id]
     end
 end

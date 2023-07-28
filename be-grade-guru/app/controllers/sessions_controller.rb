@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+  skip_before_action :confirm_authentication, only: [:create]
   skip_before_action :verify_authenticity_token, only: [:create, :destroy]
   #login - creating a new session, not user.
   def create

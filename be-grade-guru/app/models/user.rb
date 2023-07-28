@@ -1,7 +1,8 @@
 class User < ApplicationRecord
+    has_secure_password
     validates :email, presence: true, uniqueness: true
     validates :password, presence: true
-    has_secure_password
+
 
     ROLES = ['teacher', 'student', 'parent'].freeze
 

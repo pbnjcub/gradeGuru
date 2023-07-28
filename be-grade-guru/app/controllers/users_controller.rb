@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+    skip_before_action :confirm_authentication, only: [:create]
+
     skip_before_action :verify_authenticity_token, only: [:create]
 
     def index
@@ -30,10 +32,7 @@ class UsersController < ApplicationController
     private
 
     def user_params
-      params.require(:user).permit(:email, :password, :last_name, :first_name, :role)
+      params.permit(:email, :password, :last_name, :first_name, :role)
     end
-    
-
-    
 
 end

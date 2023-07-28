@@ -1,6 +1,7 @@
 
 export const createAccount = async (details, handleCurrentUser) => {
-    const resp = await fetch('/signup', {
+  console.log(details)  
+  const resp = await fetch('/signup', {
       method: 'POST',
       mode: 'cors',
       credentials: 'include',

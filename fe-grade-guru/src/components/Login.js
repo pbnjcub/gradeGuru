@@ -45,7 +45,7 @@ const Login = ({handleCurrentUser}) => {
                 <label>Email</label>
                 <input type="text" name="email" value={user.email} autoComplete="email" onChange={handleChange} />
                 <label>Password</label>
-                <input type="password" name="password" value={user.password} autoComplete="current-password" onChange={handleChange} />
+                <input type="password" name="password" value={user.password} onChange={handleChange} />
                 <input type="submit" value="Submit" />
             </form>
         </div>
