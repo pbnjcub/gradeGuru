@@ -22,12 +22,24 @@ const Signup = ({handleCurrentUser}) => {
 
 
     const handleChange = (e) => {
-      setNewUser({
-          ...newUser,
-          [e.target.name]: e.target.value,
-      })  
-      console.log(newUser)
-    };
+      if (e.target.name.includes("parent")) {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        parent: {
+          ...prevUser.parent,
+          [e.target.name.split(".")[1]]: e.target.value,
+        },
+      }));
+    } else {
+      setNewUser((prevUser) => ({
+        ...prevUser,
+        [e.target.name]: e.target.value,
+      }));
+    }
+  };
+  
+  console.log(newUser)
+
 
     const handleSubmit = async (e) => {
       e.preventDefault();
@@ -68,13 +80,13 @@ const Signup = ({handleCurrentUser}) => {
                     <hr />
                     <h2>Add Parent Information</h2>
                     <label>Parent Email</label>
-                    <input type="text" name="email" value={newUser.parent.email} onChange={handleChange} />
+                    <input type="text" name="parent.email" value={newUser.parent.email} onChange={handleChange} />
                     <label>Parent Password</label>
-                    <input type="password" name="password" value={newUser.parent.password} onChange={handleChange} />
+                    <input type="password" name="parent.password" value={newUser.parent.password} onChange={handleChange} />
                     <label>Parent First Name</label>
-                    <input type="text" name="first_name" value={newUser.parent.first_name} onChange={handleChange} />
+                    <input type="text" name="parent.first_name" value={newUser.parent.first_name} onChange={handleChange} />
                     <label>Parent Last Name</label>
-                    <input type="text" name="last_name" value={newUser.parent.last_name} onChange={handleChange} />
+                    <input type="text" name="parent.last_name" value={newUser.parent.last_name} onChange={handleChange} />
                   </div>
                 ) : null
 
