@@ -1,5 +1,5 @@
 
-export const createAccount = async (details, handleCurrentUser) => {
+export const createAccount = async (details) => {
   console.log(details)  
   const resp = await fetch('/signup', {
       method: 'POST',
@@ -14,7 +14,6 @@ export const createAccount = async (details, handleCurrentUser) => {
   
     if (resp.ok) {
       const data = await resp.json();
-      handleCurrentUser(data);
     } else {
       const errorData = await resp.json();
       return { errors: errorData.errors };

@@ -4,19 +4,22 @@ import { createAccount } from '../actions/auth';
 
 const Signup = ({handleCurrentUser}) => {
     //state variables
-    const [newUser, setNewUser] = useState({
+    const initialUserState = {
+      email: "",
+      password: "",
+      last_name: "",
+      first_name: "",
+      role: "admin",
+      parent: {
         email: "",
         password: "",
         last_name: "",
         first_name: "",
-        role: "admin",
-        parent: {
-          email: "",
-          password: "",
-          last_name: "",
-          first_name: "",
-        }
-      });
+        role: "parent"
+      }
+    };
+
+    const [newUser, setNewUser] = useState(initialUserState);
 
     const [errorMessages, setErrorMessages] = useState([]);
 
@@ -49,6 +52,7 @@ const Signup = ({handleCurrentUser}) => {
       } else {
         console.log("Account created")
         setErrorMessages([]);
+        setNewUser(initialUserState);
       }
     };
     //renders errors
