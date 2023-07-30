@@ -13,10 +13,10 @@ class UsersController < ApplicationController
       case user_params[:role]
         when 'student'
           create_student_user(user_params)
-        when 'teacher' || 'admin'
+        when 'teacher', 'admin'
           create_faculty_user(user_params)
         else
-          render json: { errors: 'Invalid role.' }, status: 400
+          render json: { errors: 'Invalid role.' }, status: :bad_request
       end
     end
       
@@ -25,7 +25,7 @@ class UsersController < ApplicationController
         if logged_in?
             render json: current_user, status: :ok
         else
-            render json: { errors: 'There is currently no user logged in.' }, status: 400
+            render json: { errors: 'There is currently no user logged in.' }, status: :bad_request
         end
     end
 
@@ -45,12 +45,12 @@ class UsersController < ApplicationController
             @family.save
           else
             @student.destroy
-            render json: { errors: @parent.errors.full_messages }, status: 400
+            render json: { errors: @parent.errors.full_messages }, status: :unprocessable_entity
           end
         end
         render json: @student, status: :created
       else
-        render json: { errors: @student.errors.full_messages }, status: 400
+        render json: { errors: @student.errors.full_messages }, status: :unprocessable_entity
       end
     end
 
@@ -59,7 +59,7 @@ class UsersController < ApplicationController
       if @user.save
         render json: @user, status: :created
       else
-        render json: { errors: @user.errors.full_messages }, status: 400
+        render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
       end
     end
 

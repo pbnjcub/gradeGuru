@@ -10,14 +10,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_21_150842) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_135045) do
   create_table "families", force: :cascade do |t|
     t.integer "parent_id"
     t.integer "student_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["parent_id"], name: "index_families_on_parent_id"
-    t.index ["student_id"], name: "index_families_on_student_id"
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -39,9 +37,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_150842) do
     t.integer "grade"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["skill_id"], name: "index_grades_on_skill_id"
-    t.index ["student_id"], name: "index_grades_on_student_id"
-    t.index ["teacher_id"], name: "index_grades_on_teacher_id"
   end
 
   create_table "skills", force: :cascade do |t|
@@ -71,7 +66,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_21_150842) do
 
   add_foreign_key "families", "users", column: "parent_id"
   add_foreign_key "families", "users", column: "student_id"
-  add_foreign_key "grades", "skills"
   add_foreign_key "grades", "users", column: "student_id"
   add_foreign_key "grades", "users", column: "teacher_id"
 end

@@ -1,7 +1,9 @@
 class User < ApplicationRecord
     has_secure_password
     validates :email, presence: true, uniqueness: true
-    validates :password, presence: true
+    validates :first_name, presence: true
+    validates :last_name, presence: true
+    validates :role, presence: true
 
 
     ROLES = ['teacher', 'admin', 'student', 'parent'].freeze
@@ -24,7 +26,7 @@ class User < ApplicationRecord
         role == 'parent'
     end
 
-    has_many :feedbacks, foreign_key: :teacher_id, class_name: 'Feedback', dependent: :destroy
+    has_many :feedbacks
     has_many :assigned_feedbacks, foreign_key: :student_id, class_name: 'Feedback', dependent: :destroy
     has_many :families, dependent: :destroy, foreign_key: :parent_id
     has_many :students, through: :families, source: :student
@@ -33,5 +35,15 @@ class User < ApplicationRecord
     has_many :parents, through: :reverse_families, source: :parent
 
     has_many :grades, foreign_key: :student_id, dependent: :destroy
+
+    # has_many :feedbacks, foreign_key: :teacher_id, class_name: 'Feedback', dependent: :destroy
+    # has_many :assigned_feedbacks, foreign_key: :student_id, class_name: 'Feedback', dependent: :destroy
+    # has_many :families, dependent: :destroy, foreign_key: :parent_id
+    # has_many :students, through: :families, source: :student
+
+    # has_many :reverse_families, class_name: 'Family', foreign_key: :student_id_key
+    # has_many :parents, through: :reverse_families, source: :parent
+
+    # has_many :grades, foreign_key: :student_id, dependent: :destroy
 
 end

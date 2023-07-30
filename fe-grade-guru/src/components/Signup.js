@@ -46,9 +46,10 @@ const Signup = ({handleCurrentUser}) => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const response = createAccount(newUser, handleCurrentUser);
+      const response = await createAccount(newUser, handleCurrentUser);
       if (response.errors) {
         setErrorMessages(response.errors);
+        console.log(errorMessages)
       } else {
         console.log("Account created")
         setErrorMessages([]);
