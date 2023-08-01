@@ -1,41 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import userContext from './UserContext';
 import { getStudentsForTeacher } from '../actions/teachers';
+import StudentLink from './StudentLink';
 
 const TeacherDashboard = () => {
     const { currentUser } = React.useContext(userContext);
-//     const [students, setStudents] = useState([]);
+    const [students, setStudents] = useState([]);
+    const [errorMessages, setErrorMessages] = useState([]);
 
-//   useEffect(() => {
-//     // Fetch the list of students for the logged-in teacher when the component mounts
-//     fetchStudents();
-//   }, []);
+  useEffect(() => {
+    console.log(currentUser.id)
+    fetchStudents(currentUser.id);
+  }, [currentUser.id]);
 
-//   const fetchStudents = async () => {
-//     try {
-//       const response = await getStudentsForTeacher();
-//       if (response.ok) {
-//         const data = await response.json();
-//         setStudents(data); // Update the students state with the fetched data
-//       } else {
-//         // Handle error if needed
-//         console.error('Failed to fetch students:', response.statusText);
-//       }
-//     } catch (error) {
-//       // Handle error if needed
-//       console.error('Error fetching students:', error);
-//     }
-//   };
+  const fetchStudents = (id) => {
+    getStudentsForTeacher(id)
+      .then((data) => {
+        setStudents(data);
+      })
+      .catch((error) => {
+        setErrorMessages(error);
+      })
+  };
+
+  const studentList = students.map((student) => <StudentLink key={student.id} student={student} />);
+
+  const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
+
 
   return (
-    <div>
+<div className="main">
       <h1>Teacher Dashboard</h1>
-      <h2>Students List:</h2>
-      {/* <ul>
-        {students.map((student) => (
-          <li key={student.id}>{`${student.first_name} ${student.last_name}`}</li>
-        ))}
-      </ul> */}
+      <h4>Teacher: {currentUser.last_name}, {currentUser.first_name}</h4>
+      <br/>
+      {renderErrors}
+      <div>
+        <table className="pure-table pure-table-horizontal">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {studentList}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

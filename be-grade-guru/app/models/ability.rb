@@ -7,11 +7,12 @@ class Ability
     user ||= User.new
 
     if user.teacher?
-      can :manage, [Feedback, Unit, Skill]
+      can :manage, [Feedback, Unit, Skill, Grade], teacher_id: user.id
+      # can :index_students, User, id: user.id
     elsif user.admin?
       can :manage, :all
     elsif user.student? || user.parent?
-      can :read, [Feedback, Unit, Skill]
+      can :read, [Feedback, Unit, Skill], student_id: user.id
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_30_135045) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_30_211957) do
   create_table "families", force: :cascade do |t|
     t.integer "parent_id"
     t.integer "student_id"
@@ -66,6 +66,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_30_135045) do
 
   add_foreign_key "families", "users", column: "parent_id"
   add_foreign_key "families", "users", column: "student_id"
+  add_foreign_key "feedbacks", "users", column: "student_id"
+  add_foreign_key "feedbacks", "users", column: "teacher_id"
   add_foreign_key "grades", "users", column: "student_id"
   add_foreign_key "grades", "users", column: "teacher_id"
 end

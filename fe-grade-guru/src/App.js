@@ -48,7 +48,7 @@ function App() {
               <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
               <Route exact path="/admin" element={<AdminDashboard />} />
-              <Route exact path="/teacher-dashboard" element={<TeacherDashboard />} />
+              <Route exact path="/teachers/:id" element={<TeacherDashboard />} />
               <Route exact path="/student-dashboard" element={<StudentDashboard />} />
             </Routes>
           </div>

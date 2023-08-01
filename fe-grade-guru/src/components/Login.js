@@ -21,13 +21,13 @@ const Login = ({handleCurrentUser}) => {
     const handleNavigation = (role) => {
         if (role === 'admin') {
             navigate("/admin");
-            } else if (role === 'teacher') {
-            navigate("/teacher-dashboard");
-            } else if (role === 'student' || role === 'parent') {
+        } else if (role === 'teacher') {
+            navigate("/teachers/:id");
+        } else if (role === 'student' || role === 'parent') {
             navigate("/student-dashboard");
-            } else {
+        } else {
             navigate("/");
-            }
+        }
     }
 
         
@@ -37,13 +37,9 @@ const Login = ({handleCurrentUser}) => {
         const response = await login(user, handleCurrentUser, handleNavigation);
 
         if (response && !response.errors) {
-        console.log("Login successful");
-        setErrorMessages([]);
-
-        // const role = response.role;
-        // handleNavigation(role); // Call handleNavigation to navigate based on the role
+            setErrorMessages([]);
         } else {
-        setErrorMessages(response?.errors || ["Error during login. Please try again."]);
+            setErrorMessages(response?.errors || ["Error during login. Please try again."]);
         }
     };
       

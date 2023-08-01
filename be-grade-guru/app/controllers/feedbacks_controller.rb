@@ -1,4 +1,6 @@
 class FeedbacksController < ApplicationController
+    skip_before_action :confirm_authentication
+    
     def index
         feedbacks = Feedback.all
         render json: feedbacks
