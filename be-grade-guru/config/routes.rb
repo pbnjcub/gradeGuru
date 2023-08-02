@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   # end
 
   # resources :feedbacks
+  get '/students/:student_id/units/:unit_id', to: 'students#get_feedback_and_grades'
   get '/teachers/:id', to: 'teachers#get_students'
   post '/login', to: 'sessions#create'
   get '/current-user', to: 'users#get_current_user'

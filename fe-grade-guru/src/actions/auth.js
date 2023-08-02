@@ -36,7 +36,7 @@ export const createAccount = async (details) => {
 
       const data = await resp.json();
       handleCurrentUser(data);
-      handleNavigation(data.role);
+      handleNavigation(data.role, data.id);
     } else {
       const errorData = await resp.json();
       return { errors: errorData.errors };
@@ -68,7 +68,6 @@ export const getCurrentUser = async (handleCurrentUser) => {
   });
 
   const data = await resp.json();
-  console.log(data);
   handleCurrentUser(data);
 };
 

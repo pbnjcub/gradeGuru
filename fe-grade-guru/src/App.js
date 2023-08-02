@@ -8,6 +8,7 @@ import Logout from './components/Logout';
 import NavBar from './components/NavBar';
 import AdminDashboard from './components/AdminDashboard';
 import TeacherDashboard from './components/TeacherDashboard';
+import TeacherStudentDetail from './components/TeacherStudentDetail';
 import StudentDashboard from './components/StudentDashboard';
 import { getCurrentUser } from './actions/auth';
 
@@ -18,10 +19,12 @@ function App() {
 
   //function to handle current user data
   const handleCurrentUser = (user) => {
-    if (user.email) {
+    if (user && user.email) {
       setCurrentUser(user);
-      console.log(user)
       setLoggedIn(true);
+    } else {
+      setCurrentUser(null);
+      setLoggedIn(false);
     }
   };
 
@@ -49,6 +52,7 @@ function App() {
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
               <Route exact path="/admin" element={<AdminDashboard />} />
               <Route exact path="/teachers/:id" element={<TeacherDashboard />} />
+              <Route exact path="/teachers/:teacher_id/students/:id" element={<TeacherStudentDetail />} />
               <Route exact path="/student-dashboard" element={<StudentDashboard />} />
             </Routes>
           </div>

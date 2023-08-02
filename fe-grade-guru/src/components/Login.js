@@ -18,11 +18,11 @@ const Login = ({handleCurrentUser}) => {
         })
     }
 
-    const handleNavigation = (role) => {
+    const handleNavigation = (role, userId) => {
         if (role === 'admin') {
             navigate("/admin");
         } else if (role === 'teacher') {
-            navigate("/teachers/:id");
+            navigate(`/teachers/${userId}`);
         } else if (role === 'student' || role === 'parent') {
             navigate("/student-dashboard");
         } else {

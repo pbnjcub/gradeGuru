@@ -38,7 +38,7 @@ const TeacherDashboard = () => {
         <table className="pure-table pure-table-horizontal">
           <thead>
             <tr>
-              <th>Course</th>
+              <th>Student</th>
               <th>Actions</th>
             </tr>
           </thead>
