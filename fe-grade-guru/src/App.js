@@ -8,7 +8,7 @@ import Logout from './components/Logout';
 import NavBar from './components/NavBar';
 import AdminDashboard from './components/AdminDashboard';
 import TeacherDashboard from './components/TeacherDashboard';
-import TeacherStudentDetail from './components/TeacherStudentDetail';
+import StudentDetail from './components/StudentDetail';
 import StudentDashboard from './components/StudentDashboard';
 import { getCurrentUser } from './actions/auth';
 
@@ -51,8 +51,8 @@ function App() {
               <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
               <Route exact path="/admin" element={<AdminDashboard />} />
-              <Route exact path="/teachers/:id" element={<TeacherDashboard />} />
-              <Route exact path="/teachers/:teacher_id/students/:id" element={<TeacherStudentDetail />} />
+              <Route path="/teachers/:id" element={<TeacherDashboard />} />
+              <Route path="/teachers/:teacher_id/students/:student_id" element={<StudentDetail />} />
               <Route exact path="/student-dashboard" element={<StudentDashboard />} />
             </Routes>
           </div>

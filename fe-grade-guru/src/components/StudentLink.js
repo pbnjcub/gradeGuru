@@ -10,7 +10,7 @@ const StudentLink = ({ student}) => {
   return (
     <tr>
       <td>
-        <Link to={`teachers/${currentUser.id}/students/${student.id}`}>
+        <Link to={`/teachers/${currentUser.id}/students/${student.id}`}>
           {student.first_name} {student.last_name}
         </Link>
       </td>

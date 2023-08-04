@@ -4,7 +4,7 @@ class TeachersController < ApplicationController
   def get_students
     teacher = User.find(params[:id])
     teacher_feedbacks = teacher.teacher_feedbacks
-    students = teacher_feedbacks.map { |feedback| feedback.student}
+    students = teacher_feedbacks.map { |feedback| feedback.student}.uniq
     render json: students
   end
 end
