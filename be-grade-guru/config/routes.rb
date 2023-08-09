@@ -7,11 +7,12 @@ Rails.application.routes.draw do
   #   get 'students', on: :member
   # end
   resources :teachers, only: [] do
-    resources :students, only: [:show]
+    resources :students, only: [:show] do 
+      resources :feedbacks, only: [:create, :update, :destroy]
+    end
   end
 
   # resources :feedbacks
-  # get '/teachers/:teacher_id/students/:student_id', to: 'students#get_feedback_and_grades'
   get '/teachers/:id', to: 'teachers#get_students'
   post '/login', to: 'sessions#create'
   get '/current-user', to: 'users#get_current_user'

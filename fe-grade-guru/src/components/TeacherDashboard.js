@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import userContext from './UserContext';
 import { getStudentsForTeacher } from '../actions/teachers';
-import { getGradesAndFeedbacksForStudent } from '../actions/students';
 import StudentLink from './StudentLink';
 
 const TeacherDashboard = () => {

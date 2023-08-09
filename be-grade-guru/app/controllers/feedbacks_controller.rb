@@ -32,10 +32,10 @@ class FeedbacksController < ApplicationController
 
     def update
         @feedback = Feedback.find(params[:id])
-        authorize! :update, @feedback
+        # authorize! :update, @feedback
     
         if @feedback.update(feedback_params)
-            render json: feedback
+            render json: @feedback
         else
             render json: { error: 'Not authorized.' }, status: 400
         end
@@ -55,6 +55,6 @@ class FeedbacksController < ApplicationController
     private
 
     def feedback_params
-        params.permit(:unit_id, :teacher_id, :written_work, :classwork, :homework, :comment)
+        params.permit(:unit_id, :teacher_id, :student_id, :written_work, :classwork, :homework, :comment)
     end
 end

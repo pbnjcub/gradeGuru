@@ -68,3 +68,12 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+### teacher dashboard
+list of all students
+student name  
+drop down menu for units
+                    |    Feedback           |           skills       |       
+                    ww    cw   hw    comment     sk1    sk2     sk3
+Unit Name           88    88   95    great job   85     96      86 
+Unit Name           78    98   78    great job   88     100     10

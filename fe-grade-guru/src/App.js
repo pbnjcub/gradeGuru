@@ -10,6 +10,7 @@ import AdminDashboard from './components/AdminDashboard';
 import TeacherDashboard from './components/TeacherDashboard';
 import StudentDetail from './components/StudentDetail';
 import StudentDashboard from './components/StudentDashboard';
+import FeedbackForm from './components/FeedbackForm';
 import { getCurrentUser } from './actions/auth';
 
 function App() {
@@ -53,6 +54,8 @@ function App() {
               <Route exact path="/admin" element={<AdminDashboard />} />
               <Route path="/teachers/:id" element={<TeacherDashboard />} />
               <Route path="/teachers/:teacher_id/students/:student_id" element={<StudentDetail />} />
+              <Route path="/skills-and-grades/:unit.id" element={<StudentDetail />} />
+              <Route path="/teachers/:teacher_id/students/:student_id/feedbacks/:feedbacks_id" element={<FeedbackForm />} />
               <Route exact path="/student-dashboard" element={<StudentDashboard />} />
             </Routes>
           </div>
