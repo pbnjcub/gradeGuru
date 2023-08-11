@@ -22,13 +22,15 @@ const TeacherDashboard = () => {
       })
   };
 
+
+
   const studentList = students.map((student) => <StudentLink key={student.id} student={student} />);
 
   const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
 
 
   return (
-<div className="main">
+<div className="main" style={{marginLeft: '50px'}}>
       <h1>Teacher Dashboard</h1>
       <h4>Teacher: {currentUser.last_name}, {currentUser.first_name}</h4>
       <br/>
@@ -38,7 +40,6 @@ const TeacherDashboard = () => {
           <thead>
             <tr>
               <th>Student</th>
-              <th>Actions</th>
             </tr>
           </thead>
           <tbody>

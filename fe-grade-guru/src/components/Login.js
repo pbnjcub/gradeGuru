@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { login } from '../actions/auth';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({handleCurrentUser}) => {
+const Login = ({handleCurrentUser, isTeacher, setIsTeacher}) => {
     //state variables
     const [user, setUser] = useState({
         email: "",
@@ -47,7 +47,7 @@ const Login = ({handleCurrentUser}) => {
 
     
     return (
-        <div className="main">
+        <div className="main" style={{marginLeft: '50px'}}>
             <h1>Login</h1>
             <br />
             {renderErrors}

@@ -1,43 +1,57 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { getGradesAndFeedbacksForStudent } from '../actions/students';
+// import { getGradesAndFeedbacksForStudent } from '../actions/students';
 import UserContext from './UserContext';
 import UnitGradesAndFeedbacks from './UnitGradesAndFeedbacks';
-import { updateStudentFeedbacks } from '../actions/students';
+// import { updateStudentFeedbacks } from '../actions/students';
 
-const StudentDetail = () => {
-  // state variables
+const StudentDetail = ({ studentObj, setStudentObj, getStudentData }) => {
   const { teacher_id, student_id } = useParams();
   const { currentUser } = React.useContext(UserContext);
-  const [student, setStudent] = useState({});
-  const [units, setUnits] = useState([]);
-  const [errorMessages, setErrorMessages] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [errorMessages, setErrorMessages] = useState([])
+  const [currentStudent, setCurrentStudent] = useState(null);
+  const [currentStudentUnits, setCurrentStudentUnits] = useState([]);
+
+  console.log(studentObj)
+
 
   useEffect(() => {
-    getGradesAndFeedbacksForStudent(teacher_id, student_id)
-      .then((data) => {
-        if (data.errors) {
-          setErrorMessages(data.errors);
+    async function fetchData() {
+      if (currentUser) {
+        setIsLoading(true);
+        setErrorMessages([]);
+
+        const data = await getStudentData(currentUser.id, student_id);
+
+        if (data) {
+          setStudentObj(data);
+          setCurrentStudent(data.student);
+          setCurrentStudentUnits(data.units_with_skill_and_feedback);
         } else {
-          setStudent(data.student);
-          setUnits(data.units_with_skill_and_feedback);
+          setErrorMessages(['Failed to fetch student data.']);
         }
-      })
-      .catch((error) => {
-        setErrorMessages([error.message]);
-      });
-  }, [teacher_id, student_id]);
+        setIsLoading(false);
+      }
+    }
+    fetchData();
+  }, [currentUser, student_id]);
 
+  const unitList = currentStudentUnits.map(unit => (
+    <UnitGradesAndFeedbacks key={unit.id} unit={unit} studentObj={studentObj} />
+  ));
 
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
 
-
-  const unitList = units.map((unit) => <UnitGradesAndFeedbacks key={unit.id} unit={unit} />);
-  
-  const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
+  if (errorMessages.length > 0) {
+    return <p>Error: {errorMessages.join(', ')}</p>;
+  }
 
   return (
-<div className="main" style={{marginLeft: '50px'}}>
-      <h1>Student Report for {student.first_name} {student.last_name} </h1>
+    <div className="main" style={{ marginLeft: '50px' }}>
+      <h1>Student Report for {currentStudent.first_name} {currentStudent.last_name}</h1>
       <br />
       <h3>Grades and Feedback</h3>
       <table className="pure-table pure-table-horizontal">

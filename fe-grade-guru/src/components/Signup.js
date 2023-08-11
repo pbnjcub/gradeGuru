@@ -41,8 +41,6 @@ const Signup = ({handleCurrentUser}) => {
     }
   };
   
-  console.log(newUser)
-
 
     const handleSubmit = async (e) => {
       e.preventDefault();

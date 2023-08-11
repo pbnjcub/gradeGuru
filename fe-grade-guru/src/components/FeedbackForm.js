@@ -5,17 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import userContext from './UserContext';
 import { updateStudentFeedbacks } from '../actions/students';
 
-const FeedbackForm = () => {
+const FeedbackForm = ({handleFeedbackUpdate}) => {
     const { currentUser } = React.useContext(userContext)
     const navigate = useNavigate();
     const location = useLocation()
     const { unit, params} = location.state
-    console.log(unit.unit.title)
-    console.log(params)
-    console.log(currentUser)
-
     const teacher_id = currentUser.id
-    const student_id = unit.unit.student_id
+    const student_id = params.student_id
+
     const [errorMessages, setErrorMessages] = useState([]);
     
     const [updatedFeedbacks, setUpdatedFeedbacks] = useState({
@@ -30,7 +27,6 @@ const FeedbackForm = () => {
       const handleInputChange = (e) => {
         setUpdatedFeedbacks({ ...updatedFeedbacks, [e.target.name]: e.target.value });
       };
-      console.log(updatedFeedbacks)
 
       const handleSubmit = (e) => {
         e.preventDefault();
@@ -39,14 +35,15 @@ const FeedbackForm = () => {
             if (data.errors) {
               setErrorMessages(data.errors);
             } else {
-              navigate(`/teachers/${teacher_id}/students/${student_id}`)
+              handleFeedbackUpdate(unit.unit.id, updatedFeedbacks)
           }
         });
-        };
+        navigate(`/teachers/${teacher_id}/students/${student_id}`)
+      };
 
   
     return (
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} style={{marginLeft: '50px'}}>
       <h1>Feedback Edit Form</h1>
       <table>
         <thead>

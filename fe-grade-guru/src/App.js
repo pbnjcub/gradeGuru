@@ -11,13 +11,15 @@ import TeacherDashboard from './components/TeacherDashboard';
 import StudentDetail from './components/StudentDetail';
 import StudentDashboard from './components/StudentDashboard';
 import FeedbackForm from './components/FeedbackForm';
+import UserEditForm from './components/UserEditForm';
 import { getCurrentUser } from './actions/auth';
-
+import { getGradesAndFeedbacksForStudent } from './actions/students';
 function App() {
   //state variables
   const [currentUser, setCurrentUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
-
+  const [studentObj, setStudentObj] = useState(null);
+  const [users, setUsers] = useState([]);
   //function to handle current user data
   const handleCurrentUser = (user) => {
     if (user && user.email) {
@@ -34,11 +36,39 @@ function App() {
     setCurrentUser(null);
     setLoggedIn(false);
   };
+  console.log(studentObj)
+  const getStudentData = async (userId, studentId) => {
+    try {
+      const data = await getGradesAndFeedbacksForStudent(userId, studentId);
+      if (!data.errors) {
+        return data;
+      } else {
+        throw new Error(data.errors.join(', '));
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
 
-  //useEffect to get current user
-  useEffect(() => {
-    getCurrentUser(handleCurrentUser);
-  }, []);
+  const handleEditUser = (updatedUser) => {
+    const updatedUsers = users.map((user) => {
+      if (user.id === updatedUser.id) {
+        return updatedUser;
+      } else {
+        return user;
+      }
+    });
+    setUsers(updatedUsers);
+  };
+
+    
+
+  const handleEditFeedback = (unitId, updatedFeedbacks) => {
+    // setUpdatedUnitId(unitId);
+    // setupdatedFeedbacks(updatedFeedbacks);
+  };
+
 
   return (
     <div className="App">
@@ -51,11 +81,11 @@ function App() {
               <Route exact path="/signup" element={<Signup setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
-              <Route exact path="/admin" element={<AdminDashboard />} />
-              <Route path="/teachers/:id" element={<TeacherDashboard />} />
-              <Route path="/teachers/:teacher_id/students/:student_id" element={<StudentDetail />} />
-              <Route path="/skills-and-grades/:unit.id" element={<StudentDetail />} />
-              <Route path="/teachers/:teacher_id/students/:student_id/feedbacks/:feedbacks_id" element={<FeedbackForm />} />
+              <Route exact path="/admin" element={<AdminDashboard users={users} setUsers={setUsers}/>} />
+              <Route exact path="/edit-user" element={<UserEditForm users={users} setUsers={setUsers} handleEditUser={handleEditUser}/>} />
+              <Route path="/teachers/:id" element={<TeacherDashboard  />} />
+              <Route path="/teachers/:teacher_id/students/:student_id" element={<StudentDetail studentObj={studentObj} setStudentObj={setStudentObj} getStudentData={getStudentData}  />} />
+              <Route path="/teachers/:teacher_id/students/:student_id/feedbacks/:feedbacks_id" element={<FeedbackForm handleEditFeedback={handleEditFeedback}/>} />
               <Route exact path="/student-dashboard" element={<StudentDashboard />} />
             </Routes>
           </div>

@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-    skip_before_action :confirm_authentication, only: [:create]
+    skip_before_action :confirm_authentication
 
-    skip_before_action :verify_authenticity_token, only: [:create]
+    skip_before_action :verify_authenticity_token
 
     def index
         users = User.all
@@ -26,6 +26,17 @@ class UsersController < ApplicationController
             render json: current_user, status: :ok
         else
             render json: { errors: 'There is currently no user logged in.' }, status: :bad_request
+        end
+    end
+
+    def update
+        user = User.find(params[:id])
+        # authorize! :update, user
+
+        if user.update(user_params)
+            render json: user
+        else
+            render json: { error: 'Not authorized.' }, status: 400
         end
     end
 

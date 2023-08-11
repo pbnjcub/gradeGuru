@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import userContext from './UserContext';
 import { useNavigate } from 'react-router-dom';
-import { updateStudentFeedbacks } from '../actions/students';
 
 const SkillsAndGrades = ({ unit }) => {
   const { currentUser } = React.useContext(userContext)
@@ -25,6 +24,7 @@ const SkillsAndGrades = ({ unit }) => {
 
   const navigateToFeedbackUpdate = () => {
     const params = {
+      // handleFeedbackUpdate: handleFeedbackUpdate,
       unit_title: current_unit.title,
       unit_description: current_unit.description,
       unit_id: current_unit.id,

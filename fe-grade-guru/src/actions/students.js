@@ -1,5 +1,4 @@
 export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) => {
-    console.log(student_id)
     const resp = await fetch(`/teachers/${teacher_id}/students/${student_id}`, {
       method: 'GET',
       mode: 'cors',
@@ -12,7 +11,6 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
 
     if (resp.ok) {
       const data = await resp.json();
-      console.log(data)
       return data
     } else {
       const errorData = await resp.json();
@@ -21,8 +19,9 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
   };
 
 export const updateStudentFeedbacks = async (teacher_id, student_id, updatedFeedbacks) => {
+    const id = updatedFeedbacks.id
     console.log(updatedFeedbacks)
-    const resp = await fetch(`/teachers/${teacher_id}/students/${student_id}/feedbacks/${updatedFeedbacks.id}`, {
+    const resp = await fetch(`/teachers/${teacher_id}/students/${student_id}/feedbacks/${id}`, {
       method: 'PATCH',
       mode: 'cors',
       credentials: 'include',
@@ -41,3 +40,5 @@ export const updateStudentFeedbacks = async (teacher_id, student_id, updatedFeed
       return { errors: errorData.errors };
     }
   }
+
+  
