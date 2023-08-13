@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import userContext from './UserContext';
 import { updateStudentFeedbacks } from '../actions/students';
 
-const FeedbackForm = ({handleFeedbackUpdate}) => {
+const FeedbackForm = ({handleEditFeedback}) => {
     const { currentUser } = React.useContext(userContext)
     const navigate = useNavigate();
     const location = useLocation()
@@ -30,15 +30,29 @@ const FeedbackForm = ({handleFeedbackUpdate}) => {
 
       const handleSubmit = (e) => {
         e.preventDefault();
-        updateStudentFeedbacks(teacher_id, student_id, updatedFeedbacks)
+
+        const updatedFeedbacksData = {
+          id: updatedFeedbacks.id,
+          written_work: updatedFeedbacks.written_work,
+          classwork: updatedFeedbacks.classwork,
+          homework: updatedFeedbacks.homework,
+          comment: updatedFeedbacks.comment,
+        };
+
+        console.log("Updated Feedbacks before API call:", updatedFeedbacks); // Add this line
+        updateStudentFeedbacks(teacher_id, student_id, updatedFeedbacksData)
           .then((data) => {
+            console.log("API Response:", data); // Add this line
             if (data.errors) {
               setErrorMessages(data.errors);
             } else {
-              handleFeedbackUpdate(unit.unit.id, updatedFeedbacks)
-          }
-        });
-        navigate(`/teachers/${teacher_id}/students/${student_id}`)
+              handleEditFeedback(unit.unit.id, updatedFeedbacksData);
+            }
+          })
+          .finally(() => {
+            console.log("Updated Feedbacks after API call:", updatedFeedbacks); // Add this line
+            navigate(`/teachers/${teacher_id}/students/${student_id}`);
+          });
       };
 
   

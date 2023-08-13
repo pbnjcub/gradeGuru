@@ -36,7 +36,7 @@ function App() {
     setCurrentUser(null);
     setLoggedIn(false);
   };
-  console.log(studentObj)
+
   const getStudentData = async (userId, studentId) => {
     try {
       const data = await getGradesAndFeedbacksForStudent(userId, studentId);
@@ -65,8 +65,14 @@ function App() {
     
 
   const handleEditFeedback = (unitId, updatedFeedbacks) => {
-    // setUpdatedUnitId(unitId);
-    // setupdatedFeedbacks(updatedFeedbacks);
+    const updatedStudentObj = { ...studentObj };
+
+    const unitToUpdate = updatedStudentObj.units_with_skill_and_feedback.find(unit => unit.unit.id === unitId);
+    
+    if (unitToUpdate) {
+      unitToUpdate.feedbacks = updatedFeedbacks;
+    }
+    setStudentObj(updatedStudentObj);
   };
 
 

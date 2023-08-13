@@ -13,9 +13,6 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData }) => {
   const [currentStudent, setCurrentStudent] = useState(null);
   const [currentStudentUnits, setCurrentStudentUnits] = useState([]);
 
-  console.log(studentObj)
-
-
   useEffect(() => {
     async function fetchData() {
       if (currentUser) {
