@@ -26,7 +26,6 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
       homework: updatedFeedbacks.homework,
       comment: updatedFeedbacks.comment,
     }
-    console.log("Sending API Request with Data:", requestBody); 
     const resp = await fetch(`/teachers/${teacher_id}/students/${student_id}/feedbacks/${id}`, {
       method: 'PATCH',
       mode: 'cors',
@@ -41,11 +40,35 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
   
     if (resp.ok) {
       const data = await resp.json();
-      console.log("API Response Data:", data);
       return data;
     } else {
       const errorData = await resp.json();
-      console.log("API Error Response Data:", errorData); 
       return { errors: errorData.errors };
     }
   };
+
+  export const updateStudentFeedbackSkills = async (teacher_id, student_id, feedback_id, updatedSkills) => {
+    const id = updatedSkills.id;
+
+    const resp = await fetch(`/teachers/${teacher_id}/students/${student_id}/feedbacks/${feedback_id}/skills/${id}`, {
+      method: 'PATCH',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(updatedSkills)
+
+    });
+
+    if (resp.ok) {
+      const data = await resp.json();
+      return data;
+    } else {
+      const errorData = await resp.json();
+      return { errors: errorData.errors };
+    }
+  };
+
+  

@@ -45,10 +45,10 @@ class FeedbacksController < ApplicationController
 
     def destroy
         @feedback = Feedback.find(params[:id])
-        authorize! :destroy, @feedback
+        # authorize! :destroy, @feedback
 
         if @feedback.destroy
-            render json: { message: 'Feedback deleted.' }
+            head :no_content
         else
             render json: { error: 'Not authorized.' }, status: 400
         end

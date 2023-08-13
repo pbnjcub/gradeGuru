@@ -36,20 +36,36 @@ function App() {
     setCurrentUser(null);
     setLoggedIn(false);
   };
-
-  const getStudentData = async (userId, studentId) => {
-    try {
-      const data = await getGradesAndFeedbacksForStudent(userId, studentId);
-      if (!data.errors) {
-        return data;
-      } else {
-        throw new Error(data.errors.join(', '));
-      }
-    } catch (error) {
-      console.error(error);
-      return null;
-    }
+  
+  const getStudentData = (userId, studentId) => {
+    return getGradesAndFeedbacksForStudent(userId, studentId)
+      .then(data => {
+        if (!data.errors) {
+          return data;
+        } else {
+          throw new Error(data.errors.join(', '));
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        return null;
+      });
   };
+  
+
+  // const getStudentData = async (userId, studentId) => {
+  //   try {
+  //     const data = await getGradesAndFeedbacksForStudent(userId, studentId);
+  //     if (!data.errors) {
+  //       return data;
+  //     } else {
+  //       throw new Error(data.errors.join(', '));
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     return null;
+  //   }
+  // };
 
   const handleEditUser = (updatedUser) => {
     const updatedUsers = users.map((user) => {
