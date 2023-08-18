@@ -4,26 +4,15 @@ class GradesController < ApplicationController
 
     
     def update
-        #find each grade by id and update the grade
         grades_data = params[:_json]
-
-        puts "grade_value: #{grades_data[1]}"
 
         updated_grades = grades_data.each.with_index do |data, index|
             grade = data["grade"]
-            puts "grade#{index}: #{grade}"
-            grade_id = grade["id"].to_i
-            puts "grade_id: #{grade_id}"
-            # grade_id = grade["id"].to_i
-            # puts "grade_id: #{grade_id}"
-            # puts "grade_id: #{grade_id}"
-            # new_grade_value = data["grade"]["grade"].to_i
-            # puts "new_grade_value: #{new_grade_value}"
+            grade_id = grade["id"]
+            new_grade_value = grade["grade"]
 
-            # grade = Grade.find(grade_id)
-            # grade.update(grade: new_grade_value)
-
-            # data
+            grade = Grade.find(grade_id)
+            grade.update(grade: new_grade_value)
         end
 
         if updated_grades
