@@ -23,7 +23,7 @@ class StudentsController < ApplicationController
         unit_skills = skills.select { |skill| skill["unit_id"] == unit["id"] }
         unit_skills_with_grade = unit_skills.map do |skill|
           grade = grades.find { |grade| grade.skill_id == skill["id"] }
-          { skill: skill, grade: grade.grade }
+          { skill: skill, grade: grade }
         end
         { unit: unit, feedbacks: unit_feedbacks, skills: unit_skills_with_grade }
       end

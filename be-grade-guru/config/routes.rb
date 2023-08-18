@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 
 
   # resources :feedbacks
+  patch '/teachers/:teacher_id/students/:student_id/update-grades', to: 'grades#update'
   patch '/teachers/:teacher_id/students/:student_id/feedbacks/:id', to: 'feedbacks#update'
   get '/teachers/:id', to: 'teachers#get_students'
   post '/login', to: 'sessions#create'
