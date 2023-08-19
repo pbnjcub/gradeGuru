@@ -7,6 +7,11 @@ class FeedbacksController < ApplicationController
         render json: feedbacks
     end
 
+    def create
+        feedback = Feedback.create(feedback_params)
+        render json: feedback, status: :create
+    end
+
     def show
         @feedback = Feedback.find(params[:id])
         authorize! :read, @feedback
