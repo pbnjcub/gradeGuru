@@ -3,7 +3,7 @@ class SkillsController < ApplicationController
     skip_before_action :verify_authenticity_token
 
     def update
-        skill = Skill.find(params[:id])
+        skill = Skill.find(params[:skill_id])
 
         if skill
             skill.update(skill_params)

@@ -85,21 +85,8 @@ function App() {
     setUsers(updatedUsers);
   };
 
-  const handleEditSkill = (updatedSkill) => {
-    const updatedUnitObj = { ...unitObj };
-    const unitId = updatedSkill.unit_id;
-    const unitToUpdate = updatedUnitObj.units_with_skill_and_feedback.find(unit => unit.unit.id === unitId);
 
-    if (unitToUpdate) {
-      unitToUpdate.skills = unitToUpdate.skills.map(skill => {
-        if (skill.id === updatedSkill.id) {
-          return { ...skill, ...updatedSkill };
-        }
-        return skill;
-      });
-    }
-    setUnitObj(updatedUnitObj);
-  }
+  
 
 
   const handleEditFeedback = (unitId, updatedFeedbacks) => {
@@ -140,7 +127,7 @@ function App() {
               <Route exact path="/admin" element={<AdminDashboard users={users} setUsers={setUsers}/>} />
               <Route exact path="/edit-user" element={<UserEditForm users={users} setUsers={setUsers} handleEditUser={handleEditUser}/>} />
               <Route path="/teachers/:id" element={<TeacherDashboard  />} />
-              <Route path="teachers/:teacher_id/units/:unit_id" element={<UnitDetails unitObj={unitObj} setUnitObj={setUnitObj} getUnitData={getUnitData} handleEditSkill={handleEditSkill} />} />
+              <Route path="teachers/:teacher_id/units/:unit_id" element={<UnitDetails unitObj={unitObj} setUnitObj={setUnitObj} getUnitData={getUnitData} />} />
               <Route path="/teachers/:teacher_id/units/create" element={<CreateUnitForm />} />
               <Route path="/teachers/:teacher_id/units/update" element={<UpdateUnitForm />} />
               <Route path="/teachers/:teacher_id/students/:student_id" element={<StudentDetail studentObj={studentObj} setStudentObj={setStudentObj} getStudentData={getStudentData} handleEditSkillsGrade={handleEditSkillsGrade} />} />

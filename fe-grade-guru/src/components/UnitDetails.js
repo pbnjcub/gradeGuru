@@ -5,7 +5,7 @@ import SkillItem from './SkillItem';
 import UpdateSkillItem from './UpdateSkillItem';
 import UserContext from './UserContext';
 
-const UnitDetails = ({ unitObj, setUnitObj, getUnitData, handleEditSkill} ) => {
+const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     const { teacher_id, unit_id } = useParams();
     const {currentUser} = React.useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
@@ -36,29 +36,41 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData, handleEditSkill} ) => {
     }, [currentUser, unit_id]);
 
     const handleUpdateSkillClick = (skillId) => {
-      setUpdatingSkillId(skillId)
-      setUpdatingSkill(unitSkills[skillId])
-    }
-
-    const handleSkillChange = (skillId, field, value) => {
-      setUnitSkills((prevSkills) =>
-        prevSkills.map((skill) =>
-          skill.id === skillId ? { ...skill, [field]: value } : skill
-        )
-      );
+      const skillToUpdate = unitSkills.find(skill => skill.id === skillId);
+      setUpdatingSkillId(skillId);
+      setUpdatingSkill(skillToUpdate);
+      setEditingSkills(true);
     };
-  
-  
-    const updateSkill = async (updatedSkillId) => {
-      const skillToUpdate = unitSkills.find(skill => skill.id === updatedSkillId);
+    
 
-      updateUnitSkill(teacher_id, unit_id, skillToUpdate)
+    const handleSkillChange = (field, value) => {
+      setUpdatingSkill({ ...updatingSkill, [field]: value})
+    };
+
+    console.log(updatingSkill)
+    
+    const handleEditSkill = (updatedSkill) => {
+      const updatedUnitSkills = unitSkills.map(skill => {
+        if (skill.id === updatedSkill.id) {
+          return updatedSkill;
+        } else {
+          return skill
+        }
+
+      })
+      setUnitSkills(updatedUnitSkills)
+    };
+    
+  
+    const updateSkill = async () => {
+
+      updateUnitSkill(teacher_id, unit_id, updatingSkill.id, updatingSkill)
       .then((data) => {
         if (data.error) {
           setErrorMessages(data.error);
         } else {
           setEditingSkills(false)
-          handleEditSkill(skillToUpdate)
+          handleEditSkill(updatingSkill)
         }
       })
     };
@@ -75,9 +87,9 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData, handleEditSkill} ) => {
       return <p>Error: {errorMessages.join(', ')}</p>;
     }
 
-    const skillList = unitSkills.map((unitSkill) => <SkillItem key={unitSkill.id} handleUpdateSkillClick={handleUpdateSkillClick} />)
+    const skillList = unitSkills.map((unitSkill) => <SkillItem key={unitSkill.id} unitSkill={unitSkill} handleUpdateSkillClick={handleUpdateSkillClick} />)
   
-    const updatingSkillList = unitSkills.map((unitSkill) => <UpdateSkillItem key={unitSkill.id} unitSkill={unitSkill} updatingSkillId={updatingSkillId} handleSkillChange={handleSkillChange} updateSkill={updateSkill} toggleEditSkills={toggleEditSkills} handleUpdateSkillClick={handleUpdateSkillClick} />)
+    const updatingSkillList = unitSkills.map((unitSkill) => <UpdateSkillItem key={unitSkill.id} unitSkill={unitSkill} updatingSkill={updatingSkill} updatingSkillId={updatingSkillId} handleSkillChange={handleSkillChange} updateSkill={updateSkill} toggleEditSkills={toggleEditSkills} handleUpdateSkillClick={handleUpdateSkillClick} />)
 
     return (
       <div className="main" style={{ marginLeft: '50px' }}>

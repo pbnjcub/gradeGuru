@@ -5,10 +5,10 @@ const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkil
     return (
       <tr key={unitSkill.id}>
         <td>
-          <input type="text" name={`title_${unitSkill.id}`} value={updatingSkill.title} onChange={(e) => handleSkillChange(updatingSkill.id, 'title', e.target.value)}/>
+          <input type="text" name={`title_${unitSkill.id}`} value={updatingSkill.title} onChange={(e) => handleSkillChange('title', e.target.value)}/>
         </td>
         <td>
-          <input type="text" name={`description_${unitSkill.id}`} value={updatingSkill.description} onChange={(e) => handleSkillChange(updatingSkill.id, 'description', e.target.value)}/>
+          <input type="text" name={`description_${unitSkill.id}`} value={updatingSkill.description} onChange={(e) => handleSkillChange('description', e.target.value)}/>
         </td>
         <td>
           <button className="pure-button pure-button-primary" onClick={() => updateSkill(updatingSkill)}>

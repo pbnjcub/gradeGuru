@@ -39,8 +39,8 @@ export const createUnit = async (teacher_id, details) => {
         }
       };
 
-      export const updateUnitSkill = async (teacher_id, unit_id, skillToUpdate) => {
-        skill_id = parseInt(updatedSkill.id)
+      export const updateUnitSkill = async (teacher_id, unit_id, skill_id, updatingSkill) => {
+        
 
         const resp = await fetch(`/teachers/${teacher_id}/units/${unit_id}/skills/${skill_id}/update`, {
           method: 'PATCH',
@@ -50,7 +50,7 @@ export const createUnit = async (teacher_id, details) => {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
           },
-          body: JSON.stringify(skillToUpdate)
+          body: JSON.stringify(updatingSkill)
     
         });
     

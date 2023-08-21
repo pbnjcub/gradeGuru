@@ -1,12 +1,12 @@
 import React from 'react';
 
-const SkillItem = ({ skill, handleUpdateSkillClick }) => {
+const SkillItem = ({ unitSkill, handleUpdateSkillClick }) => {
   return (
-    <tr key={skill.id}>
-      <td>{skill.title}</td>
-      <td>{skill.description}</td>
+    <tr key={unitSkill.id}>
+      <td>{unitSkill.title}</td>
+      <td>{unitSkill.description}</td>
       <td>
-        <button className="pure-button pure-button-primary" onClick={() => handleUpdateSkillClick(skill.id)}>
+        <button className="pure-button pure-button-primary" onClick={() => handleUpdateSkillClick(unitSkill.id)}>
           Update Skill
         </button>
       </td>
