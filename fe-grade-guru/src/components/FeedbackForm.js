@@ -39,7 +39,6 @@ const FeedbackForm = ({handleEditFeedback}) => {
           comment: updatedFeedbacks.comment,
         };
 
-        console.log("Updated Feedbacks before API call:", updatedFeedbacks); // Add this line
         updateStudentFeedbacks(teacher_id, student_id, updatedFeedbacksData)
           .then((data) => {
             console.log("API Response:", data); // Add this line

@@ -5,6 +5,26 @@ import userContext from './UserContext';
 const NavBar = ({ loggedIn }) => {
   const { currentUser } = React.useContext(userContext);
 
+  const renderManageUnitsSubMenu = () => {
+    if (currentUser.role === 'teacher') {
+      return (
+        <ul className="sub-menu">
+          <li className="sub-menu-item">
+            <NavLink className="pure-menu-link" to="/teachers/:teacher_id/units/create">
+              Create Unit
+            </NavLink>
+          </li>
+          <li className="sub-menu-item">
+            <NavLink className="pure-menu-link" to="/teachers/:teacher_id/units/edit">
+              Edit Unit
+            </NavLink>
+          </li>
+        </ul>
+      );
+    }
+    return null;
+  };
+
     if (loggedIn) {
         const role = currentUser.role;
     return (
@@ -19,11 +39,23 @@ const NavBar = ({ loggedIn }) => {
             </NavLink>
           </li>
           {role === 'teacher' && (
+            <React.Fragment>
             <li className="pure-menu-item">
-              <NavLink className="pure-menu-link" to="/teachers/:id">
+              <NavLink className="pure-menu-link has-sub-menu" to="/teachers/:id">
                 Teacher Dashboard
               </NavLink>
             </li>
+            <li className="pure-menu-item">
+              <div className="pure-menu-link has-sub-menu">
+              <span>
+                <NavLink className="pure-menu-link" to="/teachers/:teacher_id/units">
+                  Manage Units
+                </NavLink>
+                {renderManageUnitsSubMenu()}
+              </span>
+              </div>
+            </li>
+            </React.Fragment>
           )}
           {role === 'admin' && (
             <React.Fragment>

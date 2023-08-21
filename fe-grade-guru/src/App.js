@@ -12,6 +12,11 @@ import StudentDetail from './components/StudentDetail';
 import StudentDashboard from './components/StudentDashboard';
 import FeedbackForm from './components/FeedbackForm';
 import UserEditForm from './components/UserEditForm';
+import UnitsDashboard from './components/UnitsDashboard';
+import CreateUnitForm from './components/CreateUnitForm';
+import UpdateUnitForm from './components/UpdateUnitForm';
+import UnitDetails from './components/UnitDetails';
+import { getDataForUnit } from './actions/units';
 import { getCurrentUser } from './actions/auth';
 import { getGradesAndFeedbacksForStudent } from './actions/students';
 function App() {
@@ -19,6 +24,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const [studentObj, setStudentObj] = useState(null);
+  const [unitObj, setUnitObj] = useState(null);
   const [users, setUsers] = useState([]);
   //function to handle current user data
   const handleCurrentUser = (user) => {
@@ -51,21 +57,22 @@ function App() {
         return null;
       });
   };
-  
 
-  // const getStudentData = async (userId, studentId) => {
-  //   try {
-  //     const data = await getGradesAndFeedbacksForStudent(userId, studentId);
-  //     if (!data.errors) {
-  //       return data;
-  //     } else {
-  //       throw new Error(data.errors.join(', '));
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     return null;
-  //   }
-  // };
+  const getUnitData = (userId, unitId) => {
+    return getDataForUnit(userId, unitId)
+      .then(data => {
+        if (!data.errors) {
+          return data;
+        } else {
+          throw new Error(data.errors.join(', '));
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        return null;
+      });
+  };
+  
 
   const handleEditUser = (updatedUser) => {
     const updatedUsers = users.map((user) => {
@@ -78,7 +85,22 @@ function App() {
     setUsers(updatedUsers);
   };
 
-    
+  const handleEditSkill = (updatedSkill) => {
+    const updatedUnitObj = { ...unitObj };
+    const unitId = updatedSkill.unit_id;
+    const unitToUpdate = updatedUnitObj.units_with_skill_and_feedback.find(unit => unit.unit.id === unitId);
+
+    if (unitToUpdate) {
+      unitToUpdate.skills = unitToUpdate.skills.map(skill => {
+        if (skill.id === updatedSkill.id) {
+          return { ...skill, ...updatedSkill };
+        }
+        return skill;
+      });
+    }
+    setUnitObj(updatedUnitObj);
+  }
+
 
   const handleEditFeedback = (unitId, updatedFeedbacks) => {
     const updatedStudentObj = { ...studentObj };
@@ -90,6 +112,18 @@ function App() {
     }
     setStudentObj(updatedStudentObj);
   };
+
+  const handleEditSkillsGrade = (updatedSkills) => {
+    const updatedStudentObj = { ...studentObj };
+    const unitId = updatedSkills[0].skill.unit_id;
+    const unitToUpdate = updatedStudentObj.units_with_skill_and_feedback.find(unit => unit.unit.id === unitId);
+
+    if (unitToUpdate) {
+      unitToUpdate.skills = updatedSkills;
+    }
+    setStudentObj(updatedStudentObj);
+  }
+
 
 
   return (
@@ -106,8 +140,12 @@ function App() {
               <Route exact path="/admin" element={<AdminDashboard users={users} setUsers={setUsers}/>} />
               <Route exact path="/edit-user" element={<UserEditForm users={users} setUsers={setUsers} handleEditUser={handleEditUser}/>} />
               <Route path="/teachers/:id" element={<TeacherDashboard  />} />
-              <Route path="/teachers/:teacher_id/students/:student_id" element={<StudentDetail studentObj={studentObj} setStudentObj={setStudentObj} getStudentData={getStudentData}  />} />
+              <Route path="teachers/:teacher_id/units/:unit_id" element={<UnitDetails unitObj={unitObj} setUnitObj={setUnitObj} getUnitData={getUnitData} handleEditSkill={handleEditSkill} />} />
+              <Route path="/teachers/:teacher_id/units/create" element={<CreateUnitForm />} />
+              <Route path="/teachers/:teacher_id/units/update" element={<UpdateUnitForm />} />
+              <Route path="/teachers/:teacher_id/students/:student_id" element={<StudentDetail studentObj={studentObj} setStudentObj={setStudentObj} getStudentData={getStudentData} handleEditSkillsGrade={handleEditSkillsGrade} />} />
               <Route path="/teachers/:teacher_id/students/:student_id/feedbacks/:feedbacks_id" element={<FeedbackForm handleEditFeedback={handleEditFeedback}/>} />
+              <Route path="/teachers/:teacher_id/units" element={<UnitsDashboard />} />
               <Route exact path="/student-dashboard" element={<StudentDashboard />} />
             </Routes>
           </div>

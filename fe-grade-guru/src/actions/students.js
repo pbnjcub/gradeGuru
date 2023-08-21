@@ -47,10 +47,8 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
     }
   };
 
-  export const updateStudentFeedbackSkills = async (teacher_id, student_id, feedback_id, updatedSkills) => {
-    const id = updatedSkills.id;
-
-    const resp = await fetch(`/teachers/${teacher_id}/students/${student_id}/feedbacks/${feedback_id}/skills/${id}`, {
+  export const updateStudentSkillGrades = async (teacher_id, student_id, updatedGrades) => {
+    const resp = await fetch(`/teachers/${teacher_id}/students/${student_id}/grades/update`, {
       method: 'PATCH',
       mode: 'cors',
       credentials: 'include',
@@ -58,7 +56,7 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify(updatedSkills)
+      body: JSON.stringify(updatedGrades)
 
     });
 
@@ -69,6 +67,4 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
       const errorData = await resp.json();
       return { errors: errorData.errors };
     }
-  };
-
-  
+  }

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { createAccount } from '../actions/auth';
+import { createAccount } from '../actions/users';
 
 
 const Signup = ({handleCurrentUser}) => {

@@ -38,3 +38,24 @@ export const editUser = async (id, updatedUser) => {
         return { errors: errorData.errors };
     }
 }
+
+export const createAccount = async (details) => {
+    console.log(details)  
+    const resp = await fetch('/signup', {
+        method: 'POST',
+        mode: 'cors',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify(details)
+      });
+    
+      if (resp.ok) {
+        const data = await resp.json();
+      } else {
+        const errorData = await resp.json();
+        return { errors: errorData.errors };
+      }
+    };

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-// import { getGradesAndFeedbacksForStudent } from '../actions/students';
 import UserContext from './UserContext';
 import UnitGradesAndFeedbacks from './UnitGradesAndFeedbacks';
-// import { updateStudentFeedbacks } from '../actions/students';
 
-const StudentDetail = ({ studentObj, setStudentObj, getStudentData }) => {
+
+const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSkillsGrade }) => {
   const { teacher_id, student_id } = useParams();
   const { currentUser } = React.useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(true); // Add loading state
+  const [isLoading, setIsLoading] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])
   const [currentStudent, setCurrentStudent] = useState(null);
   const [currentStudentUnits, setCurrentStudentUnits] = useState([]);
@@ -35,7 +34,7 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData }) => {
   }, [currentUser, student_id]);
 
   const unitList = currentStudentUnits.map(unit => (
-    <UnitGradesAndFeedbacks key={unit.id} unit={unit} studentObj={studentObj} />
+    <UnitGradesAndFeedbacks key={unit.id} unit={unit} studentObj={studentObj} handleEditSkillsGrade={handleEditSkillsGrade} />
   ));
 
   if (isLoading) {

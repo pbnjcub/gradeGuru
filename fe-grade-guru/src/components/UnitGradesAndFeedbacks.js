@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import userContext from './UserContext';
 import { useNavigate } from 'react-router-dom';
+import {updateStudentSkillGrades} from '../actions/students';
 
-const SkillsAndGrades = ({ unit }) => {
+const SkillsAndGrades = ({ unit, handleEditSkillsGrade }) => {
   const { currentUser } = React.useContext(userContext);
   const unitFeedbacks = unit.feedbacks[0];
   const current_unit = unit.unit;
-  const teacher_id = currentUser.teacher_id;
+  const teacher_id = currentUser.id;
   const feedback_id = unit.feedbacks[0].id;
   const student_id = unit.feedbacks[0].student_id;
   const unit_skills = unit.skills;
@@ -23,21 +24,52 @@ const SkillsAndGrades = ({ unit }) => {
   const toggleEditSkills = () => {
     setEditingSkills(!editingSkills);
   };
-
-  const handleSkillGradeChange = (skillId, newGrade) => {
-    const updatedSkillsCopy = updatedSkills.map(skill => {
-      if (skill.skill.id === skillId) {
-        return { ...skill, grade: newGrade };
+  
+  const handleSkillGradeChange = (e, index) => {
+    const updatedSkill = {
+      ...updatedSkills[index],
+      grade: {                 
+        ...updatedSkills[index].grade,
+        grade: parseInt(e.target.value)
       }
-      return skill;
-    });
+    };
+    
+    const updatedSkillsCopy = [...updatedSkills];
+    updatedSkillsCopy[index] = updatedSkill;
     setUpdatedSkills(updatedSkillsCopy);
   };
-
+  
+  
+  
   const updateSkills = () => {
-    // Implement the skill update action here, e.g., call an API
-    // Once updated, you can setEditingSkills(false) to exit edit mode
+    updateStudentSkillGrades(teacher_id, student_id, updatedSkills)
+      .then((data) => {
+        if (data.error) {
+          setErrorMessages(data.error);
+        } else {
+          setEditingSkills(false);
+          handleEditSkillsGrade(updatedSkills)
+        }
+      })
   };
+
+  const skillList = unit_skills.map((skill) => (
+    <div key={skill.skill.id}>
+      <h4>{skill.skill.title}</h4>
+      <p>Grade: {skill.grade.grade}</p>
+    </div>
+  ));
+
+  const skillListEdit = updatedSkills.map((skill, index) => {
+    const skill_title = skill.skill.title.toLowerCase().replace(/\s/g, "_")
+
+    return (
+      <div key={skill.skill.id}>
+        <h4>{skill.skill.title}</h4>
+        <input type="number" name={skill_title} value={skill.grade.grade} onChange={(e) => handleSkillGradeChange(e, index)}/>
+      </div>
+    )
+  })
 
   const navigateToFeedbackUpdate = () => {
     const params = {
@@ -62,9 +94,15 @@ const SkillsAndGrades = ({ unit }) => {
         <td>{unitFeedbacks.homework}</td>
         <td>{unitFeedbacks.comment}</td>
         <td>
-          <button className="pure-button pure-button-primary" onClick={toggleSkillsAndGrades}>
-            Skills
-          </button>
+          {showSkillsAndGrades ? (
+            <button className="pure-button pure-button-primary" onClick={toggleSkillsAndGrades}>
+              Close Skills
+            </button>
+          ) : 
+            <button className="pure-button pure-button-primary" onClick={toggleSkillsAndGrades}>
+              View Skills
+            </button>
+          }
         </td>
         <td>
           <button className="pure-button pure-button-primary" onClick={navigateToFeedbackUpdate}>
@@ -82,12 +120,7 @@ const SkillsAndGrades = ({ unit }) => {
           <td colSpan="7">
             <div>
               <h3>Unit Skills</h3>
-              {unit_skills.map(skill => (
-                <div key={skill.skill.id}>
-                  <h4>{skill.skill.title}</h4>
-                  <p>Grade: {skill.grade}</p>
-                </div>
-              ))}
+              {skillList}
               <button className="pure-button pure-button-primary" onClick={toggleEditSkills}>
                 Update Skills
               </button>
@@ -100,16 +133,7 @@ const SkillsAndGrades = ({ unit }) => {
           <td colSpan="7">
             <div>
               <h3>Update Skills</h3>
-              {updatedSkills.map(skill => (
-                <div key={skill.skill.id}>
-                  <h4>{skill.skill.title}</h4>
-                  <input
-                    type="number"
-                    value={skill.grade}
-                    onChange={e => handleSkillGradeChange(skill.skill.id, e.target.value)}
-                  />
-                </div>
-              ))}
+                {skillListEdit}
               <button className="pure-button pure-button-primary" onClick={updateSkills}>
                 Save Skills
               </button>

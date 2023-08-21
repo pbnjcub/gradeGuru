@@ -8,8 +8,10 @@ Rails.application.routes.draw do
   # end
 
   resources :users, only: [:index, :update]
-
-  patch '/teachers/:teacher_id/students/:student_id/update-grades', to: 'grades#update'
+  post '/teachers/:teacher_id/units/create', to: 'units#create'
+  patch '/teachers/:teacher_id/units/update', to: 'units#update'
+  patch '/teachers/:teacher_id/units/:unit_id/skills/update', to: 'skills#update'
+  patch '/teachers/:teacher_id/students/:student_id/grades/update', to: 'grades#update'
   patch '/teachers/:teacher_id/students/:student_id/feedbacks/:id', to: 'feedbacks#update'
   get '/teachers/:id', to: 'teachers#get_students'
   post '/login', to: 'sessions#create'
@@ -21,7 +23,7 @@ Rails.application.routes.draw do
     resources :students, only: [:show] 
   end
   resources :teachers, only: [] do
-    resources :units, only: [:create, :update, :destroy]
+    resources :units, only: [:index, :show, :destroy]
   end
 end
 
