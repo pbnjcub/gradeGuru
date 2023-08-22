@@ -14,11 +14,6 @@ const NavBar = ({ loggedIn }) => {
               Create Unit
             </NavLink>
           </li>
-          <li className="sub-menu-item">
-            <NavLink className="pure-menu-link" to="/teachers/:teacher_id/units/edit">
-              Edit Unit
-            </NavLink>
-          </li>
         </ul>
       );
     }

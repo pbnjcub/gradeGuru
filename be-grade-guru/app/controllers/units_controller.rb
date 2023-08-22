@@ -42,6 +42,17 @@ class UnitsController < ApplicationController
         end
     end
 
+    def update
+        unit = Unit.find(params[:unit_id])
+
+        if unit
+            unit.update(unit_params)
+            render json: unit
+        else
+            render json: {errors: "Something went wrong"}
+        end
+    end
+
     def destroy
         unit = Unit.find(params[:id])
         

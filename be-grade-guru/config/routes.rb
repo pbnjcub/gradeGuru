@@ -9,7 +9,9 @@ Rails.application.routes.draw do
 
   resources :users, only: [:index, :update]
   post '/teachers/:teacher_id/units/create', to: 'units#create'
-  patch '/teachers/:teacher_id/units/update', to: 'units#update'
+  patch '/teachers/:teacher_id/units/:unit_id/update', to: 'units#update'
+  post '/teachers/:teacher_id/units/:unit_id/skills/create', to: 'skills#create'
+  delete '/teachers/:teacher_id/units/:unit_id/skills/:skill_id/delete', to: 'skills#destroy'
   patch '/teachers/:teacher_id/units/:unit_id/skills/:skill_id/update', to: 'skills#update'
   patch '/teachers/:teacher_id/students/:student_id/grades/update', to: 'grades#update'
   patch '/teachers/:teacher_id/students/:student_id/feedbacks/:id', to: 'feedbacks#update'

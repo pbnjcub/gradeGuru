@@ -21,6 +21,7 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
         const data = await getStudentData(currentUser.id, student_id);
 
         if (data) {
+          console.log(data)
           setStudentObj(data);
           setCurrentStudent(data.student);
           setCurrentStudentUnits(data.units_with_skill_and_feedback);
@@ -31,7 +32,8 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
       }
     }
     fetchData();
-  }, [currentUser, student_id]);
+  }, []);
+
 
   const unitList = currentStudentUnits.map(unit => (
     <UnitGradesAndFeedbacks key={unit.id} unit={unit} studentObj={studentObj} handleEditSkillsGrade={handleEditSkillsGrade} />

@@ -1,7 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
-import { updateUnitSkill } from '../actions/units'
+import { deleteUnitSkill, updateUnitSkill } from '../actions/units';
+import { createUnitSkill } from '../actions/units';
+import UpdateUnitForm from './UpdateUnitForm'
 import SkillItem from './SkillItem';
+import CreateSkillForm from './CreateSkillForm';
 import UpdateSkillItem from './UpdateSkillItem';
 import UserContext from './UserContext';
 
@@ -11,9 +14,16 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessages, setErrorMessages] = useState([]);
     const [editingSkills, setEditingSkills] = useState(false)
+    const [editingUnit, setEditingUnit] = useState(false)
     const [unitSkills, setUnitSkills] = useState([])
     const [updatingSkillId, setUpdatingSkillId] = useState(null)
     const [updatingSkill, setUpdatingSkill] = useState([])
+    const [newUnitSkill, setNewUnitSkill] = useState({
+      title: "",
+      description: "",
+      unit_id: "",
+    });
+    const [creatingNewSkill, setCreatingNewSkill] = useState(false)
 
     useEffect(() => {
       async function fetchData() {
@@ -26,6 +36,11 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
           if (data) {
             setUnitObj(data);
             setUnitSkills(data.skills)
+            setNewUnitSkill({
+              title: "",
+              description: "",
+              unit_id: data.id,
+            })
           } else {
             setErrorMessages(['Failed to fetch unit data.']);
           }
@@ -33,7 +48,13 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
         }
       }
       fetchData();
-    }, [currentUser, unit_id]);
+    }, [currentUser, unit_id, teacher_id]);
+
+    const handleUpdatedUnit = (updatedUnit) => {
+      setUnitObj(updatedUnit)
+    };
+
+
 
     const handleUpdateSkillClick = (skillId) => {
       const skillToUpdate = unitSkills.find(skill => skill.id === skillId);
@@ -47,7 +68,32 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       setUpdatingSkill({ ...updatingSkill, [field]: value})
     };
 
-    console.log(updatingSkill)
+    const addUnitSkill = (newUnitSkill) => {
+      const updatedUnitSkills = [...unitSkills, newUnitSkill];
+      setUnitSkills(updatedUnitSkills);
+    };
+
+    const handleNewUnitSkill = async (newUnitSkill) => {
+      createUnitSkill(teacher_id, unit_id, newUnitSkill)
+        .then((data) => {
+          console.log(data)
+          if (data.errors) {
+            setErrorMessages(data.errors);
+          } else {
+            addUnitSkill(data)
+          }
+        })
+
+    }
+
+    const handleDeleteUnitSkill = async (deletedSkillId) => {
+      deleteUnitSkill(teacher_id, unit_id, deletedSkillId)
+      const updatedUnitSkills = unitSkills.filter((skill) => skill.id !== deletedSkillId);
+      setUnitSkills(updatedUnitSkills);
+    };
+
+
+
     
     const handleEditSkill = (updatedSkill) => {
       const updatedUnitSkills = unitSkills.map(skill => {
@@ -63,7 +109,6 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     
   
     const updateSkill = async () => {
-
       updateUnitSkill(teacher_id, unit_id, updatingSkill.id, updatingSkill)
       .then((data) => {
         if (data.error) {
@@ -73,6 +118,14 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
           handleEditSkill(updatingSkill)
         }
       })
+    };
+
+    const toggleEditingUnit = () => {
+      setEditingUnit(!editingUnit)
+    }
+
+    const toggleNewSkill = () => {
+      setCreatingNewSkill(!creatingNewSkill)
     };
 
     const toggleEditSkills = () => {
@@ -87,7 +140,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       return <p>Error: {errorMessages.join(', ')}</p>;
     }
 
-    const skillList = unitSkills.map((unitSkill) => <SkillItem key={unitSkill.id} unitSkill={unitSkill} handleUpdateSkillClick={handleUpdateSkillClick} />)
+    const skillList = unitSkills.map((unitSkill) => <SkillItem key={unitSkill.id} unitSkill={unitSkill} handleUpdateSkillClick={handleUpdateSkillClick} handleDeleteUnitSkill={handleDeleteUnitSkill} />)
   
     const updatingSkillList = unitSkills.map((unitSkill) => <UpdateSkillItem key={unitSkill.id} unitSkill={unitSkill} updatingSkill={updatingSkill} updatingSkillId={updatingSkillId} handleSkillChange={handleSkillChange} updateSkill={updateSkill} toggleEditSkills={toggleEditSkills} handleUpdateSkillClick={handleUpdateSkillClick} />)
 
@@ -96,26 +149,50 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
         <h1>Unit Details for: {unitObj.title}</h1>
         <h3>Description: {unitObj.description}</h3>
         <br />
-        <h3>Unit Skills</h3>
-        <table className="pure-table pure-table-horizontal">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Description</th>
-              <th rowSpan="2">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {editingSkills ? (
-              updatingSkillList
-             ) : (
-              skillList
-            )}
-          </tbody>
-        </table>
-        <br />
-      </div>
+          {!editingUnit && (
+            <button className="pure-button pure-button-primary" onClick={toggleEditingUnit}>
+              Update Unit
+            </button>
+          )}
+          {editingUnit && (
+            <UpdateUnitForm unitObj={unitObj} handleUpdatedUnit={handleUpdatedUnit} toggleEditingUnit={toggleEditingUnit}/>
+          )}
+          <h3>Unit Skills</h3>
+          <table className="pure-table pure-table-horizontal">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th rowSpan="2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {editingSkills ? (
+                updatingSkillList
+              ) : (
+                skillList
+              )}
+              {creatingNewSkill ? (
+                <tr>
+                  <td colSpan="3">
+                    <CreateSkillForm teacher_id={teacher_id} unitObj={unitObj} newUnitSkill={newUnitSkill} setNewUnitSkill={setNewUnitSkill} handleNewUnitSkill={handleNewUnitSkill} toggleNewSkill={toggleNewSkill}/>
+                  </td>
+                </tr>
+              ) : null}
+              {!creatingNewSkill ? (
+                <tr>
+                  <td>
+                    <button className="pure-button pure-button-primary" onClick={toggleNewSkill}>
+                      Add Skill
+                    </button>
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+          <br />
+        </div>
     );
-  };
+};
   
   export default UnitDetails;

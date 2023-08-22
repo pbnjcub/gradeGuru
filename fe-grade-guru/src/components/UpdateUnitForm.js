@@ -1,59 +1,54 @@
 import React, {useState} from 'react';
-import { createUnit} from '../actions/units';
+import { updateUnit } from '../actions/units'
 import { useNavigate } from 'react-router-dom';
 import userContext from './UserContext';
 
 
-const UpdateUnitForm = () => {
-    //state variables
+const UpdateUnitForm = ({unitObj, handleUpdatedUnit, toggleEditingUnit}) => {
     const { currentUser } = React.useContext(userContext);
     const teacher_id = currentUser.id
+    const unit_id = unitObj.id
     const navigate = useNavigate();
 
 
-    const [newUnit, setNewUnit] = useState({
-      title: "",
-      description: "",
+    const [updatedUnit, setUpdatedUnit] = useState({
+      title: unitObj.title,
+      description: unitObj.description,
     });
 
     const [errorMessages, setErrorMessages] = useState([]);
 
     const handleChange = (e) => {
-      setNewUnit({ ...newUnit, [e.target.name]: e.target.value})
+      setUpdatedUnit({ ...updatedUnit, [e.target.name]: e.target.value})
   };
   
-
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      const response = await createUnit(teacher_id);
-      if (response.errors) {
-        setErrorMessages(response.errors);
-        console.log(errorMessages)
-      } else {
-        console.log("Unit created")
-        setErrorMessages([]);
+    const handleUpdateUnit = (updatedUnit) => {
+      updateUnit(teacher_id, unit_id, updatedUnit)
+        .then((data) => {
+          if (data.error) {
+            setErrorMessages(data.error)
+          } else {
+            setErrorMessages([])
+            toggleEditingUnit()
+            handleUpdatedUnit(updatedUnit)
+          }
+        })
+        navigate(`/teachers/${teacher_id}/units/${unit_id}`);
       }
-      navigate(`/teachers/${teacher_id}`);
 
-    };
-    //renders errors
     const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
 
     return (
-        <div style={{marginLeft: '50px'}}>
-            <h1>Create Unit</h1>
-            <br />
+        <div>
+            <h3>Update Unit</h3>
+
             {renderErrors}
-            <br />
-            <form onSubmit={handleSubmit}>
                 <label>Unit Title: </label>
-                <input type="text" name="title" value={newUnit.title} onChange={handleChange} />
+                <input type="text" name="title" value={updatedUnit.title} onChange={handleChange} />
                 <label>Description: </label>
-                <input type="text" name="description" value={newUnit.description} onChange={handleChange} />
-                <button className="pure-button pure-button-primary" type="submit">
-                Create Unit
-              </button>
-            </form>
+                <input type="text" name="description" value={updatedUnit.description} onChange={handleChange} />
+                <button className="pure-button pure-button-primary" onClick={() => handleUpdateUnit(updatedUnit)}>Save Changes</button>
+                <button className="pure-button pure-button-primary" onClick={toggleEditingUnit}>Cancel</button>
 
         </div>
     );
