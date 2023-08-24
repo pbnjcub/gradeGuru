@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   # end
 
   resources :users, only: [:index, :update]
+  get '/parents/:id', to: 'parents#show'
+  get '/students/:id', to: 'students#get_student_data'
   post '/teachers/:teacher_id/units/create', to: 'units#create'
   patch '/teachers/:teacher_id/units/:unit_id/update', to: 'units#update'
   post '/teachers/:teacher_id/units/:unit_id/skills/create', to: 'skills#create'
