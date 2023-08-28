@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
       login_user
       render json: @user, status: :ok
     else
-        render json: { error: 'Invalid email or password.' }, status: 400
+        render json: { errors: 'Invalid email or password.' }, status: 400
     end
   end
 

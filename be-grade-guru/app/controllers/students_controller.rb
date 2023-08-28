@@ -28,6 +28,7 @@ class StudentsController < ApplicationController
         { unit: unit, feedbacks: unit_feedbacks, skills: unit_skills_with_grade }
       end
       
+      
       render json: { student: student, units_with_skill_and_feedback: units_with_skill_and_feedback }
     end
 
@@ -35,7 +36,6 @@ class StudentsController < ApplicationController
   def get_student_data
     student = User.find(params[:id])
 
-    
     feedbacks = student.feedbacks
     grades = student.grades
     
@@ -51,16 +51,28 @@ class StudentsController < ApplicationController
     
     units_with_skill_and_feedback = units.map do |unit|
       unit_feedbacks = feedbacks.select { |feedback| feedback.unit_id == unit["id"] }
+      #find teacher_id from unit_feedbacks
+      feedback = unit_feedbacks.first
+      teacher_id = feedback["teacher_id"]
+      teacher = User.find(teacher_id)
       unit_skills = skills.select { |skill| skill["unit_id"] == unit["id"] }
       unit_skills_with_grade = unit_skills.map do |skill|
         grade = grades.find { |grade| grade.skill_id == skill["id"] }
         { skill: skill, grade: grade }
       end
-      { unit: unit, feedbacks: unit_feedbacks, skills: unit_skills_with_grade }
+      { unit: unit, teacher: teacher, feedbacks: unit_feedbacks, skills: unit_skills_with_grade }
+      # { unit: unit, feedbacks: unit_feedbacks, skills: unit_skills_with_grade }
+
     end
     
-    render json: { student: student, units_with_skill_and_feedback: units_with_skill_and_feedback }
+    sorted_units = units_with_skill_and_feedback.sort_by do |unit|
+      feedback = unit[:feedbacks].first 
+      feedback[:teacher_id]
+    end
+      
+    render json: { student: student, sorted_units: sorted_units }
   end
+
 
 end
   

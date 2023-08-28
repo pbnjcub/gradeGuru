@@ -1,40 +1,76 @@
 import React, { useState, useEffect } from 'react';
-import userContext from './UserContext';
+import { useParams } from 'react-router-dom';
+import { getDataForStudent } from '../actions/students';
+import UserContext from './UserContext';
+import StudentDataView from './StudentDataView';
 
-const StudentDashboard = () => {
-    const { currentUser } = React.useContext(userContext);
-//     const [students, setStudents] = useState([]);
+const StudentDashboard = ({ }) => {
+  const { currentUser } = React.useContext(UserContext);
+  const id = currentUser.id
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessages, setErrorMessages] = useState([])
+  const [currentStudent, setCurrentStudent] = useState(null);
+  const [currentStudentUnits, setCurrentStudentUnits] = useState([]);
 
-//   useEffect(() => {
-//     // Fetch the list of students for the logged-in teacher when the component mounts
-//     fetchStudents();
-//   }, []);
+  useEffect(() => {
+    async function fetchData() {
+      if (currentUser) {
+        setIsLoading(true);
+        setErrorMessages([]);
 
-//   const fetchStudents = async () => {
-//     try {
-//       const response = await getStudentsForTeacher();
-//       if (response.ok) {
-//         const data = await response.json();
-//         setStudents(data); // Update the students state with the fetched data
-//       } else {
-//         // Handle error if needed
-//         console.error('Failed to fetch students:', response.statusText);
-//       }
-//     } catch (error) {
-//       // Handle error if needed
-//       console.error('Error fetching students:', error);
-//     }
-//   };
+        const data = await getDataForStudent(id);
+
+        if (data) {
+          setCurrentStudent(data.student);
+          setCurrentStudentUnits(data.sorted_units);
+        } else {
+          setErrorMessages(['Failed to fetch student data.']);
+        }
+        setIsLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  const unitList = currentStudentUnits.map(unit => (
+    <StudentDataView key={unit.id} unit={unit} currentStudent={currentStudent} />
+  ));
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (errorMessages.length > 0) {
+    return <p>Error: {errorMessages.join(', ')}</p>;
+  }
 
   return (
-    <div>
-      <h1>Student Dashboard</h1>
-      <h2>Grades:</h2>
-      {/* <ul>
-        {students.map((student) => (
-          <li key={student.id}>{`${student.first_name} ${student.last_name}`}</li>
-        ))}
-      </ul> */}
+    <div className="main" style={{ marginLeft: '50px' }}>
+      <h1>Student Report for {currentStudent.first_name} {currentStudent.last_name}</h1>
+      <br />
+      <h3>Grades and Feedback</h3>
+      <table className="pure-table pure-table-horizontal">
+        <thead>
+          <tr>
+            <th rowSpan="2">Unit</th>
+            <th rowSpan="2">Description</th>
+            <th rowSpan="2">Teacher</th>
+            <th colSpan="4">Feedbacks</th>
+            <th rowSpan="2">Academic Skills</th>
+            <th rowSpan="2">Actions</th>
+          </tr>
+          <tr>
+            <td>Written Work</td>
+            <td>Classwork</td>
+            <td>Homework</td>
+            <td>Comment</td>
+          </tr>
+        </thead>
+        <tbody>
+          {unitList}
+        </tbody>
+      </table>
+      <br />
     </div>
   );
 };

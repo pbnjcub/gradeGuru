@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import { createAccount } from '../actions/users';
 
 
-const Signup = ({handleCurrentUser}) => {
-    //state variables
+const Signup = ({handleCurrentUser, handleNewUser}) => {
+
     const initialUserState = {
       email: "",
       password: "",
@@ -19,10 +19,9 @@ const Signup = ({handleCurrentUser}) => {
       }
     };
 
+    const [accountCreated, setAccountCreated] = useState(false)
     const [newUser, setNewUser] = useState(initialUserState);
-
     const [errorMessages, setErrorMessages] = useState([]);
-
 
     const handleChange = (e) => {
       if (e.target.name.includes("parent")) {
@@ -40,28 +39,40 @@ const Signup = ({handleCurrentUser}) => {
       }));
     }
   };
+
+    const showSuccessMessage = () => {
+      setAccountCreated(true)
+
+      setTimeout(() => {
+        setAccountCreated(false)
+      }, 5000)
+    }
   
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const response = await createAccount(newUser, handleCurrentUser);
-      if (response.errors) {
-        setErrorMessages(response.errors);
-        console.log(errorMessages)
+      const resp = await createAccount(newUser, handleCurrentUser);
+      if (resp.errors) {
+        setErrorMessages(resp.errors);
       } else {
-        console.log("Account created")
         setErrorMessages([]);
         setNewUser(initialUserState);
+        handleNewUser(resp)
+        showSuccessMessage()
       }
     };
-    //renders errors
-    const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
 
+    const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
+    
     return (
-        <div>
+        <div style={{marginLeft: '50px'}}>
             <h1>Create Account</h1>
             <br />
             {renderErrors}
+            { accountCreated ? (
+              <h3>Account Created!</h3>
+             ) : null
+            }
             <br />
             <form onSubmit={handleSubmit}>
                 <label>Email</label>

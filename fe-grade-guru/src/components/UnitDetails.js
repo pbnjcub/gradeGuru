@@ -54,8 +54,6 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       setUnitObj(updatedUnit)
     };
 
-
-
     const handleUpdateSkillClick = (skillId) => {
       const skillToUpdate = unitSkills.find(skill => skill.id === skillId);
       setUpdatingSkillId(skillId);
@@ -63,7 +61,6 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       setEditingSkills(true);
     };
     
-
     const handleSkillChange = (field, value) => {
       setUpdatingSkill({ ...updatingSkill, [field]: value})
     };
@@ -83,7 +80,6 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
             addUnitSkill(data)
           }
         })
-
     }
 
     const handleDeleteUnitSkill = async (deletedSkillId) => {
@@ -92,9 +88,6 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       setUnitSkills(updatedUnitSkills);
     };
 
-
-
-    
     const handleEditSkill = (updatedSkill) => {
       const updatedUnitSkills = unitSkills.map(skill => {
         if (skill.id === updatedSkill.id) {
@@ -102,17 +95,15 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
         } else {
           return skill
         }
-
       })
       setUnitSkills(updatedUnitSkills)
     };
     
-  
     const updateSkill = async () => {
       updateUnitSkill(teacher_id, unit_id, updatingSkill.id, updatingSkill)
       .then((data) => {
-        if (data.error) {
-          setErrorMessages(data.error);
+        if (data.errors) {
+          setErrorMessages(data.errors);
         } else {
           setEditingSkills(false)
           handleEditSkill(updatingSkill)

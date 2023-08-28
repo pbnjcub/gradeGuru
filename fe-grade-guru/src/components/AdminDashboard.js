@@ -1,6 +1,5 @@
 import React from 'react';
 import { useEffect, useState } from 'react';
-import Signup from './Signup';
 import userContext from './UserContext';
 import { getUsers } from '../actions/users';
 
@@ -23,7 +22,10 @@ const AdminDashboard = ({ users, setUsers}) => {
     <div style={{marginLeft: '50px'}}>
       <h1>Admin Dashboard</h1>
       <h3>Welcome, {currentUser.first_name}</h3>
-      <Signup />
+      <br />
+      <p>
+        As an administrator, you can create Student, Teacher and Parent accounts. You can also edit and delete users. Use the links above.
+      </p>
     </div>
   );
 };

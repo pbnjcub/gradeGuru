@@ -24,7 +24,6 @@ const SkillsAndGrades = ({ unit, handleEditSkillsGrade }) => {
   const toggleEditSkills = () => {
     setEditingSkills(!editingSkills);
   };
-  
   const handleSkillGradeChange = (e, index) => {
     const updatedSkill = {
       ...updatedSkills[index],
@@ -33,13 +32,10 @@ const SkillsAndGrades = ({ unit, handleEditSkillsGrade }) => {
         grade: parseInt(e.target.value)
       }
     };
-    
     const updatedSkillsCopy = [...updatedSkills];
     updatedSkillsCopy[index] = updatedSkill;
     setUpdatedSkills(updatedSkillsCopy);
   };
-  
-  
   
   const updateSkills = () => {
     updateStudentSkillGrades(teacher_id, student_id, updatedSkills)
@@ -109,11 +105,6 @@ const SkillsAndGrades = ({ unit, handleEditSkillsGrade }) => {
             Update Feedback
           </button>
         </td>
-        {/* <td>
-          <button className="pure-button pure-button-primary">
-            Delete Feedback
-          </button>
-        </td> */}
       </tr>
       {showSkillsAndGrades && !editingSkills ? (
         <tr>

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
   get '/current-user', to: 'users#get_current_user'
   post '/signup', to: 'users#create'
   delete '/logout', to: 'sessions#destroy'
+  delete '/users/id/delete', to: 'users#destroy'
 
   resources :teachers, only: [] do
     resources :students, only: [:show] 

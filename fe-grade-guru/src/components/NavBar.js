@@ -33,6 +33,13 @@ const NavBar = ({ loggedIn }) => {
               Home
             </NavLink>
           </li>
+          {role === 'parent' && (
+            <li className="pure-menu-item">
+              <NavLink className="pure-menu-link has-sub-menu" to="/parents/:id">
+                Parent Dashboard
+              </NavLink>
+            </li>
+          )}
           {role === 'teacher' && (
             <React.Fragment>
             <li className="pure-menu-item">
@@ -55,18 +62,13 @@ const NavBar = ({ loggedIn }) => {
           {role === 'admin' && (
             <React.Fragment>
               <li className="pure-menu-item">
-                <NavLink className="pure-menu-link" to="/create-account">
+                <NavLink className="pure-menu-link" to="/signup">
                   Create Account
                 </NavLink>
               </li>
               <li className="pure-menu-item">
                 <NavLink className="pure-menu-link" to="/edit-user">
                   Edit User
-                </NavLink>
-              </li>
-              <li className="pure-menu-item">
-                <NavLink className="pure-menu-link" to="/delete-user">
-                  Delete User
                 </NavLink>
               </li>
             </React.Fragment>

@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { login } from '../actions/auth';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({handleCurrentUser, isTeacher, setIsTeacher}) => {
+const Login = ({handleCurrentUser}) => {
     //state variables
     const [user, setUser] = useState({
         email: "",
@@ -23,8 +23,10 @@ const Login = ({handleCurrentUser, isTeacher, setIsTeacher}) => {
             navigate("/admin");
         } else if (role === 'teacher') {
             navigate(`/teachers/${userId}`);
-        } else if (role === 'student' || role === 'parent') {
-            navigate("/student-dashboard");
+        } else if (role === 'parent') {
+            navigate(`/parents/${userId}`)
+        } else if (role === 'student') {
+            navigate(`/students/${userId}`);
         } else {
             navigate("/");
         }

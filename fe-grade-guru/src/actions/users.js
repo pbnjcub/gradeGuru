@@ -32,15 +32,16 @@ export const editUser = async (id, updatedUser) => {
     
     if (resp.ok) {
         const data = await resp.json();
+        console.log(data)
         return data
     } else {
         const errorData = await resp.json();
+        console.log(errorData)
         return { errors: errorData.errors };
     }
 }
 
 export const createAccount = async (details) => {
-    console.log(details)  
     const resp = await fetch('/signup', {
         method: 'POST',
         mode: 'cors',
@@ -54,6 +55,7 @@ export const createAccount = async (details) => {
     
       if (resp.ok) {
         const data = await resp.json();
+        return data
       } else {
         const errorData = await resp.json();
         return { errors: errorData.errors };

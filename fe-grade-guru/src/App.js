@@ -16,8 +16,11 @@ import UnitsDashboard from './components/UnitsDashboard';
 import CreateUnitForm from './components/CreateUnitForm';
 import UpdateUnitForm from './components/UpdateUnitForm';
 import UnitDetails from './components/UnitDetails';
+import ParentDashboard from './components/ParentDashboard';
+import ParentViewStudentData from './components/ParentViewStudentData';
 import { getDataForUnit } from './actions/units';
 import { getCurrentUser } from './actions/auth';
+import { getDataForStudent} from './actions/students'
 import { getGradesAndFeedbacksForStudent } from './actions/students';
 function App() {
   //state variables
@@ -37,19 +40,19 @@ function App() {
     }
   };
 
-  //function to log out the current user
   const logoutCurrentUser = () => {
     setCurrentUser(null);
     setLoggedIn(false);
   };
-  
+
   const getStudentData = (userId, studentId) => {
     return getGradesAndFeedbacksForStudent(userId, studentId)
       .then(data => {
-        if (!data.errors) {
-          return data;
+        if (data.errors) {
+          console.error(data.errors.join(', '));
+          return null;
         } else {
-          throw new Error(data.errors.join(', '));
+          return data;
         }
       })
       .catch(error => {
@@ -58,21 +61,72 @@ function App() {
       });
   };
 
-  const getUnitData = (userId, unitId) => {
-    return getDataForUnit(userId, unitId)
+  const getStudentDataForStudent = (userId) => {
+    return getDataForStudent(userId)
       .then(data => {
-        if (!data.errors) {
-          return data;
+        if (data.errors) {
+          return null;
         } else {
-          throw new Error(data.errors.join(', '));
+          return data;
         }
       })
-      .catch(error => {
-        console.error(error);
+      .catch(errors => {
         return null;
       });
   };
   
+  
+  // const getStudentData = (userId, studentId) => {
+  //   return getGradesAndFeedbacksForStudent(userId, studentId)
+  //     .then(data => {
+  //       if (!data.errors) {
+  //         return data;
+  //       } else {
+  //         throw new Error(data.errors.join(', '));
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //       return null;
+  //     });
+  // };
+
+  const getUnitData = async (userId, unitId) => {
+    try {
+      const data = await getDataForUnit(userId, unitId);
+      
+      if (!data.errors) {
+        return data;
+      } else {
+        console.error(data.errors.join(', '));
+        return null;
+      }
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+  
+
+  // const getUnitData = (userId, unitId) => {
+  //   return getDataForUnit(userId, unitId)
+  //     .then(data => {
+  //       if (!data.errors) {
+  //         return data;
+  //       } else {
+  //         throw new Error(data.errors.join(', '));
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error(error);
+  //       return null;
+  //     });
+  // };
+  
+  const handleNewUser = (updatedUsers) => {
+    setUsers(updatedUsers)
+  }
+
 
   const handleEditUser = (updatedUser) => {
     const updatedUsers = users.map((user) => {
@@ -84,10 +138,6 @@ function App() {
     });
     setUsers(updatedUsers);
   };
-
-
-  
-
 
   const handleEditFeedback = (unitId, updatedFeedbacks) => {
     const updatedStudentObj = { ...studentObj };
@@ -121,7 +171,7 @@ function App() {
             <NavBar loggedIn={loggedIn} logoutCurrentUser={logoutCurrentUser} />
             <Routes>
               <Route exact path="/" element={<Home />} />
-              <Route exact path="/signup" element={<Signup setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
+              <Route exact path="/signup" element={<Signup setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} handleNewUser={handleNewUser} />} />
               <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
               <Route exact path="/admin" element={<AdminDashboard users={users} setUsers={setUsers}/>} />
@@ -132,8 +182,11 @@ function App() {
               <Route path="/teachers/:teacher_id/units/update" element={<UpdateUnitForm />} />
               <Route path="/teachers/:teacher_id/students/:student_id" element={<StudentDetail studentObj={studentObj} setStudentObj={setStudentObj} getStudentData={getStudentData} handleEditSkillsGrade={handleEditSkillsGrade} />} />
               <Route path="/teachers/:teacher_id/students/:student_id/feedbacks/:feedbacks_id" element={<FeedbackForm handleEditFeedback={handleEditFeedback}/>} />
-              <Route path="/teachers/:teacher_id/units" element={<UnitsDashboard />} />
-              <Route exact path="/student-dashboard" element={<StudentDashboard />} />
+              <Route path="/teachers/:teacher_id/units" element={<UnitsDashboard/>} />
+              <Route path="/students/:id" element={<StudentDashboard   />} />
+              <Route path="/parents/:id" element={<ParentDashboard />} />
+              <Route path="/parents/:parent_id/students/:id" element={<ParentViewStudentData studentObj={studentObj} setStudentObj={setStudentObj} getStudentDataForStudent={getStudentDataForStudent}/>} />
+
             </Routes>
           </div>
         </UserContext.Provider>

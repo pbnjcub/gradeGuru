@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import { getDataForStudent } from '../actions/students';
 import UserContext from './UserContext';
-import UnitGradesAndFeedbacks from './UnitGradesAndFeedbacks';
+import StudentDataView from './StudentDataView';
 
-const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSkillsGrade }) => {
-  const { teacher_id, student_id } = useParams();
+const ParentViewStudentData = ({ }) => {
   const { currentUser } = React.useContext(UserContext);
+  console.log(currentUser.id)
+  const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])
   const [currentStudent, setCurrentStudent] = useState(null);
@@ -17,13 +19,11 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
         setIsLoading(true);
         setErrorMessages([]);
 
-        const data = await getStudentData(currentUser.id, student_id);
+        const data = await getDataForStudent(id);
 
         if (data) {
-          console.log(data)
-          setStudentObj(data);
           setCurrentStudent(data.student);
-          setCurrentStudentUnits(data.units_with_skill_and_feedback);
+          setCurrentStudentUnits(data.sorted_units);
         } else {
           setErrorMessages(['Failed to fetch student data.']);
         }
@@ -34,7 +34,7 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
   }, []);
 
   const unitList = currentStudentUnits.map(unit => (
-    <UnitGradesAndFeedbacks key={unit.id} unit={unit} studentObj={studentObj} handleEditSkillsGrade={handleEditSkillsGrade} />
+    <StudentDataView key={unit.id} unit={unit} currentStudent={currentStudent} />
   ));
 
   if (isLoading) {
@@ -74,4 +74,4 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
   );
 };
 
-export default StudentDetail;
+export default ParentViewStudentData;
