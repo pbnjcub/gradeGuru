@@ -4,30 +4,31 @@ class SkillsController < ApplicationController
 
 
     def create
-        @skill = Skill.create(skill_params)
+        @skill = Skill.new(skill_params)
         @skill_id = @skill.id
         @teacher_id = params[:teacher_id].to_i
 
         @unit_id = params[:unit_id]
     
-        if @skill
-
+        if @skill.save
             create_empty_grades
             render json: @skill
         else
-            render json: {errors: "Something went wrong"}
+            render json: {errors: @skill.errors.full_messages}, status: :unprocessable_entity
         end
     end
-
 
     def update
         skill = Skill.find(params[:skill_id])
 
         if skill
-            skill.update(skill_params)
-            render json: skill
+            if skill.update(skill_params)
+                render json: skill
+            else
+                render json: {errors: skill.errors.full_messages}, status: :unprocessable_entity
+            end
         else
-            render json: {errors: "Something went wrong"}
+            render json: {errors: "Skill not found"}
         end
     end
 

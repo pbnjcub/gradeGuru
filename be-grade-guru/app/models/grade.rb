@@ -6,4 +6,5 @@ class Grade < ApplicationRecord
   validates :student_id, presence: true
   validates :teacher_id, presence: true
   validates :skill_id, presence: true
+  # validates :grade, numericality, { only_integer: true, allow_nil: true }
 end

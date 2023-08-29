@@ -27,6 +27,7 @@ class User < ApplicationRecord
     has_many :teacher_feedbacks, foreign_key: :teacher_id, class_name: 'Feedback', dependent: :destroy
     has_many :feedbacks, foreign_key: 'student_id', dependent: :destroy
     has_many :grades, foreign_key: :student_id, class_name: 'Grade', dependent: :destroy
+    # has_many :teacher_grades, foreign_key: :teacher_id, class_name: 'Grade', dependent: :destroy
     has_many :families, foreign_key: :parent_id, class_name: 'Family'
     has_many :students, through: :families, dependent: :destroy
 

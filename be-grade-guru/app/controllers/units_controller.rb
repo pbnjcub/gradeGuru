@@ -9,7 +9,6 @@ class UnitsController < ApplicationController
 
         unit_ids_taught = teacher_feedbacks.pluck(:unit_id).uniq
 
-        #i want to retrieve all units based on the unit_ids_taught
         teacher_units = unit_ids_taught.map do |unit_id|
             Unit.find(unit_id)
         end
@@ -18,27 +17,25 @@ class UnitsController < ApplicationController
     end
 
     def create
-        puts params
-        @unit = Unit.create(unit_params)
-
+        @unit = Unit.new(unit_params)
+      
         @teacher_id = params[:teacher_id].to_i
-
-        puts @teacher_id
-        if @unit
-            create_empty_feedbacks
-            render json: @unit, status: :ok
+      
+        if @unit.save
+          create_empty_feedbacks
+          render json: @unit, status: :created
         else
-            render json: { error: 'unit not created' }, status: :unprocessable_entity
+          render json: {errors: @unit.errors.full_messages}, status: :unprocessable_entity
         end
-    end
+      end
 
     def show
         unit = Unit.find(params[:id])
 
         if unit
-            render json: unit
+            render json: unit, status: :ok
         else
-            render json: { error: 'unit not found'}
+            render json: {errors: unit.errors.full_messages}, status: :unprocessable_entity
         end
     end
 
@@ -46,10 +43,13 @@ class UnitsController < ApplicationController
         unit = Unit.find(params[:unit_id])
 
         if unit
-            unit.update(unit_params)
-            render json: unit
+            if unit.update(unit_params)
+                render json: unit, status: :ok
+            else
+                render json: {errors: unit.errors.full_messages}, status: :unprocessable_entity
+            end
         else
-            render json: {errors: "Something went wrong"}
+            render json: {errors: "Unit not found"}
         end
     end
 

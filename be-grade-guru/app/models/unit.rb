@@ -7,7 +7,7 @@ class Unit < ApplicationRecord
     has_many :students, -> { where(role: 'student') }, through: :feedbacks, source: :user
     has_many :parents, -> { where(role: 'parent') }, through: :feedbacks, source: :user
 
-    validates :title, presence: true, uniqueness: true
+    validates :title, presence: true
     validates :description, presence: true
   
     

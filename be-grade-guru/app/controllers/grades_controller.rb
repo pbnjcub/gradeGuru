@@ -18,7 +18,7 @@ class GradesController < ApplicationController
         if updated_grades
             render json: updated_grades
         else
-            render json: {error: "Something went wrong"}
+            render json: {errors: feedback.errors.full_messages}, status: :unprocessable_entity        end
         end
 
     end

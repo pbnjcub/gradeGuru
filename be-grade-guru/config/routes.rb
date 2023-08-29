@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   #   get 'students', on: :member
   # end
 
-  resources :users, only: [:index, :update]
+
   get '/parents/:id', to: 'parents#show'
   get '/students/:id', to: 'students#get_student_data'
   post '/teachers/:teacher_id/units/create', to: 'units#create'
@@ -24,6 +24,8 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   delete '/users/id/delete', to: 'users#destroy'
 
+  resources :users, only: [:index, :update]
+  
   resources :teachers, only: [] do
     resources :students, only: [:show] 
   end
