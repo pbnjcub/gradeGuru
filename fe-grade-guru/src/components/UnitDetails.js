@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { deleteUnitSkill, updateUnitSkill } from '../actions/units';
 import { createUnitSkill } from '../actions/units';
 import UpdateUnitForm from './UpdateUnitForm'
@@ -25,6 +26,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     });
     const [creatingNewSkill, setCreatingNewSkill] = useState(false)
 
+    const navigate = useNavigate();
     useEffect(() => {
       async function fetchData() {
         if (currentUser) {
@@ -70,17 +72,15 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       setUnitSkills(updatedUnitSkills);
     };
 
-    const handleNewUnitSkill = async (newUnitSkill) => {
-      createUnitSkill(teacher_id, unit_id, newUnitSkill)
-        .then((data) => {
-          console.log(data)
-          if (data.errors) {
-            setErrorMessages(data.errors);
-          } else {
-            addUnitSkill(data)
-          }
-        })
-    }
+    // const handleNewUnitSkill = async (newUnitSkill) => {
+    //   const resp = await createUnitSkill(teacher_id, unit_id, newUnitSkill)
+    //     if (resp.errors) {
+    //         setErrorMessages(data.errors);
+    //       } else {
+    //         setErrorMessages([])
+    //         addUnitSkill(resp)
+    //     }
+    // }
 
     const handleDeleteUnitSkill = async (deletedSkillId) => {
       deleteUnitSkill(teacher_id, unit_id, deletedSkillId)
@@ -100,15 +100,15 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     };
     
     const updateSkill = async () => {
-      updateUnitSkill(teacher_id, unit_id, updatingSkill.id, updatingSkill)
-      .then((data) => {
-        if (data.errors) {
-          setErrorMessages(data.errors);
-        } else {
-          setEditingSkills(false)
-          handleEditSkill(updatingSkill)
-        }
-      })
+      const resp = await updateUnitSkill(teacher_id, unit_id, updatingSkill.id, updatingSkill)
+      if (resp.errors) {
+        setErrorMessages(resp.errors);
+      } else {
+        setEditingSkills(false)
+        handleEditSkill(updatingSkill)
+        setErrorMessages([])
+        navigate(`/teachers/${teacher_id}/units/${unit_id}`)
+      }
     };
 
     const toggleEditingUnit = () => {
@@ -127,13 +127,15 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       return <p>Loading...</p>;
     }
   
-    if (errorMessages.length > 0) {
-      return <p>Error: {errorMessages.join(', ')}</p>;
-    }
+    // if (errorMessages.length > 0) {
+    //   return <p>Error: {errorMessages.join(', ')}</p>;
+    // }
 
     const skillList = unitSkills.map((unitSkill) => <SkillItem key={unitSkill.id} unitSkill={unitSkill} handleUpdateSkillClick={handleUpdateSkillClick} handleDeleteUnitSkill={handleDeleteUnitSkill} />)
   
     const updatingSkillList = unitSkills.map((unitSkill) => <UpdateSkillItem key={unitSkill.id} unitSkill={unitSkill} updatingSkill={updatingSkill} updatingSkillId={updatingSkillId} handleSkillChange={handleSkillChange} updateSkill={updateSkill} toggleEditSkills={toggleEditSkills} handleUpdateSkillClick={handleUpdateSkillClick} />)
+
+    const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
 
     return (
       <div className="main" style={{ marginLeft: '50px' }}>
@@ -149,12 +151,15 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
             <UpdateUnitForm unitObj={unitObj} handleUpdatedUnit={handleUpdatedUnit} toggleEditingUnit={toggleEditingUnit}/>
           )}
           <h3>Unit Skills</h3>
+          <br />
+            {renderErrors}
+          <br />
           <table className="pure-table pure-table-horizontal">
             <thead>
               <tr>
                 <th>Title</th>
                 <th>Description</th>
-                <th rowSpan="2">Actions</th>
+                <th colSpan="2">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -166,7 +171,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
               {creatingNewSkill ? (
                 <tr>
                   <td colSpan="3">
-                    <CreateSkillForm teacher_id={teacher_id} unitObj={unitObj} newUnitSkill={newUnitSkill} setNewUnitSkill={setNewUnitSkill} handleNewUnitSkill={handleNewUnitSkill} toggleNewSkill={toggleNewSkill}/>
+                    <CreateSkillForm teacher_id={teacher_id} unitObj={unitObj} newUnitSkill={newUnitSkill} setNewUnitSkill={setNewUnitSkill} addUnitSkill={addUnitSkill} toggleNewSkill={toggleNewSkill}/>
                   </td>
                 </tr>
               ) : null}

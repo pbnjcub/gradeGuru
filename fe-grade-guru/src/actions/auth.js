@@ -1,6 +1,5 @@
 
 export const createAccount = async (details) => {
-  console.log(details)  
   const resp = await fetch('/signup', {
       method: 'POST',
       mode: 'cors',
@@ -33,10 +32,10 @@ export const createAccount = async (details) => {
     });
   
     if (resp.ok) {
-
       const data = await resp.json();
       handleCurrentUser(data);
-      handleNavigation(data.role, data.id);
+      return data
+      // handleNavigation(data.role, data.id);
     } else {
       const errorData = await resp.json();
       return { errors: errorData.errors };

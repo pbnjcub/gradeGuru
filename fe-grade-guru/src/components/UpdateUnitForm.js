@@ -22,27 +22,29 @@ const UpdateUnitForm = ({unitObj, handleUpdatedUnit, toggleEditingUnit}) => {
       setUpdatedUnit({ ...updatedUnit, [e.target.name]: e.target.value})
   };
   
-    const handleUpdateUnit = (updatedUnit) => {
-      updateUnit(teacher_id, unit_id, updatedUnit)
-        .then((data) => {
-          if (data.error) {
-            setErrorMessages(data.error)
-          } else {
-            setErrorMessages([])
-            toggleEditingUnit()
-            handleUpdatedUnit(updatedUnit)
-          }
-        })
+    const handleUpdateUnit = async (updatedUnit) => {
+      const resp = await updateUnit(teacher_id, unit_id, updatedUnit)
+      if (resp.errors) {
+        setErrorMessages(resp.errors)
+      } else {
+        setErrorMessages([])
+        toggleEditingUnit()
+        handleUpdatedUnit(updatedUnit)
         navigate(`/teachers/${teacher_id}/units/${unit_id}`);
       }
+       
+    }
 
-    const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
+  
+
+    const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
 
     return (
         <div>
             <h3>Update Unit</h3>
-
+            <br />
             {renderErrors}
+            <br />
                 <label>Unit Title: </label>
                 <input type="text" name="title" value={updatedUnit.title} onChange={handleChange} />
                 <label>Description: </label>

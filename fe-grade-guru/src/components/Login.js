@@ -36,12 +36,12 @@ const Login = ({handleCurrentUser}) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await login(user, handleCurrentUser, handleNavigation);
+        const resp = await login(user, handleCurrentUser, handleNavigation);
 
-        if (response && !response.errors) {
+        if (resp && !resp.errors) {
             setErrorMessages([]);
         } else {
-            setErrorMessages(response?.errors || ["Error during login. Please try again."]);
+            setErrorMessages(resp.errors);
         }
     };
       

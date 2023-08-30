@@ -25,19 +25,16 @@ const CreateUnitForm = () => {
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const response = await createUnit(teacher_id);
-      if (response.errors) {
-        setErrorMessages(response.errors);
-        console.log(errorMessages)
+      const resp = await createUnit(teacher_id, newUnit);
+      if (resp.errors) {
+        setErrorMessages(resp.errors);
       } else {
-        console.log("Unit created")
         setErrorMessages([]);
+        navigate(`/teachers/${teacher_id}/units`);
       }
-      navigate(`/teachers/${teacher_id}`);
-
     };
-    //renders errors
-    const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
+
+    const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
 
     return (
         <div style={{marginLeft: '50px'}}>

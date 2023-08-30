@@ -12,6 +12,7 @@ export const createUnit = async (teacher_id, details) => {
     
       if (resp.ok) {
         const data = await resp.json();
+        return data
       } else {
         const errorData = await resp.json();
         return { errors: errorData.errors };
@@ -28,7 +29,7 @@ export const createUnit = async (teacher_id, details) => {
               'Accept': 'application/json',
             },
             body: JSON.stringify(updatedUnit)
-          });
+        });
         
           if (resp.ok) {
             const data = await resp.json();

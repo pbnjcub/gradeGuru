@@ -3,7 +3,7 @@ import userContext from './UserContext';
 import { useNavigate } from 'react-router-dom';
 import {updateStudentSkillGrades} from '../actions/students';
 
-const SkillsAndGrades = ({ unit, handleEditSkillsGrade }) => {
+const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
   const { currentUser } = React.useContext(userContext);
   const unitFeedbacks = unit.feedbacks[0];
   const current_unit = unit.unit;
@@ -11,6 +11,8 @@ const SkillsAndGrades = ({ unit, handleEditSkillsGrade }) => {
   const feedback_id = unit.feedbacks[0].id;
   const student_id = unit.feedbacks[0].student_id;
   const unit_skills = unit.skills;
+  const student_first_name = studentObj.student.first_name
+  const student_last_name = studentObj.student.last_name
   const [showSkillsAndGrades, setShowSkillsAndGrades] = useState(false);
   const [editingSkills, setEditingSkills] = useState(false);
   const [updatedSkills, setUpdatedSkills] = useState([...unit.skills]);
@@ -69,6 +71,8 @@ const SkillsAndGrades = ({ unit, handleEditSkillsGrade }) => {
 
   const navigateToFeedbackUpdate = () => {
     const params = {
+      student_first_name: student_first_name,
+      student_last_name: student_last_name,
       unit_title: current_unit.title,
       unit_description: current_unit.description,
       unit_id: current_unit.id,

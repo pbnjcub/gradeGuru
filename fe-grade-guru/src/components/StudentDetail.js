@@ -20,7 +20,6 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
         const data = await getStudentData(currentUser.id, student_id);
 
         if (data) {
-          console.log(data)
           setStudentObj(data);
           setCurrentStudent(data.student);
           setCurrentStudentUnits(data.units_with_skill_and_feedback);
