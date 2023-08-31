@@ -1,8 +1,9 @@
 class GradesController < ApplicationController
-    skip_before_action :confirm_authentication
+    # skip_before_action :confirm_authentication
     skip_before_action :verify_authenticity_token
 
-    
+    load_and_authorize_resource
+
     def update
         grades_data = params[:_json]
 
@@ -18,9 +19,8 @@ class GradesController < ApplicationController
         if updated_grades
             render json: updated_grades
         else
-            render json: {errors: feedback.errors.full_messages}, status: :unprocessable_entity        end
+            render json: {errors: feedback.errors.full_messages}, status: :unprocessable_entity
         end
-
     end
 
     private

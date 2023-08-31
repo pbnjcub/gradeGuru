@@ -37,22 +37,20 @@ const Login = ({handleCurrentUser}) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const resp = await login(user, handleCurrentUser, handleNavigation);
-
         if (resp && !resp.errors) {
             setErrorMessages([]);
+            handleNavigation(resp.role, resp.id);
         } else {
             setErrorMessages(resp.errors);
         }
     };
-      
-    const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
-
     
     return (
         <div className="main" style={{marginLeft: '50px'}}>
             <h1>Login</h1>
+
+            {errorMessages}
             <br />
-            {renderErrors}
             <br />
             <form onSubmit={handleSubmit}>
                 <label>Email</label>

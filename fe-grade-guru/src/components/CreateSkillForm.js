@@ -20,7 +20,7 @@ const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNe
             setErrorMessages(resp.errors)
         } else {
             setErrorMessages([]);
-            addUnitSkill(newUnitSkill)
+            addUnitSkill(resp)
             setNewUnitSkill({
                 title: "",
                 description: "",

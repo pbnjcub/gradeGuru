@@ -1,6 +1,7 @@
 class UnitsController < ApplicationController
-    skip_before_action :confirm_authentication
+    # skip_before_action :confirm_authentication
     skip_before_action :verify_authenticity_token
+    load_and_authorize_resource
 
     def index
         teacher_id = params[:teacher_id].to_i
@@ -41,7 +42,6 @@ class UnitsController < ApplicationController
 
     def update
         unit = Unit.find(params[:unit_id])
-
         if unit
             if unit.update(unit_params)
                 render json: unit, status: :ok
@@ -55,7 +55,7 @@ class UnitsController < ApplicationController
 
     def destroy
         unit = Unit.find(params[:id])
-        
+
         if unit
             unit.destroy
             head :no_content
@@ -74,7 +74,6 @@ class UnitsController < ApplicationController
         
         teacher_feedbacks = Feedback.where(teacher_id: teacher.id)
 
-        #i want to retrieve the student ids associated with the feedbacks associated with the teacher_id
         student_ids_taught = teacher_feedbacks.pluck(:student_id).uniq
 
 

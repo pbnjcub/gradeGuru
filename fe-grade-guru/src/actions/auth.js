@@ -19,7 +19,7 @@ export const createAccount = async (details) => {
     }
   };
 
-  export const login = async (details, handleCurrentUser, handleNavigation) => {
+  export const login = async (details, handleCurrentUser) => {
     const resp = await fetch('/login', {
       method: "POST",
       mode: "cors",

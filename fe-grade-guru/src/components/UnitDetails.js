@@ -83,7 +83,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     // }
 
     const handleDeleteUnitSkill = async (deletedSkillId) => {
-      deleteUnitSkill(teacher_id, unit_id, deletedSkillId)
+      const resp = await deleteUnitSkill(teacher_id, unit_id, deletedSkillId)
       const updatedUnitSkills = unitSkills.filter((skill) => skill.id !== deletedSkillId);
       setUnitSkills(updatedUnitSkills);
     };
@@ -126,10 +126,6 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     if (isLoading) {
       return <p>Loading...</p>;
     }
-  
-    // if (errorMessages.length > 0) {
-    //   return <p>Error: {errorMessages.join(', ')}</p>;
-    // }
 
     const skillList = unitSkills.map((unitSkill) => <SkillItem key={unitSkill.id} unitSkill={unitSkill} handleUpdateSkillClick={handleUpdateSkillClick} handleDeleteUnitSkill={handleDeleteUnitSkill} />)
   

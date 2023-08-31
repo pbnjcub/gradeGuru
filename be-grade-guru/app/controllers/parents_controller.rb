@@ -1,6 +1,6 @@
 class ParentsController < ApplicationController
-    skip_before_action :confirm_authentication
-
+    # skip_before_action :confirm_authentication
+    load_and_authorize_resource
     def show
         parent = User.find(params[:id])
         families = parent.families

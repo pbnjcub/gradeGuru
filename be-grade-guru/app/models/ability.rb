@@ -4,20 +4,39 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    user ||= User.new
-
+    puts "user in ability class:"
+    puts user.inspect
+    raise "user is nil" unless user
+    # return unless user
     if user.teacher?
-      can :manage, [Feedback, Unit, Skill, Grade], teacher_id: user.id
+      can :read, User
+      # can :read, Unit, teacher_id: user.id
+      can :manage, [Feedback, Unit, Skill, Grade]
+      can :read, [Student, Family, Parent, Teacher]
       # can :index_students, User, id: user.id
     elsif user.admin?
       can :manage, :all
-    elsif user.student? || user.parent?
-      can :read, [Feedback, Unit, Skill], student_id: user.id
+    elsif user.student?
+      can :read, User, id: user.id
+      can :read, Unit
+      can :read, Skill
+      can :read, Feedback, student_id: user.id
+      can :read, Grade, student_id: user.id      
+    elsif user.parent?
+      can :read, User
+      can :read, Unit
+      can :read, Skill
+      can :read, Feedback
+      can :read, Grade
     end
   end
+end
 
     
-    # Define abilities for the user here. For example:
+   
+
+
+   # Define abilities for the user here. For example:
     #
     #   return unless user.present?
     #   can :read, :all
@@ -41,4 +60,3 @@ class Ability
     #
     # See the wiki for details:
     # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
-end
