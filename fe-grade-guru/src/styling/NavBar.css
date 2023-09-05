@@ -1,0 +1,4 @@
+.pure-menu-horizontal .pure-menu-list .pure-menu-item:hover,
+.pure-menu-horizontal .pure-menu-list .pure-menu-item:focus {
+    background-color: #FFB476;
+}

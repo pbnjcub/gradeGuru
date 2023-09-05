@@ -1,4 +1,5 @@
 import React from 'react';
+import '../styling/TablesForms.css'
 
 const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkillChange, updateSkill, toggleEditSkills, handleUpdateSkillClick, setErrorMessages }) => {
   const handleCancelClick = () => {
@@ -17,10 +18,10 @@ const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkil
           <input type="text" name={`description_${unitSkill.id}`} value={updatingSkill.description} onChange={(e) => handleSkillChange('description', e.target.value)}/>
         </td>
         <td>
-          <button className="pure-button pure-button-primary" onClick={() => updateSkill(updatingSkill)}>
+          <button className="pure-button" onClick={() => updateSkill(updatingSkill)}>
             Save Skill
           </button>
-          <button className="pure-button pure-button-primary" onClick={handleCancelClick}>
+          <button className="pure-button" onClick={handleCancelClick}>
             Cancel
           </button>
         </td>
@@ -32,7 +33,7 @@ const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkil
         <td>{unitSkill.title}</td>
         <td>{unitSkill.description}</td>
         <td>
-          <button className="pure-button pure-button-primary" onClick={() => handleUpdateSkillClick(unitSkill.id)}>
+          <button className="pure-button" onClick={() => handleUpdateSkillClick(unitSkill.id)}>
             Update Skill
           </button>
         </td>

@@ -100,17 +100,17 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
         <td>{unitFeedbacks.comment}</td>
         <td>
           {showSkillsAndGrades ? (
-            <button className="pure-button pure-button-primary" onClick={toggleSkillsAndGrades}>
+            <button className="pure-button" onClick={toggleSkillsAndGrades}>
               Close Skills
             </button>
           ) : 
-            <button className="pure-button pure-button-primary" onClick={toggleSkillsAndGrades}>
+            <button className="pure-button" onClick={toggleSkillsAndGrades}>
               View Skills
             </button>
           }
         </td>
         <td>
-          <button className="pure-button pure-button-primary" onClick={navigateToFeedbackUpdate}>
+          <button className="pure-button" onClick={navigateToFeedbackUpdate}>
             Update Feedback
           </button>
         </td>
@@ -126,7 +126,7 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
                 <p>No skills available yet</p>
               )}
               {!editingSkills && unit_skills.length > 0 ? (
-                <button className="pure-button pure-button-primary" onClick={toggleEditSkills}>
+                <button className="pure-button" onClick={toggleEditSkills}>
                   Update Skills
                 </button>
               ) : null}
@@ -143,10 +143,10 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
               {renderErrors}
 
               {skillListEdit}
-              <button className="pure-button pure-button-primary" onClick={updateSkills}>
+              <button className="pure-button" onClick={updateSkills}>
                 Save Skills
               </button>
-              <button className="pure-button pure-button-primary" onClick={toggleEditSkills}>
+              <button className="pure-button" onClick={toggleEditSkills}>
                 Cancel
               </button>
             </div>

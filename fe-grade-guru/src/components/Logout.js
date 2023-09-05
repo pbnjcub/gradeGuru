@@ -2,7 +2,6 @@ import React from 'react';
 import { logout } from '../actions/auth';
 
 const Logout = ({logoutCurrentUser}) => {
-    //runs logout action from auth.js
     logout(logoutCurrentUser);
                  
     return (

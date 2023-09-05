@@ -1,14 +1,13 @@
-// EnrollTeacherSearch.js
 import React from 'react';
 
-const UnenrollTeacherSearch = ({ allTeachers, handleTeacherSearch, handleSelectTeacherClick, handleUnselectTeacherClick, searchTeacher, filteredTeachers, selectedTeacher }) => {
+const UnenrollTeacherSearch = ({ handleTeacherSearch, handleSelectTeacherClick, handleUnselectTeacherClick, searchTeacher, filteredTeachers, selectedTeacher }) => {
 
   const listFilteredTeachers = searchTeacher === '' ? [] : filteredTeachers.map((teacher) => (
     <tr key={teacher.id}>
         <td>{teacher.first_name}</td>
         <td>{teacher.last_name}</td>
         <td>
-            <button onClick={() => handleSelectTeacherClick(teacher)}>Show Enrolled</button>
+            <button className="pure-button" onClick={() => handleSelectTeacherClick(teacher)}>Show Enrolled</button>
         </td>
     </tr>
   ));
@@ -33,8 +32,6 @@ const UnenrollTeacherSearch = ({ allTeachers, handleTeacherSearch, handleSelectT
             {listFilteredTeachers}
           </tbody>
         </table>
-
-
       </div>
     </div>
   );

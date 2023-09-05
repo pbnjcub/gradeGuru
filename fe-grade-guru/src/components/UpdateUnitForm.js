@@ -53,8 +53,8 @@ const UpdateUnitForm = ({unitObj, handleUpdatedUnit, toggleEditingUnit}) => {
                 <input type="text" name="title" value={updatedUnit.title} onChange={handleChange} />
                 <label>Description: </label>
                 <input type="text" name="description" value={updatedUnit.description} onChange={handleChange} />
-                <button className="pure-button pure-button-primary" onClick={() => handleUpdateUnit(updatedUnit)}>Save Changes</button>
-                <button className="pure-button pure-button-primary" onClick={handleCancelClick}>Cancel</button>
+                <button className="pure-button" onClick={() => handleUpdateUnit(updatedUnit)}>Save Changes</button>
+                <button className="pure-button" onClick={handleCancelClick}>Cancel</button>
 
         </div>
     );

@@ -12,7 +12,6 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
   const [allStudents, setAllStudents] = useState([]);
   const [allTeachers, setAllTeachers] = useState([]);
   const [filteredStudents, setFilteredStudents] = useState([])
-  const [selectedStudent, setSelectedStudent] = useState([])
   const [selectedTeacher, setSelectedTeacher] = useState(null)
   const [errorMessages, setErrorMessages] = useState([])
   const [studentsUnenrolled, setStudentsUnenrolled] = useState(false)
@@ -81,7 +80,6 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
     setSearchTeacher('')
     }
 
-
   const filteredStudentList = filteredStudents.map((student) => <StudentEnrollmentList key={student.id} student={student} confirmUnenrollmentClick={confirmUnenrollmentClick}/>);
 
   return (
@@ -119,8 +117,6 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
           </tr>
         </thead>
         <tbody>
-      
-        
           {filteredStudentList}
         </tbody>
       </table>

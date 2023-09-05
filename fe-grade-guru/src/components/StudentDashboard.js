@@ -84,7 +84,6 @@ const StudentDashboard = ({ }) => {
       doc.text(`Homework: ${unit.feedbacks[0]?.homework}`, 130, yOffset);
       yOffset += 10;
      
-      // Print Academic Skills
       if (unit.skills.length > 0) {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(12);
@@ -104,7 +103,7 @@ const StudentDashboard = ({ }) => {
       yOffset += 10;
   
       if (index < currentStudentUnits.length - 1) {
-        doc.line(10, yOffset, 200, yOffset); // Add a horizontal line between units
+        doc.line(10, yOffset, 200, yOffset); 
         yOffset += 10;
       }
     });
@@ -112,10 +111,6 @@ const StudentDashboard = ({ }) => {
     doc.save(`StudentReport_${currentStudent.first_name}_${currentStudent.last_name}.pdf`);
   };
   
-  
-
-
-
   return (
     <div className="main" style={{ marginLeft: '50px' }}>
       <h1>Student Report for {currentStudent.first_name} {currentStudent.last_name}</h1>
@@ -131,7 +126,6 @@ const StudentDashboard = ({ }) => {
             <th rowSpan="2">Teacher</th>
             <th colSpan="4">Feedbacks</th>
             <th rowSpan="2">Academic Skills</th>
-            <th rowSpan="2">Actions</th>
           </tr>
           <tr>
             <td>Written Work</td>

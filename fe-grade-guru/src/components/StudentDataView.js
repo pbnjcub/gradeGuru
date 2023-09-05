@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const StudentDataView = ({ unit }) => {
   const unitFeedbacks = unit.feedbacks[0];
@@ -7,7 +6,6 @@ const StudentDataView = ({ unit }) => {
   const current_unit = unit.unit;
   const unit_skills = unit.skills;
   const [showSkillsAndGrades, setShowSkillsAndGrades] = useState(false);
-  const navigate = useNavigate();
 
   const toggleSkillsAndGrades = () => {
     setShowSkillsAndGrades(!showSkillsAndGrades);
@@ -47,7 +45,11 @@ const StudentDataView = ({ unit }) => {
           <td colSpan="7">
             <div>
               <h3>Unit Skills</h3>
-              {skillList}
+              {unit_skills.length > 0 ? (
+                skillList
+              ) : (
+                <p>No skills available yet</p>
+              )}
             </div>
           </td>
         </tr>

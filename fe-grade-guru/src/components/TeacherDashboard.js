@@ -37,6 +37,7 @@ const TeacherDashboard = () => {
   };
 
   const studentList = students.map((student) => <StudentLink key={student.id} student={student} />);
+  
   const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
   return (

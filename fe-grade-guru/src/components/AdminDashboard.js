@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import userContext from './UserContext';
 
 const AdminDashboard = ({ getAllUsers}) => {

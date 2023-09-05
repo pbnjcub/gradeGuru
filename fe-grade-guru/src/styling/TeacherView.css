@@ -3,12 +3,41 @@
   margin-left: 50px;
 }
 
-.pure-button-primary:hover {
-  background-color: #0056b3;
+.pure-button {
+  background-color: #FFB476;
+  color: #fff; 
+  border: none;
+  transition: background-color 0.3s; 
+}
+
+.pure-button:hover, .pure-button:focus {
+  background-color: #E6A068; 
 }
 
 
 .error {
   color: red;
 }
+
+h1 {
+  color: #FFB476;
+}
+
+/* .container .pure-table tbody tr:hover {
+  color: #FFB476;
+}
+
+.container .pure-table tbody tr td a {
+  color: #FFB476;
+}
+
+.container .pure-table tbody tr td a:hover {
+  color: darken(#FFB476, 10%);
+} */
+
+.container table thead th {
+  text-align: left;
+}
+
+
 

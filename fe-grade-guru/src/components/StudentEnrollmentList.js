@@ -1,8 +1,7 @@
 import React from 'react';
-import userContext from './UserContext';
+import '../styling/TablesForms.css'
 
 const StudentEnrollmentList = ({ student, confirmUnenrollmentClick }) => {
-  const { currentUser } = React.useContext(userContext);
 
   return (
 
@@ -11,7 +10,7 @@ const StudentEnrollmentList = ({ student, confirmUnenrollmentClick }) => {
           { student.first_name} {student.last_name}
       </td>
       <td>
-        <button onClick={() => confirmUnenrollmentClick(student)}>Unenroll</button>
+        <button className="pure-button" onClick={() => confirmUnenrollmentClick(student)}>Unenroll</button>
       </td>
     </tr>
   );

@@ -8,7 +8,6 @@ import '../styling/SimpleForms.css'
 
 
 const CreateUnitForm = () => {
-    //state variables
     const { currentUser } = React.useContext(userContext);
     const teacher_id = currentUser.id
     const navigate = useNavigate();

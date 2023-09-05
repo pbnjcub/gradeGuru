@@ -78,37 +78,6 @@ function App() {
       return resp;
     }
   };
-  
-
-  // const getStudentDataForStudent = (userId) => {
-  //   return getDataForStudent(userId)
-  //     .then(data => {
-  //       if (data.errors) {
-  //         return null;
-  //       } else {
-  //         return data;
-  //       }
-  //     })
-  //     .catch(errors => {
-  //       return null;
-  //     });
-  // };
-  
-  
-  // const getStudentData = (userId, studentId) => {
-  //   return getGradesAndFeedbacksForStudent(userId, studentId)
-  //     .then(data => {
-  //       if (!data.errors) {
-  //         return data;
-  //       } else {
-  //         throw new Error(data.errors.join(', '));
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error(error);
-  //       return null;
-  //     });
-  // };
 
   const getUnitData = async (userId, unitId) => {
     const resp = await getDataForUnit(userId, unitId)
@@ -120,40 +89,6 @@ function App() {
 
   }
 
-  // const getUnitData = async (userId, unitId) => {
-  //   return getDataForUnit(userId, unitId)
-  //     .then((data) => {
-  //       if (data.errors) {
-  //         console.error(data.errors.join(', '));
-  //         return null;
-  //       } else {
-  //         return data;
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       return null;
-  //     });
-  // };
-  
-  
-
-  // const getUnitData = async (userId, unitId) => {
-  //   try {
-  //     const data = await getDataForUnit(userId, unitId);
-      
-  //     if (!data.errors) {
-  //       return data;
-  //     } else {
-  //       console.error(data.errors.join(', '));
-  //       return null;
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     return null;
-  //   }
-  // };
-  
     
   const handleNewUser = (updatedUsers) => {
     setUsers(updatedUsers)

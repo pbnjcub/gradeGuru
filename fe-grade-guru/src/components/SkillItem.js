@@ -6,12 +6,12 @@ const SkillItem = ({ unitSkill, handleUpdateSkillClick, handleDeleteUnitSkill })
       <td>{unitSkill.title}</td>
       <td>{unitSkill.description}</td>
       <td>
-        <button className="pure-button pure-button-primary" onClick={() => handleUpdateSkillClick(unitSkill.id)}>
+        <button className="pure-button" onClick={() => handleUpdateSkillClick(unitSkill.id)}>
           Update Skill
         </button>
       </td>
       <td>
-        <button className="pure-button pure-button-primary" onClick={() => handleDeleteUnitSkill(unitSkill.id)}>
+        <button className="pure-button" onClick={() => handleDeleteUnitSkill(unitSkill.id)}>
           Delete Skill
         </button>
       </td>

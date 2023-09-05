@@ -1,6 +1,8 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import userContext from './UserContext';
+import '../styling/NavBar.css'
+
 
 const NavBar = ({ loggedIn }) => {
   const { currentUser } = React.useContext(userContext);
@@ -45,7 +47,7 @@ const NavBar = ({ loggedIn }) => {
     return (
       <div className="pure-menu pure-menu-horizontal">
         <a href="/" className="pure-menu-heading pure-menu-link">
-          <img src="./GradeGuruLogo.png" alt="GradeGuru Logo" width="100" height="auto" />
+          <img src="/GradeGuruLogo2.png" alt="GradeGuru Logo" width="75" height="auto" />
         </a>
         <ul className="pure-menu-list">
           <li className="pure-menu-item">
@@ -121,8 +123,8 @@ const NavBar = ({ loggedIn }) => {
   } else {
     return (
       <div className="pure-menu pure-menu-horizontal">
-        <a href="/" className="pure-menu-heading pure-menu-link">
-          <img src="./GradeGuruLogo.png" alt="GradeGuru Logo" width="100" height="auto" />
+         <a href="/" className="pure-menu-heading pure-menu-link">
+          <img src="/GradeGuruLogo2.png" alt="GradeGuru Logo" width="75" height="auto" />
         </a>
         <ul className="pure-menu-list">
           <li className="pure-menu-item">

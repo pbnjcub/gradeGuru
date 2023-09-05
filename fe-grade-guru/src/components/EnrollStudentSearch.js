@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../styling/TablesForms.css'
 
 
-const EnrollStudentSearch = ({ allStudents, handleSearch, handleAddClick, handleUnselectClick, searchStudent, filteredStudents, selectedStudents, selectedTeacher }) => {
+const EnrollStudentSearch = ({ handleSearch, handleAddClick, handleUnselectClick, searchStudent, filteredStudents, selectedStudents, selectedTeacher }) => {
 
     const listFilteredStudents = searchStudent === '' ? [] : filteredStudents.map((student) => (
         <tr key={student.id}>
@@ -11,20 +11,20 @@ const EnrollStudentSearch = ({ allStudents, handleSearch, handleAddClick, handle
             <td>
                 {selectedTeacher && student.feedbacks.some(feedback => feedback.teacher_id === selectedTeacher.id) ? 
                     'Enrolled' :
-                    <button onClick={() => handleAddClick(student)}>+</button>
+                    <button className="pure-button" onClick={() => handleAddClick(student)}>+</button>
                 }
             </td>
         </tr>
     ));
 
   const listSelectedStudents = selectedStudents === [] ? [] : selectedStudents.map((student) => (
-    <tr key={student.id}>
-    <td>{student.first_name}</td>
-    <td>{student.last_name}</td>
-    <td>
-        <button onClick={() => handleUnselectClick(student)}>-</button>
-    </td>
-  </tr>
+        <tr key={student.id}>
+            <td>{student.first_name}</td>
+            <td>{student.last_name}</td>
+            <td>
+                <button className="pure-button" nClick={() => handleUnselectClick(student)}>-</button>
+            </td>
+        </tr>
   ))
 
   return (

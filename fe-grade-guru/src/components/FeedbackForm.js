@@ -60,7 +60,8 @@ const FeedbackForm = ({handleEditFeedback}) => {
 
   
     return (
-      <form onSubmit={handleSubmit} style={{marginLeft: '50px'}}>
+      <div className="container">
+      <form onSubmit={handleSubmit}>
       <h1>Feedback Edit Form for: {student_first_name} {student_last_name} </h1>
       <h5>{renderErrors}</h5>
       <table>
@@ -92,10 +93,10 @@ const FeedbackForm = ({handleEditFeedback}) => {
               <input type="text" name="comment" value={updatedFeedbacks.comment} onChange={handleInputChange} style={{ width: "375px"}}/>
             </td>
             <td>
-              <button className="pure-button pure-button-primary" type="submit">
+              <button className="pure-button" type="submit">
                 Update
               </button>
-              <button className="pure-button pure-button-primary" type="button" onClick={handleCancel}>
+              <button className="pure-button" type="button" onClick={handleCancel}>
           Cancel
         </button>
             </td>
@@ -103,6 +104,7 @@ const FeedbackForm = ({handleEditFeedback}) => {
         </tbody>
       </table>
     </form>
+    </div>
   );
 };
 

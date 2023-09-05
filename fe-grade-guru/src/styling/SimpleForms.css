@@ -26,4 +26,13 @@
   .edit-form input, .edit-form button {
     margin-bottom: 10px;
   }
+
+  h1 {
+    color: #FFB476;
+  }
+
+  .pure-button:hover, .pure-button:focus {
+    background-color: #E6A068; 
+  }
+  
   

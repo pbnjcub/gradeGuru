@@ -56,3 +56,10 @@
   color: red;
 }
 
+h1 {
+  color: #FFB476;
+}
+
+.pure-button:hover, .pure-button:focus {
+  background-color: #E6A068; 
+}

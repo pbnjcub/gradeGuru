@@ -124,9 +124,9 @@ const ParentViewStudentData = ({ }) => {
         <thead>
           <tr>
             <th rowSpan="2" colSpan="2">Unit</th>
+            <th rowSpan="2">Teacher</th>
             <th colSpan="4">Feedbacks</th>
             <th rowSpan="2">Academic Skills</th>
-            <th rowSpan="2">Actions</th>
           </tr>
           <tr>
             <td>Written Work</td>

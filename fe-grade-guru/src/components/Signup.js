@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { createAccount } from '../actions/users';
 import '../styling/TablesForms.css'
 
-
 const Signup = ({handleCurrentUser, handleNewUser}) => {
 
     const initialUserState = {
@@ -134,7 +133,7 @@ const Signup = ({handleCurrentUser, handleNewUser}) => {
                 )}
               </tbody>
             </table>
-            <input type="submit" className="pure-button-primary" value="Signup" />
+            <input type="submit" className="pure-button" value="Signup" />
           </form>
       </div>
   );

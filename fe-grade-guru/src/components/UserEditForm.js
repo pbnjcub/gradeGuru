@@ -23,7 +23,18 @@ const UserEditForm = ({users, handleEditUser}) => {
           setAccountEdited(false)
         }, 5000)
     }
-
+    
+    const sortUsers = (users) => {
+        const sorted = users.sort((a,b) => {
+          const sortByLastName = a.last_name.localeCompare(b.last_name);
+          if (sortByLastName !== 0) {
+            return sortByLastName;
+          } else {
+            return a.first_name.localeCompare(b.first_name);
+          }
+        })
+        return sorted
+    } 
 
     const handleChange = (e) => {
         setUpdatedUser({ ...updatedUser, [e.target.name]: e.target.value });
@@ -65,7 +76,7 @@ const UserEditForm = ({users, handleEditUser}) => {
           (user) =>
             user.last_name.toLowerCase().includes(query)
         );
-        setFilteredUsers(filtered);
+        setFilteredUsers(sortUsers(filtered));
     };
 
     const handleEditClick = (user) => {
@@ -80,7 +91,7 @@ const UserEditForm = ({users, handleEditUser}) => {
             <td>{user.last_name}</td>
             <td>{user.role}</td>
             <td>
-                <button onClick={() => handleEditClick(user)}>Edit</button>
+                <button className="pure-button" onClick={() => handleEditClick(user)}>Edit</button>
             </td>
         </tr>
     ));
@@ -136,10 +147,10 @@ const UserEditForm = ({users, handleEditUser}) => {
                     </div>
                     <div>
                         <br/>
-                        <button type="submit" value="Submit" className="pure-button-primary">Submit Changes</button>
+                        <button type="submit" value="Submit" className="pure-button">Submit Changes</button>
                     </div>
                     <div>
-                        <button type="button" onClick={handleCancel} className="pure-button-primary">Cancel</button>
+                        <button type="button" onClick={handleCancel} className="pure-button">Cancel</button>
                     </div>
                 </form>
             )}

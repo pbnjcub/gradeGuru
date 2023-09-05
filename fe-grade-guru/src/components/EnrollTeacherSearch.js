@@ -12,7 +12,7 @@ const EnrollTeacherSearch = ({ handleTeacherSearch, handleAddTeacherClick, handl
             {teacher.teacher_feedbacks && teacher.teacher_feedbacks.length === 0 ? (
                 <span>No assigned sections</span>
                 ) : (
-                <button onClick={() => handleAddTeacherClick(teacher)}>+</button>
+                <button className="pure-button" onClick={() => handleAddTeacherClick(teacher)}>+</button>
             )}
         </td>
     </tr>
@@ -55,7 +55,7 @@ const EnrollTeacherSearch = ({ handleTeacherSearch, handleAddTeacherClick, handl
                 <td>{selectedTeacher.first_name}</td>
                 <td>{selectedTeacher.last_name}</td>
                 <td>
-                  <button onClick={() => handleUnselectTeacherClick(selectedTeacher)}>-</button>
+                  <button className="pure-button" onClick={() => handleUnselectTeacherClick(selectedTeacher)}>-</button>
                 </td>
               </tr>
             ) : null}

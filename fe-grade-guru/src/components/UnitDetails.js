@@ -78,16 +78,6 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       setUnitSkills(updatedUnitSkills);
     };
 
-    // const handleNewUnitSkill = async (newUnitSkill) => {
-    //   const resp = await createUnitSkill(teacher_id, unit_id, newUnitSkill)
-    //     if (resp.errors) {
-    //         setErrorMessages(data.errors);
-    //       } else {
-    //         setErrorMessages([])
-    //         addUnitSkill(resp)
-    //     }
-    // }
-
     const handleDeleteUnitSkill = async (deletedSkillId) => {
       const resp = await deleteUnitSkill(teacher_id, unit_id, deletedSkillId)
       const updatedUnitSkills = unitSkills.filter((skill) => skill.id !== deletedSkillId);
@@ -143,12 +133,12 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       <div className="main" style={{ marginLeft: '50px' }}>
         <h1>Unit Details for: {unitObj.title}</h1>
         <h3>Description: {unitObj.description}</h3>
-        <button className="pure-button pure-button-primary" onClick={handleDeleteUnitClick}>
+        <button className="pure-button" onClick={handleDeleteUnitClick}>
               Delete Unit
             </button>
         <br />
           {!editingUnit && (
-            <button className="pure-button pure-button-primary" onClick={toggleEditingUnit}>
+            <button className="pure-button" onClick={toggleEditingUnit}>
               Update Unit
             </button>
           )}
@@ -184,7 +174,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
               {!creatingNewSkill ? (
                 <tr>
                   <td>
-                    <button className="pure-button pure-button-primary" onClick={toggleNewSkill}>
+                    <button className="pure-button" onClick={toggleNewSkill}>
                       Add Skill
                     </button>
                   </td>

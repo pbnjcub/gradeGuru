@@ -118,7 +118,7 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
     <div className="main" style={{ marginLeft: '50px' }}>
       <h1>Student Report for {currentStudent.first_name} {currentStudent.last_name}</h1>
       <br />
-      <button onClick={generatePDF}>Generate PDF</button>
+      <button className="pure-button" onClick={generatePDF}>Generate PDF</button>
       <br />
       <h3>Grades and Feedback</h3>
       <table className="pure-table pure-table-horizontal">

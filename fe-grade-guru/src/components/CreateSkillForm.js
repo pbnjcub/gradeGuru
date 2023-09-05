@@ -36,18 +36,6 @@ const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNe
         setErrorMessages([]);
       };
 
-
-    // const handleSkillSubmit = (newUnitSkill) => {
-    //     handleNewUnitSkill(newUnitSkill);
-    //     setNewUnitSkill({
-    //         title: "",
-    //         description: "",
-    //         unit_id: unitObj.id,
-    //     });
-    //     toggleNewSkill()
-    //     navigate(`/teachers/${teacher_id}/units/${unit_id}`);
-
-    // };
     const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
     return (
@@ -61,8 +49,8 @@ const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNe
                 <label>Description: </label>
                 <input type="text" name="description" value={newUnitSkill.description} onChange={handleChange} />
 
-                <button className="pure-button pure-button-primary" onClick={() => handleSkillSubmit(newUnitSkill)}>Add Skill</button>
-                <button className="pure-button pure-button-primary" onClick={handleCancelClick}>Cancel</button>
+                <button className="pure-button" onClick={() => handleSkillSubmit(newUnitSkill)}>Add Skill</button>
+                <button className="pure-button" onClick={handleCancelClick}>Cancel</button>
             
         </div>
     );

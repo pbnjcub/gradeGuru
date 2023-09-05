@@ -139,7 +139,6 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
       }
       <div className="flex-container">
         <EnrollStudentSearch
-          allStudents={allStudents}
           handleSearch={handleSearch}
           handleAddClick={handleAddClick}
           handleUnselectClick={handleUnselectClick}
@@ -149,7 +148,6 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
           selectedTeacher={selectedTeacher}
         />
         <EnrollTeacherSearch
-          allTeachers={allTeachers}
           handleTeacherSearch={handleTeacherSearch}
           handleAddTeacherClick={handleAddTeacherClick}
           handleUnselectTeacherClick={handleUnselectTeacherClick}
@@ -160,7 +158,7 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
       </div>
       <br />
       {selectedStudents.length > 0 && selectedTeacher && (
-        <button id="confirm-enrollment-button" className="pure-button-primary" onClick={() => confirmEnrollmentClick()}>Confirm Enrollment</button>
+        <button id="confirm-enrollment-button" className="pure-button" onClick={() => confirmEnrollmentClick()}>Confirm Enrollment</button>
       )}
     </div>
   );
