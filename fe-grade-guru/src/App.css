@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.table-container table {
+  border-collapse: separate;
+  border-spacing: 20px 0;
+  border: 2px solid #000; /* Change border color here */
+  background-color: #666; /* Change background color here */
+}
+
+.table-container th, .table-container td {
+  padding: 10px;
+  border: 1px solid #000; /* Change border color here */
+}

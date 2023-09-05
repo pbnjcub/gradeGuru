@@ -1,13 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import { deleteUnitSkill, updateUnitSkill } from '../actions/units';
-import { createUnitSkill } from '../actions/units';
+import { deleteUnit, deleteUnitSkill, updateUnitSkill } from '../actions/units';
 import UpdateUnitForm from './UpdateUnitForm'
 import SkillItem from './SkillItem';
 import CreateSkillForm from './CreateSkillForm';
 import UpdateSkillItem from './UpdateSkillItem';
 import UserContext from './UserContext';
+import '../styling/TeacherView.css'
+
 
 const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     const { teacher_id, unit_id } = useParams();
@@ -55,6 +56,11 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     const handleUpdatedUnit = (updatedUnit) => {
       setUnitObj(updatedUnit)
     };
+
+    const handleDeleteUnitClick = () => {
+      deleteUnit(teacher_id, unit_id)
+      navigate(`/teachers/${teacher_id}/units`)
+    }
 
     const handleUpdateSkillClick = (skillId) => {
       const skillToUpdate = unitSkills.find(skill => skill.id === skillId);
@@ -129,14 +135,17 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
 
     const skillList = unitSkills.map((unitSkill) => <SkillItem key={unitSkill.id} unitSkill={unitSkill} handleUpdateSkillClick={handleUpdateSkillClick} handleDeleteUnitSkill={handleDeleteUnitSkill} />)
   
-    const updatingSkillList = unitSkills.map((unitSkill) => <UpdateSkillItem key={unitSkill.id} unitSkill={unitSkill} updatingSkill={updatingSkill} updatingSkillId={updatingSkillId} handleSkillChange={handleSkillChange} updateSkill={updateSkill} toggleEditSkills={toggleEditSkills} handleUpdateSkillClick={handleUpdateSkillClick} />)
+    const updatingSkillList = unitSkills.map((unitSkill) => <UpdateSkillItem key={unitSkill.id} unitSkill={unitSkill} updatingSkill={updatingSkill} updatingSkillId={updatingSkillId} handleSkillChange={handleSkillChange} updateSkill={updateSkill} toggleEditSkills={toggleEditSkills} handleUpdateSkillClick={handleUpdateSkillClick} setErrorMessages={setErrorMessages} />)
 
-    const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
+    const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
     return (
       <div className="main" style={{ marginLeft: '50px' }}>
         <h1>Unit Details for: {unitObj.title}</h1>
         <h3>Description: {unitObj.description}</h3>
+        <button className="pure-button pure-button-primary" onClick={handleDeleteUnitClick}>
+              Delete Unit
+            </button>
         <br />
           {!editingUnit && (
             <button className="pure-button pure-button-primary" onClick={toggleEditingUnit}>
@@ -146,6 +155,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
           {editingUnit && (
             <UpdateUnitForm unitObj={unitObj} handleUpdatedUnit={handleUpdatedUnit} toggleEditingUnit={toggleEditingUnit}/>
           )}
+          
           <h3>Unit Skills</h3>
           <br />
             {renderErrors}

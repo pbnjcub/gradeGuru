@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import { editUser } from '../actions/users';
+import '../styling/SimpleForms.css'
 
 const UserEditForm = ({users, handleEditUser}) => {
     const [searchUser, setSearchUser] = useState('');
@@ -12,7 +13,7 @@ const UserEditForm = ({users, handleEditUser}) => {
         last_name: '',
         role: '',
     })
-
+    const [showEditForm, setShowEditForm] = useState(false)
     const [errorMessages, setErrorMessages] = useState([])
 
     const showSuccessMessage = () => {
@@ -21,7 +22,7 @@ const UserEditForm = ({users, handleEditUser}) => {
         setTimeout(() => {
           setAccountEdited(false)
         }, 5000)
-      }
+    }
 
 
     const handleChange = (e) => {
@@ -32,14 +33,30 @@ const UserEditForm = ({users, handleEditUser}) => {
         e.preventDefault();
         const resp = await editUser(updatedUser.id, updatedUser)
         if (resp.errors) {
-            console.log(resp.errors)
             setErrorMessages(resp.errors)
         } else {
+            setShowEditForm(false)
             setErrorMessages([])
             handleEditUser(resp);
             showSuccessMessage()
+            setUpdatedUser({
+                id: '',
+                first_name: '',
+                last_name: '',
+                role: '',
+            })
         }        
     }
+
+    const handleCancel = () => {
+        setUpdatedUser({
+            id: '',
+            first_name: '',
+            last_name: '',
+            role: '',
+        });
+        setShowEditForm(false);
+    };
 
     const handleSearch = (e) => {
         const query = e.target.value.toLowerCase();
@@ -49,14 +66,15 @@ const UserEditForm = ({users, handleEditUser}) => {
             user.last_name.toLowerCase().includes(query)
         );
         setFilteredUsers(filtered);
-      };
+    };
 
-      const handleEditClick = (user) => {
+    const handleEditClick = (user) => {
         setUpdatedUser(user);
         setSearchUser('')
-      }
+        setShowEditForm(true);
+    }
 
-      const listFilteredUsers = searchUser === '' ? [] : filteredUsers.map((user) => (
+    const listFilteredUsers = searchUser === '' ? [] : filteredUsers.map((user) => (
         <tr key={user.id}>
             <td>{user.first_name}</td>
             <td>{user.last_name}</td>
@@ -67,33 +85,28 @@ const UserEditForm = ({users, handleEditUser}) => {
         </tr>
     ));
 
-    const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
+    const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
     return (
-        <div style={{marginLeft: '50px'}}>
+        <div className="container">
             <h1>User Edit Form</h1>
             <br />
             {renderErrors}
-            { accountEdited ? (
-              <h3>Account Successfully Edited!</h3>
-             ) : null
-            }
+            {accountEdited && (
+                <h3>Account Successfully Edited!</h3>
+            )}
             <div>
                 <label>Search by Name:</label>
-                <input
-                type="text"
-                name="search"
-                value={searchUser}
-                onChange={handleSearch}
-                />
+                <input type="text" name="search" value={searchUser} onChange={handleSearch} />
             </div>
             <h3>Search Results:</h3>
-            <table>
+            <table className="results-table">
                 <thead>
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
                         <th>Role</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -102,15 +115,34 @@ const UserEditForm = ({users, handleEditUser}) => {
             </table>
             <br />
 
-            <form onSubmit={handleEditSubmit}>
-                <label>First Name: </label>
-                <input type="text" name="first_name" value={updatedUser.first_name} onChange={handleChange} />
-                <label>Last Name: </label>
-                <input type="text" name="last_name" value={updatedUser.last_name} onChange={handleChange} />
-                <label>Role: </label>
-                <input type="text" name="role" value={updatedUser.role} onChange={handleChange} />
-                <button type="submit" value="Submit" className="pure-button pure-button-primary">Submit Changes</button>
-            </form>
+            {showEditForm && (
+                <form className="edit-form" onSubmit={handleEditSubmit}>
+                    <div>
+                        <label>First Name: </label>
+                        <input type="text" name="first_name" value={updatedUser.first_name} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label>Last Name: </label>
+                        <input type="text" name="last_name" value={updatedUser.last_name} onChange={handleChange} />
+                    </div>
+                    <div>
+                        <label>Role: </label>
+                        <select name="role" value={updatedUser.role} onChange={handleChange}>
+                            <option value="admin">Admin</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="student">Student</option>
+                            <option value="parent">Parent</option>
+                        </select>
+                    </div>
+                    <div>
+                        <br/>
+                        <button type="submit" value="Submit" className="pure-button-primary">Submit Changes</button>
+                    </div>
+                    <div>
+                        <button type="button" onClick={handleCancel} className="pure-button-primary">Cancel</button>
+                    </div>
+                </form>
+            )}
         </div>
     );
 }

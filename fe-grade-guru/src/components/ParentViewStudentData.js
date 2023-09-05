@@ -7,7 +7,6 @@ import jsPDF from 'jspdf'
 
 const ParentViewStudentData = ({ }) => {
   const { currentUser } = React.useContext(UserContext);
-  console.log(currentUser.id)
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])

@@ -1,0 +1,58 @@
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  display: table;
+}
+
+.results-table th, .results-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  text-align: left;
+}
+
+.results-table thead tr {
+  border-bottom: 2px solid black;
+}
+
+.results-header,
+.results-row td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.results-row:hover {
+  background-color: #f5f5f5;
+}
+
+.flex-container {
+  display: flex;
+  gap: 20px; 
+}
+
+/* .table-container {
+  margin: 0;
+  padding: 0;
+} */
+
+.container {
+  margin-left: 50px;
+}
+
+.pure-button-primary:hover {
+  background-color: #0056b3;
+}
+
+#confirm-enrollment-button {
+  font-size: 20px;  
+  padding: 15px 30px; 
+ 
+}
+
+
+.error {
+  color: red;
+}
+

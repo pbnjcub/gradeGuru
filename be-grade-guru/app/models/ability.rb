@@ -16,6 +16,8 @@ class Ability
       # can :index_students, User, id: user.id
     elsif user.admin?
       can :manage, :all
+      can :enroll, User, role: 'student'
+      can :unenroll, User, role: 'student'
     elsif user.student?
       can :read, User, id: user.id
       can :read, Unit

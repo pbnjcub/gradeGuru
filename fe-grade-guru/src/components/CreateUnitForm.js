@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import { createUnit} from '../actions/units';
 import { useNavigate } from 'react-router-dom';
 import userContext from './UserContext';
+import '../styling/TeacherView.css'
+import '../styling/SimpleForms.css'
+
 
 
 const CreateUnitForm = () => {
@@ -34,22 +37,25 @@ const CreateUnitForm = () => {
       }
     };
 
-    const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
+
+  const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
     return (
-        <div style={{marginLeft: '50px'}}>
+        <div className="container">
             <h1>Create Unit</h1>
             <br />
             {renderErrors}
             <br />
-            <form onSubmit={handleSubmit}>
+            <form className="edit-form" onSubmit={handleSubmit}>
                 <label>Unit Title: </label>
                 <input type="text" name="title" value={newUnit.title} onChange={handleChange} />
                 <label>Description: </label>
                 <input type="text" name="description" value={newUnit.description} onChange={handleChange} />
+                <div>
                 <button className="pure-button pure-button-primary" type="submit">
                 Create Unit
               </button>
+              </div>
             </form>
 
         </div>

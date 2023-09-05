@@ -10,8 +10,28 @@ const NavBar = ({ loggedIn }) => {
       return (
         <ul className="sub-menu">
           <li className="sub-menu-item">
-            <NavLink className="pure-menu-link" to="/teachers/:teacher_id/units/create">
+            <NavLink className="pure-menu-link" to={`/teachers/${currentUser.id}/units/create`}>
               Create Unit
+            </NavLink>
+          </li>
+        </ul>
+      );
+    }
+    return null;
+  };
+
+  const renderEnrollmentSubMenu = () => {
+    if (currentUser.role === 'admin') {
+      return (
+        <ul className="sub-menu">
+          <li className="sub-menu-item">
+            <NavLink className="pure-menu-link" to={'/enroll-students'}>
+              Enroll Students
+            </NavLink>
+          </li>
+          <li className="sub-menu-item">
+            <NavLink className="pure-menu-link" to={'/unenroll-students'}>
+              Unenroll Students
             </NavLink>
           </li>
         </ul>
@@ -35,22 +55,29 @@ const NavBar = ({ loggedIn }) => {
           </li>
           {role === 'parent' && (
             <li className="pure-menu-item">
-              <NavLink className="pure-menu-link has-sub-menu" to="/parents/:id">
+              <NavLink className="pure-menu-link" to={`/parents/${currentUser.id}`}>
                 Parent Dashboard
+              </NavLink>
+            </li>
+          )}
+          {role === 'student' && (
+            <li className="pure-menu-item">
+              <NavLink className="pure-menu-link" to={`/students/${currentUser.id}`}>
+                Student Dashboard
               </NavLink>
             </li>
           )}
           {role === 'teacher' && (
             <React.Fragment>
             <li className="pure-menu-item">
-              <NavLink className="pure-menu-link has-sub-menu" to="/teachers/:id">
+              <NavLink className="pure-menu-link has-sub-menu" to={`/teachers/${currentUser.id}`}>
                 Teacher Dashboard
               </NavLink>
             </li>
             <li className="pure-menu-item">
               <div className="pure-menu-link has-sub-menu">
               <span>
-                <NavLink className="pure-menu-link" to="/teachers/:teacher_id/units">
+                <NavLink className="pure-menu-link" to={`/teachers/${currentUser.id}/units`}>
                   Manage Units
                 </NavLink>
                 {renderManageUnitsSubMenu()}
@@ -70,6 +97,16 @@ const NavBar = ({ loggedIn }) => {
                 <NavLink className="pure-menu-link" to="/edit-user">
                   Edit User
                 </NavLink>
+              </li>
+              <li className="pure-menu-item">
+                <div className="pure-menu-link has-sub-menu">
+                  <span>
+                    <NavLink className="pure-menu-link" to="#">
+                    Enrollments
+                  </NavLink>
+                  {renderEnrollmentSubMenu()}
+                  </span>
+                </div>
               </li>
             </React.Fragment>
           )}

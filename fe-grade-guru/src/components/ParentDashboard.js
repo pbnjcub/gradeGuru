@@ -25,7 +25,7 @@ const ParentDashboard = () => {
 
   const studentList = students.map((student) => <StudentLink key={student.id} student={student} />);
 
-  const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
+  const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
 
 
   return (

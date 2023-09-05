@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import userContext from './UserContext';
 import { getUnitsForTeacher } from '../actions/teachers';
 import UnitLink from './UnitLink';
+import '../styling/TeacherView.css'
+
 
 const UnitsDashboard = () => {
     const { currentUser } = React.useContext(userContext);
@@ -23,12 +25,9 @@ const UnitsDashboard = () => {
   };
 
 
+  const unitsList = units.map((unit) => <UnitLink key={unit.id} unit={unit} teacher_id={currentUser.id} />);
 
-
-
-  const unitsList = units.map((unit) => <UnitLink key={unit.id} unit={unit} />);
-
-  const renderErrors = errorMessages.map((message) => <p id="error">{message}</p>);
+  const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
 
   return (

@@ -1,0 +1,29 @@
+
+.container {
+    margin-left: 50px;
+  }
+  
+  .results-table {
+    width: 70%;
+    margin: 0 auto;
+    border-collapse: collapse;
+  }
+  
+  .results-table th, .results-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .results-table thead tr {
+    border-bottom: 2px solid black;
+  }
+  
+  .edit-form label {
+    display: block;
+    margin-top: 10px;
+  }
+  
+  .edit-form input, .edit-form button {
+    margin-bottom: 10px;
+  }
+  

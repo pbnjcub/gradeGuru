@@ -57,7 +57,7 @@ class SkillsController < ApplicationController
         student_ids_taught = teacher_feedbacks.pluck(:student_id).uniq
 
         student_ids_taught.each do |student_id|
-            Grade.create(skill_id: @skill.id, teacher_id: @teacher_id, student_id: student_id)
+            Grade.create(skill_id: @skill.id, teacher_id: @teacher_id, student_id: student_id, grade: 0)
         end
 
     end

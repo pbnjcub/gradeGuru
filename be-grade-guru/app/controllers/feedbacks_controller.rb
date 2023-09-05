@@ -4,7 +4,7 @@ class FeedbacksController < ApplicationController
     load_and_authorize_resource
     def index
         feedbacks = Feedback.all
-        render json: feedbacks
+        render json: feedbacks, each_serializer: FeedbackSerializer
     end
 
     def create
@@ -19,31 +19,18 @@ class FeedbacksController < ApplicationController
 
     def show
         @feedback = Feedback.find(params[:id])
-        authorize! :read, @feedback
 
         if current_user.student? && @feedback.student_id != current_user.id
             render json: { error: 'Not authorized.' }, status: 400
         elsif current_user.teacher? && @feedback.teacher_id != current_user.id
             render json: { error: 'Not authorized.' }, status: 400
         else
-            render json: @feedback, status: :created
+            render json: @feedback, status: :created, serializer: FeedbackSerializer
         end
     end
-
-    # def create
-    #     @feedback = Feedback.new(feedback_params)
-    #     authorize! :create, @feedback
-
-    #     if @feedback.save
-    #         render json: @feedback, status: :created
-    #     else
-    #         render json: { error: 'Not authorized.' }, status: 400
-    #     end
-    # end
       
     def update
         feedback = Feedback.find(params[:id])
-        # authorize! :update, @feedback
       
         if feedback.update(feedback_params)
             render json: feedback, status: :created
@@ -53,7 +40,6 @@ class FeedbacksController < ApplicationController
 
     def destroy
         feedback = Feedback.find(params[:id])
-        # authorize! :destroy, @feedback
 
         if feedback.destroy
             head :no_content

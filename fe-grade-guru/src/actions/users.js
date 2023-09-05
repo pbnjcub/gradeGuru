@@ -32,11 +32,9 @@ export const editUser = async (id, updatedUser) => {
     
     if (resp.ok) {
         const data = await resp.json();
-        console.log(data)
         return data
     } else {
         const errorData = await resp.json();
-        console.log(errorData)
         return { errors: errorData.errors };
     }
 }

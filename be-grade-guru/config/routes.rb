@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   get '/students/:id', to: 'students#get_student_data'
   post '/teachers/:teacher_id/units/create', to: 'units#create'
   patch '/teachers/:teacher_id/units/:unit_id/update', to: 'units#update'
+  delete '/teachers/:teacher_id/units/:unit_id/delete', to: 'units#destroy'
   post '/teachers/:teacher_id/units/:unit_id/skills/create', to: 'skills#create'
   delete '/teachers/:teacher_id/units/:unit_id/skills/:skill_id/delete', to: 'skills#destroy'
   patch '/teachers/:teacher_id/units/:unit_id/skills/:skill_id/update', to: 'skills#update'
@@ -23,6 +24,8 @@ Rails.application.routes.draw do
   post '/signup', to: 'users#create'
   delete '/logout', to: 'sessions#destroy'
   delete '/users/id/delete', to: 'users#destroy'
+  post '/enroll-students', to: 'students#enroll_students'
+  delete '/unenroll-students', to: 'students#unenroll_student'
 
   resources :users, only: [:index, :update]
   

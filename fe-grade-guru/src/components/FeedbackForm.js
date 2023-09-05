@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import userContext from './UserContext';
 import { updateStudentFeedbacks } from '../actions/students';
+import '../styling/TeacherView.css'
 
 const FeedbackForm = ({handleEditFeedback}) => {
     const { currentUser } = React.useContext(userContext)
@@ -14,59 +15,48 @@ const FeedbackForm = ({handleEditFeedback}) => {
     const student_id = params.student_id
     const student_first_name = params.student_first_name
     const student_last_name = params.student_last_name
-    console.log(params)
 
     const [errorMessages, setErrorMessages] = useState([]);
     
     const [updatedFeedbacks, setUpdatedFeedbacks] = useState({
         id: unit.feedbacks[0].id,
-        written_work: unit.feedbacks[0].written_work,
-        classwork: unit.feedbacks[0].classwork,
-        homework: unit.feedbacks[0].homework,
-        comment: unit.feedbacks[0].comment,
+        written_work: unit.feedbacks[0].written_work || "",
+        classwork: unit.feedbacks[0].classwork || "",
+        homework: unit.feedbacks[0].homework || "",
+        comment: unit.feedbacks[0].comment || "",
       });
 
 
-      const handleInputChange = (e) => {
-        setUpdatedFeedbacks({ ...updatedFeedbacks, [e.target.name]: e.target.value });
-      };
+    const handleInputChange = (e) => {
+      setUpdatedFeedbacks({ ...updatedFeedbacks, [e.target.name]: e.target.value });
+    };
 
-      const handleSubmit = async (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+      e.preventDefault();
 
-        const updatedFeedbacksData = {
-          id: updatedFeedbacks.id,
-          written_work: updatedFeedbacks.written_work,
-          classwork: updatedFeedbacks.classwork,
-          homework: updatedFeedbacks.homework,
-          comment: updatedFeedbacks.comment,
-        };
+    const updatedFeedbacksData = {
+      id: updatedFeedbacks.id,
+      written_work: updatedFeedbacks.written_work,
+      classwork: updatedFeedbacks.classwork,
+      homework: updatedFeedbacks.homework,
+      comment: updatedFeedbacks.comment,
+    };
 
-        const resp = await updateStudentFeedbacks(teacher_id, student_id, updatedFeedbacksData)
-          if (resp.errors) {
-            setErrorMessages(resp.errors.errors);
-          } else {
-            setErrorMessages([])
-            handleEditFeedback(unit.unit.id, updatedFeedbacksData);
-            navigate(`/teachers/${teacher_id}/students/${student_id}`);
-          }
-        };
+    const resp = await updateStudentFeedbacks(teacher_id, student_id, updatedFeedbacksData)
+      if (resp.errors) {
+        setErrorMessages(resp.errors);
+      } else {
+        setErrorMessages([])
+        handleEditFeedback(unit.unit.id, updatedFeedbacksData);
+        navigate(`/teachers/${teacher_id}/students/${student_id}`);
+      }
+    };
 
-        // updateStudentFeedbacks(teacher_id, student_id, updatedFeedbacksData)
-        //   .then((data) => {
-        //     if (data.errors) {
-        //       setErrorMessages(data.errors);
-        //     } else {
-        //       handleEditFeedback(unit.unit.id, updatedFeedbacksData);
-        //     }
-        //   })
-        //   .finally(() => {
-        //     console.log("Updated Feedbacks after API call:", updatedFeedbacks); // Add this line
-        //     navigate(`/teachers/${teacher_id}/students/${student_id}`);
-        //   });
+    const handleCancel = () => {
+      navigate(`/teachers/${teacher_id}/students/${student_id}`);
+    };
 
-
-        const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
+    const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
   
     return (
@@ -105,6 +95,9 @@ const FeedbackForm = ({handleEditFeedback}) => {
               <button className="pure-button pure-button-primary" type="submit">
                 Update
               </button>
+              <button className="pure-button pure-button-primary" type="button" onClick={handleCancel}>
+          Cancel
+        </button>
             </td>
           </tr>
         </tbody>

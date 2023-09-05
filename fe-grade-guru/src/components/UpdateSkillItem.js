@@ -1,7 +1,13 @@
 import React from 'react';
 
-const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkillChange, updateSkill, toggleEditSkills, handleUpdateSkillClick }) => {
-    if (updatingSkillId === unitSkill.id) {
+const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkillChange, updateSkill, toggleEditSkills, handleUpdateSkillClick, setErrorMessages }) => {
+  const handleCancelClick = () => {
+    toggleEditSkills();
+    setErrorMessages([]);
+  };
+  
+  
+  if (updatingSkillId === unitSkill.id) {
     return (
       <tr key={unitSkill.id}>
         <td>
@@ -14,7 +20,7 @@ const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkil
           <button className="pure-button pure-button-primary" onClick={() => updateSkill(updatingSkill)}>
             Save Skill
           </button>
-          <button className="pure-button pure-button-primary" onClick={toggleEditSkills}>
+          <button className="pure-button pure-button-primary" onClick={handleCancelClick}>
             Cancel
           </button>
         </td>

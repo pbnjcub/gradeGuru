@@ -104,8 +104,8 @@ export const createUnit = async (teacher_id, details) => {
           }
         };
 
-        export const deleteUnitSkill = async (teacher_id, unit_id, skill_id) => {
-            const resp = await fetch(`/teachers/${teacher_id}/units/${unit_id}/skills/${skill_id}/delete`, {
+        export const deleteUnit = async (teacher_id, unit_id) => {
+            const resp = await fetch(`/teachers/${teacher_id}/units/${unit_id}/delete`, {
                 method: 'DELETE',
                 mode: 'cors',
                 credentials: 'include',
@@ -115,3 +115,15 @@ export const createUnit = async (teacher_id, details) => {
                 },
             });
         };
+
+        export const deleteUnitSkill = async (teacher_id, unit_id, skill_id) => {
+          const resp = await fetch(`/teachers/${teacher_id}/units/${unit_id}/skills/${skill_id}/delete`, {
+              method: 'DELETE',
+              mode: 'cors',
+              credentials: 'include',
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+              },
+          });
+      };

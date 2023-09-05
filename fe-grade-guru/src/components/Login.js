@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { login } from '../actions/auth';
 import { useNavigate } from 'react-router-dom';
+import '../styling/SimpleForms.css'
 
 const Login = ({handleCurrentUser}) => {
-    //state variables
     const [user, setUser] = useState({
         email: "",
         password: "",
@@ -32,8 +32,6 @@ const Login = ({handleCurrentUser}) => {
         }
     }
 
-        
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         const resp = await login(user, handleCurrentUser, handleNavigation);
@@ -52,12 +50,14 @@ const Login = ({handleCurrentUser}) => {
             {errorMessages}
             <br />
             <br />
-            <form onSubmit={handleSubmit}>
+            <form className="edit-form" onSubmit={handleSubmit}>
                 <label>Email</label>
                 <input type="text" name="email" value={user.email} autoComplete="email" onChange={handleChange} />
                 <label>Password</label>
                 <input type="password" name="password" value={user.password} autoComplete="current-password" onChange={handleChange} />
-                <input type="submit" value="Submit" />
+                <div>
+                    <input type="submit" className="pure-button-primary" value="Submit" />
+                </div>
             </form>
         </div>
     );

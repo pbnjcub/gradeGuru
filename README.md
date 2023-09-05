@@ -62,13 +62,17 @@ JavaScript
 Model, View, Controller, Rails Generators, RESTful Routing, Full CRUD capabilities, Multiple Many-to-Many relationship, User Authorization, CanCanCan (Role-Handling), jsPDF (PDF Creation)
 
 ### Credits
-jsPDF: https://www.codexworld.com/convert-html-to-pdf-using-javascript-jspdf/
+jsPDF:
+https://www.codexworld.com/convert-html-to-pdf-using-javascript-jspdf/
 
-Rails Generators: https://gist.github.com/cdesch/2f8de645cad1d83aa251c0a20b0f7097
+Rails Generators:
+https://gist.github.com/cdesch/2f8de645cad1d83aa251c0a20b0f7097
 
-Ruby on Rails: https://guides.rubyonrails.org/
+Ruby on Rails:
+https://guides.rubyonrails.org/
 
-CanCanCan: https://github.com/CanCanCommunity/cancancan
+CanCanCan:
+https://github.com/CanCanCommunity/cancancan
 
 React:
 https://legacy.reactjs.org/

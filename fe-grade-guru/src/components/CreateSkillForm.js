@@ -2,7 +2,7 @@ import React from 'react';
 import {useState} from'react';
 import { useNavigate } from 'react-router-dom';
 import { createUnitSkill } from '../actions/units';
-
+import '../styling/TeacherView.css'
 
 const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNewUnitSkill, handleNewUnitSkill, toggleNewSkill}) => {
     const navigate = useNavigate();
@@ -31,6 +31,11 @@ const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNe
         }
     };
 
+    const handleCancelClick = () => {
+        toggleNewSkill();
+        setErrorMessages([]);
+      };
+
 
     // const handleSkillSubmit = (newUnitSkill) => {
     //     handleNewUnitSkill(newUnitSkill);
@@ -43,7 +48,7 @@ const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNe
     //     navigate(`/teachers/${teacher_id}/units/${unit_id}`);
 
     // };
-    const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
+    const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
     return (
         <div>
@@ -57,7 +62,7 @@ const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNe
                 <input type="text" name="description" value={newUnitSkill.description} onChange={handleChange} />
 
                 <button className="pure-button pure-button-primary" onClick={() => handleSkillSubmit(newUnitSkill)}>Add Skill</button>
-                <button className="pure-button pure-button-primary" onClick={toggleNewSkill}>Cancel</button>
+                <button className="pure-button pure-button-primary" onClick={handleCancelClick}>Cancel</button>
             
         </div>
     );

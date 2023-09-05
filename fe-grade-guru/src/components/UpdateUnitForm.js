@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { updateUnit } from '../actions/units'
 import { useNavigate } from 'react-router-dom';
 import userContext from './UserContext';
+import '../styling/TeacherView.css'
 
 
 const UpdateUnitForm = ({unitObj, handleUpdatedUnit, toggleEditingUnit}) => {
@@ -29,15 +30,18 @@ const UpdateUnitForm = ({unitObj, handleUpdatedUnit, toggleEditingUnit}) => {
       } else {
         setErrorMessages([])
         toggleEditingUnit()
-        handleUpdatedUnit(updatedUnit)
+        handleUpdatedUnit(resp)
         navigate(`/teachers/${teacher_id}/units/${unit_id}`);
       }
        
     }
 
-  
+    const handleCancelClick = () => {
+      toggleEditingUnit();
+      setErrorMessages([]);
+    };
 
-    const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
+    const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
     return (
         <div>
@@ -50,7 +54,7 @@ const UpdateUnitForm = ({unitObj, handleUpdatedUnit, toggleEditingUnit}) => {
                 <label>Description: </label>
                 <input type="text" name="description" value={updatedUnit.description} onChange={handleChange} />
                 <button className="pure-button pure-button-primary" onClick={() => handleUpdateUnit(updatedUnit)}>Save Changes</button>
-                <button className="pure-button pure-button-primary" onClick={toggleEditingUnit}>Cancel</button>
+                <button className="pure-button pure-button-primary" onClick={handleCancelClick}>Cancel</button>
 
         </div>
     );

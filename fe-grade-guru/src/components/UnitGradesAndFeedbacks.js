@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import userContext from './UserContext';
 import { useNavigate } from 'react-router-dom';
 import {updateStudentSkillGrades} from '../actions/students';
+import '../styling/TeacherView.css'
 
 const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
   const { currentUser } = React.useContext(userContext);
@@ -31,7 +32,7 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
       ...updatedSkills[index],
       grade: {                 
         ...updatedSkills[index].grade,
-        grade: parseInt(e.target.value)
+        grade: e.target.value
       }
     };
     const updatedSkillsCopy = [...updatedSkills];
@@ -42,10 +43,12 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
   const updateSkills = () => {
     updateStudentSkillGrades(teacher_id, student_id, updatedSkills)
       .then((data) => {
-        if (data.error) {
-          setErrorMessages(data.error);
+        if (data.errors) {
+          const errorObj = data.errors.map(errorArr => errorArr.errors)
+          setErrorMessages(errorObj[0]);
         } else {
           setEditingSkills(false);
+          setErrorMessages([])
           handleEditSkillsGrade(updatedSkills)
         }
       })
@@ -84,6 +87,8 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
     });
   };
 
+  const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
+
   return (
     <>
       <tr>
@@ -115,10 +120,16 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
           <td colSpan="7">
             <div>
               <h3>Unit Skills</h3>
-              {skillList}
-              <button className="pure-button pure-button-primary" onClick={toggleEditSkills}>
-                Update Skills
-              </button>
+              {unit_skills.length > 0 ? (
+                skillList
+              ) : (
+                <p>No skills available yet</p>
+              )}
+              {!editingSkills && unit_skills.length > 0 ? (
+                <button className="pure-button pure-button-primary" onClick={toggleEditSkills}>
+                  Update Skills
+                </button>
+              ) : null}
             </div>
           </td>
         </tr>
@@ -128,7 +139,10 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
           <td colSpan="7">
             <div>
               <h3>Update Skills</h3>
-                {skillListEdit}
+              <br />
+              {renderErrors}
+
+              {skillListEdit}
               <button className="pure-button pure-button-primary" onClick={updateSkills}>
                 Save Skills
               </button>

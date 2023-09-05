@@ -54,7 +54,7 @@ class UnitsController < ApplicationController
     end
 
     def destroy
-        unit = Unit.find(params[:id])
+        unit = Unit.find(params[:unit_id])
 
         if unit
             unit.destroy
@@ -78,7 +78,7 @@ class UnitsController < ApplicationController
 
 
         student_ids_taught.each do |student_id|
-            Feedback.create(unit_id: @unit.id, teacher_id: @teacher_id, student_id: student_id)
+            Feedback.create(unit_id: @unit.id, teacher_id: @teacher_id, student_id: student_id, written_work: 0, classwork: 0, homework: 0)
         end
 
     end

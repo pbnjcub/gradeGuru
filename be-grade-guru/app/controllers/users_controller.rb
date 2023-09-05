@@ -3,6 +3,8 @@ class UsersController < ApplicationController
 
     skip_before_action :verify_authenticity_token
 
+    
+
     def index
         users = User.all
         render json: users
@@ -53,11 +55,11 @@ class UsersController < ApplicationController
     private
 
     def user_params
-      params.require(:user).permit(:last_name, :first_name, :role, parent: [:last_name, :first_name, :email,:role])
-      # params.permit(:email, :password, :password_confirmation, :last_name, :first_name, :role, parent: [:last_name, :first_name, :email, :password, :password_confirmation, :role])
+      params.permit(:email, :password, :password_confirmation, :last_name, :first_name, :role, parent: [:last_name, :first_name, :email, :password, :password_confirmation, :role])
     end
 
     def create_student_user(user_params)
+      puts "User params: #{user_params}"
       @student = User.new(user_params.except(:parent))
       
       if @student.save

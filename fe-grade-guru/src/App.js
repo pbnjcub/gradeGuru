@@ -18,7 +18,10 @@ import UpdateUnitForm from './components/UpdateUnitForm';
 import UnitDetails from './components/UnitDetails';
 import ParentDashboard from './components/ParentDashboard';
 import ParentViewStudentData from './components/ParentViewStudentData';
+import Enrollments from './components/Enrollments';
+import Unenrollments from './components/Unenrollments'
 import { getDataForUnit } from './actions/units';
+import { getUsers } from './actions/users';
 import { getCurrentUser } from './actions/auth';
 import { getDataForStudent} from './actions/students'
 import { getGradesAndFeedbacksForStudent } from './actions/students';
@@ -29,7 +32,9 @@ function App() {
   const [studentObj, setStudentObj] = useState(null);
   const [unitObj, setUnitObj] = useState(null);
   const [users, setUsers] = useState([]);
-  //function to handle current user data
+  const [units, setUnits] = useState([])
+
+
   const handleCurrentUser = (user) => {
     if (user && user.email) {
       setCurrentUser(user);
@@ -45,35 +50,49 @@ function App() {
     setLoggedIn(false);
   };
 
-  const getStudentData = (userId, studentId) => {
-    return getGradesAndFeedbacksForStudent(userId, studentId)
-      .then(data => {
-        if (data.errors) {
-          console.error(data.errors.join(', '));
-          return null;
-        } else {
-          return data;
-        }
-      })
-      .catch(error => {
-        console.error(error);
-        return null;
-      });
-  };
+  const getAllUsers = async () => {
+    const resp = await getUsers()
+    if (resp.errors) {
+      return null
+    } else {
+      setUsers(resp)
+    }
+  }
 
-  const getStudentDataForStudent = (userId) => {
-    return getDataForStudent(userId)
-      .then(data => {
-        if (data.errors) {
-          return null;
-        } else {
-          return data;
-        }
-      })
-      .catch(errors => {
-        return null;
-      });
+  
+
+  const getStudentData = async (userId, studentId) => {
+    const resp = await getGradesAndFeedbacksForStudent(userId, studentId)
+    if (resp.errors) {
+      return null
+    } else {
+      return resp
+    }
+  }
+  
+  const getStudentDataForStudent = async (userId) => {
+    const resp = await getDataForStudent(userId);
+    if (resp.errors) {
+      return null;
+    } else {
+      return resp;
+    }
   };
+  
+
+  // const getStudentDataForStudent = (userId) => {
+  //   return getDataForStudent(userId)
+  //     .then(data => {
+  //       if (data.errors) {
+  //         return null;
+  //       } else {
+  //         return data;
+  //       }
+  //     })
+  //     .catch(errors => {
+  //       return null;
+  //     });
+  // };
   
   
   // const getStudentData = (userId, studentId) => {
@@ -92,41 +111,76 @@ function App() {
   // };
 
   const getUnitData = async (userId, unitId) => {
-    try {
-      const data = await getDataForUnit(userId, unitId);
-      
-      if (!data.errors) {
-        return data;
-      } else {
-        console.error(data.errors.join(', '));
-        return null;
-      }
-    } catch (error) {
-      console.error(error);
-      return null;
+    const resp = await getDataForUnit(userId, unitId)
+    if (resp.errors) {
+      return null
+    } else {
+      return resp
     }
-  };
-  
 
-  // const getUnitData = (userId, unitId) => {
+  }
+
+  // const getUnitData = async (userId, unitId) => {
   //   return getDataForUnit(userId, unitId)
-  //     .then(data => {
-  //       if (!data.errors) {
-  //         return data;
+  //     .then((data) => {
+  //       if (data.errors) {
+  //         console.error(data.errors.join(', '));
+  //         return null;
   //       } else {
-  //         throw new Error(data.errors.join(', '));
+  //         return data;
   //       }
   //     })
-  //     .catch(error => {
+  //     .catch((error) => {
   //       console.error(error);
   //       return null;
   //     });
   // };
   
+  
+
+  // const getUnitData = async (userId, unitId) => {
+  //   try {
+  //     const data = await getDataForUnit(userId, unitId);
+      
+  //     if (!data.errors) {
+  //       return data;
+  //     } else {
+  //       console.error(data.errors.join(', '));
+  //       return null;
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     return null;
+  //   }
+  // };
+  
+    
   const handleNewUser = (updatedUsers) => {
     setUsers(updatedUsers)
   }
 
+  const handleUpdatedEnrollments = (updatedUsers) => {
+    const updatedUsersObj = users.map(user => {
+      const updatedUser = updatedUsers.find(updatedUser => updatedUser.id === user.id);
+      if (updatedUser) {
+        return updatedUser;
+      } else {
+        return user;
+      }
+    })
+    setUsers(updatedUsersObj)
+  }
+
+  const handleUpdatedUnenrollments = (updatedStudent) => {
+    const updatedUsersObj = users.map(user => {
+      if (user.id === updatedStudent.id) {
+        return updatedStudent;
+      } else {
+        return user;
+      }
+    })
+    setUsers(updatedUsersObj)
+  }
 
   const handleEditUser = (updatedUser) => {
     const updatedUsers = users.map((user) => {
@@ -138,6 +192,7 @@ function App() {
     });
     setUsers(updatedUsers);
   };
+  
 
   const handleEditFeedback = (unitId, updatedFeedbacks) => {
     const updatedStudentObj = { ...studentObj };
@@ -174,8 +229,10 @@ function App() {
               <Route exact path="/signup" element={<Signup setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} handleNewUser={handleNewUser} />} />
               <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
-              <Route exact path="/admin" element={<AdminDashboard users={users} setUsers={setUsers}/>} />
+              <Route exact path="/admin" element={<AdminDashboard users={users} setUsers={setUsers} getAllUsers={getAllUsers} />} />
               <Route exact path="/edit-user" element={<UserEditForm users={users} setUsers={setUsers} handleEditUser={handleEditUser}/>} />
+              <Route exact path="/enroll-students" element={<Enrollments users={users} handleUpdatedEnrollments={handleUpdatedEnrollments}/>}/>
+              <Route exact path="/unenroll-students" element={<Unenrollments users={users} handleUpdatedUnenrollments={handleUpdatedUnenrollments}/>}/>
               <Route path="/teachers/:id" element={<TeacherDashboard  />} />
               <Route path="teachers/:teacher_id/units/:unit_id" element={<UnitDetails unitObj={unitObj} setUnitObj={setUnitObj} getUnitData={getUnitData} />} />
               <Route path="/teachers/:teacher_id/units/create" element={<CreateUnitForm />} />

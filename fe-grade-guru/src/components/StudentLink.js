@@ -13,7 +13,6 @@ const StudentLink = ({ student }) => {
     }
   }
 
-
   const studentLastName = (student) => {
     if (currentUser.role === 'teacher') {
       return student.last_name

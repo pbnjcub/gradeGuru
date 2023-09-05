@@ -55,7 +55,6 @@ await fetch('/logout', {
 logoutCurrentUser();
 };
 
-
 export const getCurrentUser = async (handleCurrentUser) => {
   const resp = await fetch('/current-user', {
     headers: {

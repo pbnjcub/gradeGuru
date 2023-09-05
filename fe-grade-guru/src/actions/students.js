@@ -65,6 +65,7 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
       return data;
     } else {
       const errorData = await resp.json();
+      console.log(errorData)
       return { errors: errorData.errors };
     }
   }
@@ -80,6 +81,53 @@ export const getGradesAndFeedbacksForStudent = async (teacher_id, student_id) =>
       }
     });
 
+    if (resp.ok) {
+      const data = await resp.json();
+      return data
+    } else {
+      const errorData = await resp.json();
+      return { errors: errorData.errors };
+    }
+  };
+
+  export const enrollStudents = async (teacherId, studentIds) => {
+    const resp = await fetch(`/enroll-students`, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        teacher_id: teacherId,
+        student_ids: studentIds,
+      }),
+    });
+
+    if (resp.ok) {
+      const data = await resp.json();
+      return data
+    } else {
+      const errorData = await resp.json();
+      return { errors: errorData.errors };
+    }
+  };
+
+  export const unenrollStudent = async (teacherId, studentId) => {
+    const resp = await fetch(`/unenroll-students`, {
+      method: 'DELETE',
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify({
+        teacher_id: teacherId,
+        student_id: studentId,
+      }),
+    });
     if (resp.ok) {
       const data = await resp.json();
       return data
