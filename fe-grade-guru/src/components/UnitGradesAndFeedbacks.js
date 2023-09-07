@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import userContext from './UserContext';
+import React, { useState, useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { useNavigate } from 'react-router-dom';
 import {updateStudentSkillGrades} from '../actions/students';
 import '../styling/TeacherView.css'
 
 const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
-  const { currentUser } = React.useContext(userContext);
+  const { currentUser, loading } = useContext(UserContext);
   const unitFeedbacks = unit.feedbacks[0];
   const current_unit = unit.unit;
   const teacher_id = currentUser.id;
@@ -87,7 +87,13 @@ const SkillsAndGrades = ({ unit, studentObj, handleEditSkillsGrade }) => {
     });
   };
 
+  
+
   const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

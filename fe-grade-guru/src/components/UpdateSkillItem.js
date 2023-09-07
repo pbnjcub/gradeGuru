@@ -1,12 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import '../styling/TablesForms.css'
 
 const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkillChange, updateSkill, toggleEditSkills, handleUpdateSkillClick, setErrorMessages }) => {
+  const { currentUser, loading } = useContext(UserContext);
+
   const handleCancelClick = () => {
     toggleEditSkills();
     setErrorMessages([]);
   };
   
+  if (loading) {
+    return <div>Loading...</div>;
+  }
   
   if (updatingSkillId === unitSkill.id) {
     return (

@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { login } from '../actions/auth';
 import { useNavigate } from 'react-router-dom';
 import '../styling/SimpleForms.css'

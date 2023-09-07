@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import {useState} from'react';
 import { useNavigate } from 'react-router-dom';
 import { createUnitSkill } from '../actions/units';
 import '../styling/TeacherView.css'
 
 const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNewUnitSkill, handleNewUnitSkill, toggleNewSkill}) => {
+    const { currentUser, loading } = useContext(UserContext);
+
     const navigate = useNavigate();
     const unit_id = unitObj.id;
 
@@ -37,6 +40,10 @@ const CreateSkillForm = ({teacher_id, unitObj, addUnitSkill, newUnitSkill, setNe
       };
 
     const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div>

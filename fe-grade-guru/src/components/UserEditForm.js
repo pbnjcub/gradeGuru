@@ -1,8 +1,11 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { editUser } from '../actions/users';
 import '../styling/SimpleForms.css'
 
 const UserEditForm = ({users, handleEditUser}) => {
+    const { currentUser, loading } = useContext(UserContext);
+
     const [searchUser, setSearchUser] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [accountEdited, setAccountEdited] = useState(false)
@@ -98,6 +101,10 @@ const UserEditForm = ({users, handleEditUser}) => {
 
     const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
+    if (loading) {
+        return <div>Loading...</div>;
+      }
+      
     return (
         <div className="container">
             <h1>User Edit Form</h1>

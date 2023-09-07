@@ -1,15 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { useParams } from 'react-router-dom';
-import UserContext from './UserContext';
 import UnitGradesAndFeedbacks from './UnitGradesAndFeedbacks';
 import '../styling/TeacherView.css'
 
 import jsPDF from 'jspdf';
 
 const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSkillsGrade }) => {
+
   const { teacher_id, student_id } = useParams();
-  const { currentUser } = React.useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(true);
+  const { currentUser, loading } = useContext(UserContext);
+  const [isFetching, setIsFetching] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])
   const [currentStudent, setCurrentStudent] = useState(null);
   const [currentStudentUnits, setCurrentStudentUnits] = useState([]);
@@ -17,7 +18,7 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
   useEffect(() => {
     async function fetchData() {
       if (currentUser) {
-        setIsLoading(true);
+        setIsFetching(true);
         setErrorMessages([]);
 
         const data = await getStudentData(currentUser.id, student_id);
@@ -29,22 +30,18 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
         } else {
           setErrorMessages(['Failed to fetch student data.']);
         }
-        setIsLoading(false);
+        setIsFetching(false);
       }
     }
     fetchData();
-  }, []);
+  }, [currentUser]);
 
   const unitList = currentStudentUnits.map(unit => (
-    <UnitGradesAndFeedbacks key={unit.id} unit={unit} studentObj={studentObj} handleEditSkillsGrade={handleEditSkillsGrade} />
+    <UnitGradesAndFeedbacks key={unit.unit.id} unit={unit} studentObj={studentObj} handleEditSkillsGrade={handleEditSkillsGrade} />
   ));
 
-  if (isLoading) {
+  if (isFetching || loading) {
     return <p>Loading...</p>;
-  }
-
-  if (errorMessages.length > 0) {
-    return <p>Error: {errorMessages.join(', ')}</p>;
   }
 
   const generatePDF = () => {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { deleteUnit, deleteUnitSkill, updateUnitSkill } from '../actions/units';
@@ -6,13 +6,13 @@ import UpdateUnitForm from './UpdateUnitForm'
 import SkillItem from './SkillItem';
 import CreateSkillForm from './CreateSkillForm';
 import UpdateSkillItem from './UpdateSkillItem';
-import UserContext from './UserContext';
+import { UserContext } from "../contexts/UserContext"
 import '../styling/TeacherView.css'
 
 
 const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     const { teacher_id, unit_id } = useParams();
-    const {currentUser} = React.useContext(UserContext);
+    const { currentUser, loading } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessages, setErrorMessages] = useState([]);
     const [editingSkills, setEditingSkills] = useState(false)
@@ -28,6 +28,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     const [creatingNewSkill, setCreatingNewSkill] = useState(false)
 
     const navigate = useNavigate();
+    
     useEffect(() => {
       async function fetchData() {
         if (currentUser) {
@@ -51,7 +52,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
         }
       }
       fetchData();
-    }, [currentUser, unit_id, teacher_id]);
+    }, [currentUser]);
 
     const handleUpdatedUnit = (updatedUnit) => {
       setUnitObj(updatedUnit)
@@ -119,7 +120,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
       setEditingSkills(!editingSkills);
     };
     
-    if (isLoading) {
+    if (isLoading || loading) {
       return <p>Loading...</p>;
     }
 

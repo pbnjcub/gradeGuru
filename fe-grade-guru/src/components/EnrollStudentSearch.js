@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import '../styling/TablesForms.css'
 
 
 const EnrollStudentSearch = ({ handleSearch, handleAddClick, handleUnselectClick, searchStudent, filteredStudents, selectedStudents, selectedTeacher }) => {
+    const { currentUser, setCurrentUser } = useContext(UserContext);
 
     const listFilteredStudents = searchStudent === '' ? [] : filteredStudents.map((student) => (
         <tr key={student.id}>
@@ -27,6 +29,9 @@ const EnrollStudentSearch = ({ handleSearch, handleAddClick, handleUnselectClick
         </tr>
   ))
 
+  if (loading) {
+    return <div>Loading...</div>;
+}
   return (
     <div>
       <div className="input-group">

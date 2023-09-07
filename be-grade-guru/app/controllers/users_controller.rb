@@ -1,7 +1,6 @@
 class UsersController < ApplicationController
     skip_before_action :confirm_authentication
-
-    skip_before_action :verify_authenticity_token
+    # skip_before_action :verify_authenticity_token
 
     
 
@@ -32,7 +31,6 @@ class UsersController < ApplicationController
 
     def update
         user = User.find(params[:id])
-        # authorize! :update, user
 
         if user.update(user_params)
             render json: user
@@ -40,17 +38,6 @@ class UsersController < ApplicationController
             render json: { errors: user.errors.full_messages }, status: :unprocessable_entity
         end
     end
-
-  #   def destroy
-  #     user = User.find(params[:id])
-  #     if user
-  #         user.destroy
-  #         head :no_content
-  #     else
-  #         render json: {errors: "User not found"}
-  #     end
-  # end
-
 
     private
 

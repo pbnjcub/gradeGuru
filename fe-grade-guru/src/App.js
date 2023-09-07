@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext} from "./contexts/UserContext"
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import UserContext from './components/UserContext';
 import Home from './components/Home';
 import Signup from './components/Signup';
 import Login from './components/Login';
@@ -22,32 +22,27 @@ import Enrollments from './components/Enrollments';
 import Unenrollments from './components/Unenrollments'
 import { getDataForUnit } from './actions/units';
 import { getUsers } from './actions/users';
-import { getCurrentUser } from './actions/auth';
 import { getDataForStudent} from './actions/students'
 import { getGradesAndFeedbacksForStudent } from './actions/students';
+
 function App() {
-  //state variables
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const [studentObj, setStudentObj] = useState(null);
   const [unitObj, setUnitObj] = useState(null);
   const [users, setUsers] = useState([]);
   const [units, setUnits] = useState([])
 
-
   const handleCurrentUser = (user) => {
+    console.log(user)
     if (user && user.email) {
       setCurrentUser(user);
-      setLoggedIn(true);
     } else {
       setCurrentUser(null);
-      setLoggedIn(false);
     }
   };
 
   const logoutCurrentUser = () => {
     setCurrentUser(null);
-    setLoggedIn(false);
   };
 
   const getAllUsers = async () => {
@@ -58,8 +53,6 @@ function App() {
       setUsers(resp)
     }
   }
-
-  
 
   const getStudentData = async (userId, studentId) => {
     const resp = await getGradesAndFeedbacksForStudent(userId, studentId)
@@ -89,7 +82,6 @@ function App() {
 
   }
 
-    
   const handleNewUser = (updatedUsers) => {
     setUsers(updatedUsers)
   }
@@ -156,13 +148,13 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+
           <div>
-            <NavBar loggedIn={loggedIn} logoutCurrentUser={logoutCurrentUser} />
+            <NavBar logoutCurrentUser={logoutCurrentUser} />
             <Routes>
               <Route exact path="/" element={<Home />} />
-              <Route exact path="/signup" element={<Signup setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} handleNewUser={handleNewUser} />} />
-              <Route exact path="/login" element={<Login setLoggedIn={setLoggedIn} handleCurrentUser={handleCurrentUser} />} />
+              <Route exact path="/signup" element={<Signup  handleCurrentUser={handleCurrentUser} handleNewUser={handleNewUser} />} />
+              <Route exact path="/login" element={<Login handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
               <Route exact path="/admin" element={<AdminDashboard users={users} setUsers={setUsers} getAllUsers={getAllUsers} />} />
               <Route exact path="/edit-user" element={<UserEditForm users={users} setUsers={setUsers} handleEditUser={handleEditUser}/>} />
@@ -181,9 +173,10 @@ function App() {
 
             </Routes>
           </div>
-        </UserContext.Provider>
+
       </Router>
     </div>
+
   );
 }
 

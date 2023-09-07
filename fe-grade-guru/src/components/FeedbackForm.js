@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
-import userContext from './UserContext';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { updateStudentFeedbacks } from '../actions/students';
 import '../styling/TeacherView.css'
 
 const FeedbackForm = ({handleEditFeedback}) => {
-    const { currentUser } = React.useContext(userContext)
+  const { currentUser, loading } = useContext(UserContext);
     const navigate = useNavigate();
     const location = useLocation()
     const { unit, params} = location.state
@@ -58,6 +57,9 @@ const FeedbackForm = ({handleEditFeedback}) => {
 
     const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
+    if (loading) {
+      return <div>Loading...</div>;
+    }
   
     return (
       <div className="container">

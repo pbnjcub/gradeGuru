@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { Link } from 'react-router-dom';
-import userContext from './UserContext';
 
 const StudentLink = ({ student }) => {
-  const { currentUser } = React.useContext(userContext);
+  const { currentUser, loading } = useContext(UserContext);
 
   const studentFirstName = (student) => {
     if (currentUser.role === 'teacher') {
@@ -21,6 +21,11 @@ const StudentLink = ({ student }) => {
     }
   }
   const linkTo = currentUser.role === 'teacher' ? `/teachers/${currentUser.id}/students/${student.id}` : `/parents/${currentUser.id}/students/${student.student.id}`
+  
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <tr>
       <td>

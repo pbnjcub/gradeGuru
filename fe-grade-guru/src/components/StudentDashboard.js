@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { getDataForStudent } from '../actions/students';
-import UserContext from './UserContext';
 import StudentDataView from './StudentDataView';
 import jsPDF from 'jspdf'
 
 const StudentDashboard = ({ }) => {
-  const { currentUser } = React.useContext(UserContext);
-  const id = currentUser.id
+  const { currentUser, loading } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])
   const [currentStudent, setCurrentStudent] = useState(null);
@@ -18,7 +17,7 @@ const StudentDashboard = ({ }) => {
         setIsLoading(true);
         setErrorMessages([]);
 
-        const data = await getDataForStudent(id);
+        const data = await getDataForStudent(currentUser.id);
 
         if (data) {
           setCurrentStudent(data.student);
@@ -30,13 +29,13 @@ const StudentDashboard = ({ }) => {
       }
     }
     fetchData();
-  }, []);
+  }, [currentUser]);
 
   const unitList = currentStudentUnits.map(unit => (
     <StudentDataView key={unit.id} unit={unit} currentStudent={currentStudent} />
   ));
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return <p>Loading...</p>;
   }
 

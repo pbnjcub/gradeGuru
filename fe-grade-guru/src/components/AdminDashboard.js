@@ -1,16 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { useEffect } from 'react';
-import userContext from './UserContext';
+
+
+
 
 const AdminDashboard = ({ getAllUsers}) => {
-  const { currentUser } = React.useContext(userContext);
+  const { currentUser, loading } = useContext(UserContext);
  
   useEffect(() => {
     if (currentUser && currentUser.role === 'admin') {
       getAllUsers();
     }
   }, [currentUser]);
-  
+
+  if (loading) {
+    return <div>Loading...</div>;
+}
+
   return (
     <div style={{marginLeft: '50px'}}>
       <h1>Admin Dashboard</h1>

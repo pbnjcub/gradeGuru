@@ -1,5 +1,4 @@
 class StudentsController < ApplicationController
-    # skip_before_action :confirm_authentication
     skip_before_action :verify_authenticity_token
 
     # load_and_authorize_resource
@@ -34,27 +33,7 @@ class StudentsController < ApplicationController
       end
       
       render json: { student: student.as_json(except: [:password_digest, :created_at, :updated_at]), units_with_skill_and_feedback: units_with_skill_and_feedback.as_json(except: [:created_at, :updated_at]) }
-    end
-
-    # def get_student_data
-    #   student = User.includes(feedbacks: [:teacher, { unit: :skills }], grades: { skill: :unit }).find(params[:id])
-    #   authorize! :read, student
-    #   units_with_skill_and_feedback = student.feedbacks.group_by(&:unit).map do |unit, unit_feedbacks|
-    #     unit_skills_with_grade = unit.skills.map do |skill|
-    #       grade = student.grades.find { |grade| grade.skill_id == skill.id }
-    #       { skill: skill, grade: grade }
-    #     end
-    
-    #     teacher = unit_feedbacks.first.teacher
-    
-    #     { unit: unit, teacher: teacher, feedbacks: unit_feedbacks, skills: unit_skills_with_grade }
-    #   end
-    
-    #   sorted_units = units_with_skill_and_feedback.sort_by { |unit| unit[:feedbacks].first.teacher_id }
-    
-    #   render json: { student: student, sorted_units: sorted_units }
-    # end
-    
+    end  
 
 
   def get_student_data
@@ -141,7 +120,6 @@ class StudentsController < ApplicationController
   end
 
   def create_empty_feedbacks
-    #find all unit_ids associated with the teacher from teacher_feedbacks
     teacher_unit_ids = @teacher.teacher_feedbacks.pluck(:unit_id).uniq
 
     @student_ids.each do |student_id|
@@ -152,7 +130,6 @@ class StudentsController < ApplicationController
   end
 
   def create_empty_grades
-    #find all unit_ids associated with the teacher from teacher_feedbacks
     teacher_unit_ids = @teacher.teacher_feedbacks.pluck(:unit_id).uniq
 
     teacher_skill_ids = Skill.where(unit_id: teacher_unit_ids).pluck(:id)

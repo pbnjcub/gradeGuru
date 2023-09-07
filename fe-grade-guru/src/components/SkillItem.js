@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 
 const SkillItem = ({ unitSkill, handleUpdateSkillClick, handleDeleteUnitSkill }) => {
+  const { currentUser, loading } = useContext(UserContext);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <tr key={unitSkill.id}>
       <td>{unitSkill.title}</td>

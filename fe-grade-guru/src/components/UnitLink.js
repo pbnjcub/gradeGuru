@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { Link } from 'react-router-dom';
-import userContext from './UserContext';
-
-
-
 
 const UnitLink = ({ unit }) => {
-  const { currentUser } = React.useContext(userContext);
+  const { currentUser, loading } = useContext(UserContext);
 
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <tr>

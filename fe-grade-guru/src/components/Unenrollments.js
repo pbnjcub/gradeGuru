@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import userContext from './UserContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import '../styling/TablesForms.css'
 import UnenrollTeacherSearch from './UnenrollTeacherSearch';
 import StudentEnrollmentList from './StudentEnrollmentList';
 import {unenrollStudent} from '../actions/students';
 
 const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
-  const { currentUser } = React.useContext(userContext);
+  const { currentUser, loading } = useContext(UserContext);
   const [searchTeacher, setSearchTeacher] = useState('');
   const [filteredTeachers, setFilteredTeachers] = useState([])
   const [allStudents, setAllStudents] = useState([]);
@@ -81,6 +81,10 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
     }
 
   const filteredStudentList = filteredStudents.map((student) => <StudentEnrollmentList key={student.id} student={student} confirmUnenrollmentClick={confirmUnenrollmentClick}/>);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="container">

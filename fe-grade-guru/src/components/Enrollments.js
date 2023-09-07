@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import userContext from './UserContext';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import '../styling/TablesForms.css'
 import EnrollStudentSearch from './EnrollStudentSearch';
 import EnrollTeacherSearch from './EnrollTeacherSearch';
 import {enrollStudents} from '../actions/students';
 
 const Enrollments = ({ users, handleUpdatedEnrollments }) => {
-  const { currentUser } = React.useContext(userContext);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const [searchStudent, setSearchStudent] = useState('');
   const [searchTeacher, setSearchTeacher] = useState('');
   const [filteredStudents, setFilteredStudents] = useState([]);
@@ -124,6 +124,9 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
     setSelectedStudents(updatedSelectedStudents)
   }
 
+  if (loading) {
+    return <div>Loading...</div>;
+}
   return (
     <div className="container">
       <h1>Enrollments</h1>

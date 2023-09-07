@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { createAccount } from '../actions/users';
 import '../styling/TablesForms.css'
 
 const Signup = ({handleCurrentUser, handleNewUser}) => {
+  const { currentUser, loading } = useContext(UserContext);
 
     const initialUserState = {
       email: "",
@@ -63,6 +65,9 @@ const Signup = ({handleCurrentUser, handleNewUser}) => {
       }
     };
 
+    if (loading) {
+      return <div>Loading...</div>;
+    }
 
     const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
     

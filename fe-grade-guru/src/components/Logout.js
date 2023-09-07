@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { logout } from '../actions/auth';
 
 const Logout = ({logoutCurrentUser}) => {

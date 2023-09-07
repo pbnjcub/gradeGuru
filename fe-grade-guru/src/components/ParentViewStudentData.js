@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { useParams } from 'react-router-dom';
 import { getDataForStudent } from '../actions/students';
-import UserContext from './UserContext';
 import StudentDataView from './StudentDataView';
 import jsPDF from 'jspdf'
 
 const ParentViewStudentData = ({ }) => {
-  const { currentUser } = React.useContext(UserContext);
+  const { currentUser, loading } = useContext(UserContext);
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])
@@ -37,7 +37,7 @@ const ParentViewStudentData = ({ }) => {
     <StudentDataView key={unit.id} unit={unit} currentStudent={currentStudent} />
   ));
 
-  if (isLoading) {
+  if (isLoading || loading) {
     return <p>Loading...</p>;
   }
 

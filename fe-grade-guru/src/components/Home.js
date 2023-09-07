@@ -1,6 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 
 const Home = () => {
+  const { currentUser, loading } = useContext(UserContext);
+
+
   return (
     <div className="main" style={{ marginLeft: '50px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <img src="/GradeGuruLogo2.png" alt="GradeGuru Logo" />

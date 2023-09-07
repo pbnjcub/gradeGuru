@@ -1,6 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 
 const StudentDataView = ({ unit }) => {
+  const { currentUser, loading } = useContext(UserContext);
+
   const unitFeedbacks = unit.feedbacks[0];
   const unitTeacher = unit.teacher;
   const current_unit = unit.unit;
@@ -17,6 +20,10 @@ const StudentDataView = ({ unit }) => {
       <p>Grade: {skill.grade.grade}</p>
     </div>
   ));
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <>

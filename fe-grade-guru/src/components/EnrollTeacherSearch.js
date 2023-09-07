@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import '../styling/TablesForms.css'
 
 
 const EnrollTeacherSearch = ({ handleTeacherSearch, handleAddTeacherClick, handleUnselectTeacherClick, searchTeacher, filteredTeachers, selectedTeacher }) => {
+    const { currentUser, setCurrentUser } = useContext(UserContext);
 
   const listFilteredTeachers = searchTeacher === '' ? [] : filteredTeachers.map((teacher) => (
     <tr key={teacher.id}>
@@ -17,6 +19,10 @@ const EnrollTeacherSearch = ({ handleTeacherSearch, handleAddTeacherClick, handl
         </td>
     </tr>
   ));
+
+  if (loading) {
+    return <div>Loading...</div>;
+}
 
   return (
     <div>

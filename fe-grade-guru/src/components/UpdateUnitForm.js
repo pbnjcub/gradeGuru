@@ -1,12 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { updateUnit } from '../actions/units'
 import { useNavigate } from 'react-router-dom';
-import userContext from './UserContext';
+import { UserContext } from "../contexts/UserContext"
 import '../styling/TeacherView.css'
 
 
 const UpdateUnitForm = ({unitObj, handleUpdatedUnit, toggleEditingUnit}) => {
-    const { currentUser } = React.useContext(userContext);
+  const { currentUser, loading } = useContext(UserContext);
     const teacher_id = currentUser.id
     const unit_id = unitObj.id
     const navigate = useNavigate();
@@ -42,6 +42,10 @@ const UpdateUnitForm = ({unitObj, handleUpdatedUnit, toggleEditingUnit}) => {
     };
 
     const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
+
+    if (loading) {
+      return <div>Loading...</div>;
+    }
 
     return (
         <div>

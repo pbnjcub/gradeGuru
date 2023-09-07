@@ -1,6 +1,4 @@
 class TeachersController < ApplicationController
-  # skip_before_action :confirm_authentication
-
 
   def get_students
     teacher = User.find(params[:id])

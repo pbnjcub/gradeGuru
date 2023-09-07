@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from "../contexts/UserContext"
 import { NavLink } from 'react-router-dom';
-import userContext from './UserContext';
 import '../styling/NavBar.css'
 
-
-const NavBar = ({ loggedIn }) => {
-  const { currentUser } = React.useContext(userContext);
+const NavBar = () => {
+  const { currentUser, loading, loggedIn } = useContext(UserContext);
 
   const renderManageUnitsSubMenu = () => {
     if (currentUser.role === 'teacher') {
@@ -42,6 +41,10 @@ const NavBar = ({ loggedIn }) => {
     return null;
   };
 
+  if (loading) {
+    return <div className="loading-navbar">Loading...</div>; // or any appropriate loading UI for your navbar
+  }
+  console.log(loggedIn)
     if (loggedIn) {
         const role = currentUser.role;
     return (
