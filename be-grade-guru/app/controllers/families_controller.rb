@@ -1,7 +1,7 @@
 class FamiliesController < ApplicationController
     skip_before_action :verify_authenticity_token
-    skip_before_action :confirm_authentication
-
+    # skip_before_action :confirm_authentication
+    load_and_authorize_resource
     
     def create
         parent_id = params[:parent_id]
@@ -24,5 +24,10 @@ class FamiliesController < ApplicationController
       
         render json: { families: created_families, parent: updated_parent, students: updated_students }, status: :created
       end
+
+      private
       
+      def family_params
+        params.require(:family).permit(:parent_id, student_ids: [])
+      end
 end

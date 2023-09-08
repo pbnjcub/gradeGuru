@@ -79,19 +79,23 @@ end
 units_data = [
   {
     title: "Rational Number Operations",
-    description: "Operations with Negative and Positive Rational Numbers"
+    description: "Operations with Negative and Positive Rational Numbers",
+    teacher_id: 1
   },
   {
     title: "Poetry",
-    description: "Introduction to how to analyze a poem."
+    description: "Introduction to how to analyze a poem.",
+    teacher_id: 5
   },
   {
     title: "Algebraic Skills",
-    description: "Operations with Variables and Algebraic Expressions"
+    description: "Operations with Variables and Algebraic Expressions",
+    teacher_id: 1
   },
   {
     title: "Creative Writing",
-    description: "Learning the Building Blocks of Creative Writing"
+    description: "Learning the Building Blocks of Creative Writing",
+    teacher_id: 5
   },
 ]
 

@@ -14,20 +14,7 @@ class UsersController < ApplicationController
       else
         render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
       end
-    end
-
-    # def create
-    #   case user_params[:role]
-    #     when 'student'
-    #       create_student_with_parent
-    #       # create_student_user(user_params)
-    #     when 'teacher', 'admin'
-    #       create_faculty_user(user_params)
-    #     else
-    #       render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
-    #   end
-    # end
-      
+    end    
 
     def get_current_user
         if logged_in?
@@ -50,7 +37,7 @@ class UsersController < ApplicationController
     private
 
     def user_params
-      params.permit(:email, :password, :password_confirmation, :last_name, :first_name, :role)
+      params.permit(:id, :email, :password, :password_confirmation, :last_name, :first_name, :role, :parent_families, :teacher_feedbacks, :student_feedbacks, :units, :student_families)
     end
   end
     

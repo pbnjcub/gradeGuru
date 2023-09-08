@@ -1,7 +1,7 @@
 class UnitsController < ApplicationController
     skip_before_action :verify_authenticity_token
-    # load_and_authorize_resource
-    skip_before_action :confirm_authentication
+    load_and_authorize_resource
+    # skip_before_action :confirm_authentication
 
     def index
         teacher = User.find(params[:teacher_id])

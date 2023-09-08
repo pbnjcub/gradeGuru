@@ -7,7 +7,7 @@ import FamilyStudentSearch from './FamilyStudentSearch';
 import '../styling/TablesForms.css'
 
 const FamilyCreation = () => {
-  const { currentUser, setCurrentUser, loading: userLoading } = useContext(UserContext);
+  const { currentUser, loading: userLoading } = useContext(UserContext);
   const { allUsers, setAllUsers, loading: adminLoading } = useContext(AdminContext);
   
   // Local states
@@ -31,9 +31,6 @@ const FamilyCreation = () => {
       setAllParents(parents);
     }
   }, [allUsers])
-
-  console.log(allStudents)
-  console.log(allParents)
 
   const handleUpdatedFamilies = (updatedFamily) => {
     console.log(updatedFamily)
