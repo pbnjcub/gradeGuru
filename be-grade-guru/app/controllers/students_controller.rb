@@ -39,7 +39,7 @@ class StudentsController < ApplicationController
   def get_student_data
     @user = User.find(params[:id])
     authorize! :read, @user
-    feedbacks = @user.feedbacks
+    feedbacks = @user.student_feedbacks
     grades = @user.grades
     
     skills = grades.map do |grade|

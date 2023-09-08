@@ -2,7 +2,7 @@ class ParentsController < ApplicationController
     load_and_authorize_resource
     def show
         parent = User.find(params[:id])
-        families = parent.families
+        families = parent.parent_families
 
         students = families.map do |family|
             student = User.find(family.student_id)

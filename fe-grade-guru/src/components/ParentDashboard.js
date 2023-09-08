@@ -16,7 +16,7 @@ const ParentDashboard = () => {
         setErrorMessages([])
 
         const data = await getStudentsForParent(currentUser.id);
-
+        console.log(data)
         if (data) {
           setStudents(data)
         } else {
@@ -28,8 +28,8 @@ const ParentDashboard = () => {
     fetchData()
   }, [currentUser]);
 
-
-  const studentList = students.map((student) => <StudentLink key={student.id} student={student} />);
+  console.log(students)
+  const studentList = students.map((student) => <StudentLink key={student.student.id} student={student} />);
 
   const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
 

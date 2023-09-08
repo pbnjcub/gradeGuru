@@ -6,15 +6,16 @@ import jsPDF from 'jspdf'
 
 const StudentDashboard = ({ }) => {
   const { currentUser, loading } = useContext(UserContext);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])
   const [currentStudent, setCurrentStudent] = useState(null);
   const [currentStudentUnits, setCurrentStudentUnits] = useState([]);
 
+  console.log()
   useEffect(() => {
     async function fetchData() {
       if (currentUser) {
-        setIsLoading(true);
+        setIsFetching(true);
         setErrorMessages([]);
 
         const data = await getDataForStudent(currentUser.id);
@@ -25,17 +26,18 @@ const StudentDashboard = ({ }) => {
         } else {
           setErrorMessages(['Failed to fetch student data.']);
         }
-        setIsLoading(false);
+        setIsFetching(false);
       }
     }
     fetchData();
   }, [currentUser]);
 
+  console.log(currentStudentUnits)
   const unitList = currentStudentUnits.map(unit => (
-    <StudentDataView key={unit.id} unit={unit} currentStudent={currentStudent} />
+    <StudentDataView key={unit.unit.id} unit={unit} currentStudent={currentStudent} />
   ));
 
-  if (isLoading || loading) {
+  if (isFetching || loading) {
     return <p>Loading...</p>;
   }
 

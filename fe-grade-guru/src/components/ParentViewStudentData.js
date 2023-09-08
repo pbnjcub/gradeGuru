@@ -8,7 +8,7 @@ import jsPDF from 'jspdf'
 const ParentViewStudentData = () => {
   const { currentUser, loading } = useContext(UserContext);
   const { id } = useParams()
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFetching, setIsFetching] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])
   const [currentStudent, setCurrentStudent] = useState(null);
   const [currentStudentUnits, setCurrentStudentUnits] = useState([]);
@@ -16,7 +16,7 @@ const ParentViewStudentData = () => {
   useEffect(() => {
     async function fetchData() {
       if (currentUser) {
-        setIsLoading(true);
+        setIsFetching(true);
         setErrorMessages([]);
 
         const data = await getDataForStudent(id);
@@ -27,17 +27,17 @@ const ParentViewStudentData = () => {
         } else {
           setErrorMessages(['Failed to fetch student data.']);
         }
-        setIsLoading(false);
+        setIsFetching(false);
       }
     }
     fetchData();
   }, [currentUser]);
 
   const unitList = currentStudentUnits.map(unit => (
-    <StudentDataView key={unit.id} unit={unit} currentStudent={currentStudent} />
+    <StudentDataView key={unit.unit.id} unit={unit} currentStudent={currentStudent} />
   ));
 
-  if (isLoading || loading) {
+  if (isFetching || loading) {
     return <p>Loading...</p>;
   }
 
@@ -85,7 +85,6 @@ const ParentViewStudentData = () => {
       doc.text(`Homework: ${unit.feedbacks[0]?.homework}`, 130, yOffset);
       yOffset += 10;
      
-      // Print Academic Skills
       if (unit.skills.length > 0) {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(12);
