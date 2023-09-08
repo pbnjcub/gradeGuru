@@ -4,14 +4,15 @@ import '../styling/TablesForms.css'
 
 
 const EnrollStudentSearch = ({ handleSearch, handleAddClick, handleUnselectClick, searchStudent, filteredStudents, selectedStudents, selectedTeacher }) => {
-    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { loading } = useContext(UserContext);
+    console.log(filteredStudents)
 
     const listFilteredStudents = searchStudent === '' ? [] : filteredStudents.map((student) => (
         <tr key={student.id}>
             <td>{student.first_name}</td>
             <td>{student.last_name}</td>
             <td>
-                {selectedTeacher && student.feedbacks.some(feedback => feedback.teacher_id === selectedTeacher.id) ? 
+                {selectedTeacher && student.student_feedbacks.some(feedback => feedback.teacher_id === selectedTeacher.id) ? 
                     'Enrolled' :
                     <button className="pure-button" onClick={() => handleAddClick(student)}>+</button>
                 }
@@ -19,12 +20,12 @@ const EnrollStudentSearch = ({ handleSearch, handleAddClick, handleUnselectClick
         </tr>
     ));
 
-  const listSelectedStudents = selectedStudents === [] ? [] : selectedStudents.map((student) => (
+  const listSelectedStudents = selectedStudents.length === 0 ? [] : selectedStudents.map((student) => (
         <tr key={student.id}>
             <td>{student.first_name}</td>
             <td>{student.last_name}</td>
             <td>
-                <button className="pure-button" nClick={() => handleUnselectClick(student)}>-</button>
+                <button className="pure-button" onClick={() => handleUnselectClick(student)}>-</button>
             </td>
         </tr>
   ))

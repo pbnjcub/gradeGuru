@@ -8,7 +8,7 @@ import '../styling/SimpleForms.css'
 
 
 const CreateUnitForm = () => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser, loading } = useContext(UserContext);
     const teacher_id = currentUser.id
     const navigate = useNavigate();
 
@@ -55,7 +55,7 @@ const CreateUnitForm = () => {
                 <label>Description: </label>
                 <input type="text" name="description" value={newUnit.description} onChange={handleChange} />
                 <div>
-                <button className="pure-button pure-button-primary" type="submit">
+                <button className="pure-button" type="submit">
                 Create Unit
               </button>
               </div>

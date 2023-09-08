@@ -1,5 +1,4 @@
 class ParentsController < ApplicationController
-    # skip_before_action :confirm_authentication
     load_and_authorize_resource
     def show
         parent = User.find(params[:id])
@@ -8,7 +7,7 @@ class ParentsController < ApplicationController
         students = families.map do |family|
             student = User.find(family.student_id)
 
-            feedbacks = student.feedbacks
+            feedbacks = student.student_feedbacks
             grades = student.grades
             
             skills = grades.map do |grade|

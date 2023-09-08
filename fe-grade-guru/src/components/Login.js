@@ -1,10 +1,10 @@
-import React, {useState, useContext} from 'react';
-import { UserContext } from "../contexts/UserContext"
+import React, {useState} from 'react';
 import { login } from '../actions/auth';
 import { useNavigate } from 'react-router-dom';
 import '../styling/SimpleForms.css'
 
 const Login = ({handleCurrentUser}) => {
+
     const [user, setUser] = useState({
         email: "",
         password: "",
@@ -57,7 +57,7 @@ const Login = ({handleCurrentUser}) => {
                 <label>Password</label>
                 <input type="password" name="password" value={user.password} autoComplete="current-password" onChange={handleChange} />
                 <div>
-                    <input type="submit" className="pure-button-primary" value="Submit" />
+                    <input type="submit" className="pure-button" value="Submit" />
                 </div>
             </form>
         </div>

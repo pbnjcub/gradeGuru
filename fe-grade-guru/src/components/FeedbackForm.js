@@ -55,7 +55,7 @@ const FeedbackForm = ({handleEditFeedback}) => {
       navigate(`/teachers/${teacher_id}/students/${student_id}`);
     };
 
-    const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
+    const renderErrors = errorMessages.map((message, index) => <div key={index} className="container"><h3 className="error">{message}</h3></div>);
 
     if (loading) {
       return <div>Loading...</div>;

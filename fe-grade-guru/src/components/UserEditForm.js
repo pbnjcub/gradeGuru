@@ -1,17 +1,17 @@
 import React, {useState, useContext} from 'react';
 import { UserContext } from "../contexts/UserContext"
+import { AdminContext } from "../contexts/AdminContext";
 import { editUser } from '../actions/users';
 import '../styling/SimpleForms.css'
 
-const UserEditForm = ({users, handleEditUser}) => {
-    const { currentUser, loading } = useContext(UserContext);
+const UserEditForm = ({handleEditUser}) => {
+    const { loading: userLoading } = useContext(UserContext);
+    const { allUsers, loading: adminLoading } = useContext(AdminContext);
 
     const [searchUser, setSearchUser] = useState('');
     const [filteredUsers, setFilteredUsers] = useState([]);
     const [accountEdited, setAccountEdited] = useState(false)
-
     const [updatedUser, setUpdatedUser] = useState({
-        id: '',
         first_name: '',
         last_name: '',
         role: '',
@@ -54,7 +54,6 @@ const UserEditForm = ({users, handleEditUser}) => {
             handleEditUser(resp);
             showSuccessMessage()
             setUpdatedUser({
-                id: '',
                 first_name: '',
                 last_name: '',
                 role: '',
@@ -64,7 +63,6 @@ const UserEditForm = ({users, handleEditUser}) => {
 
     const handleCancel = () => {
         setUpdatedUser({
-            id: '',
             first_name: '',
             last_name: '',
             role: '',
@@ -75,7 +73,7 @@ const UserEditForm = ({users, handleEditUser}) => {
     const handleSearch = (e) => {
         const query = e.target.value.toLowerCase();
         setSearchUser(query);
-        const filtered = users.filter(
+        const filtered = allUsers.filter(
           (user) =>
             user.last_name.toLowerCase().includes(query)
         );
@@ -101,9 +99,8 @@ const UserEditForm = ({users, handleEditUser}) => {
 
     const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
-    if (loading) {
-        return <div>Loading...</div>;
-      }
+    if (userLoading || adminLoading) return <div>Loading...</div>;
+
       
     return (
         <div className="container">

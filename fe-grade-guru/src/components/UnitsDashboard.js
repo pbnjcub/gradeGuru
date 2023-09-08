@@ -1,40 +1,41 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from "../contexts/UserContext"
+import { UnitsContext } from "../contexts/UnitsForTeacherContext"
 import { getUnitsForTeacher } from '../actions/teachers';
 import UnitLink from './UnitLink';
 import '../styling/TeacherView.css'
 
 
 const UnitsDashboard = () => {
-  const { currentUser, loading } = useContext(UserContext);
-    const [units, setUnits] = useState([]);
-    const [errorMessages, setErrorMessages] = useState([]);
-    const [isFetching, setIsFetching] = useState(true)
-  useEffect(() => {
-    async function fetchData() {
-      if (currentUser) {
-        setIsFetching(true);
-        setErrorMessages([])
+  const { currentUser, loading: userLoading} = useContext(UserContext);
+  const { units, setUnits, loading: unitsLoading } = useContext(UnitsContext);
+  const [errorMessages, setErrorMessages] = useState([]);
+  
+  //   useEffect(() => {
+  //   async function fetchData() {
+  //     if (currentUser) {
+  //       setIsFetching(true);
+  //       setErrorMessages([])
 
-        const data = await getUnitsForTeacher(currentUser.id)
+  //       const data = await getUnitsForTeacher(currentUser.id)
      
-        if (data) {
-          setUnits(data)
-        } else {
-          setErrorMessages(['Failed to fetch unit data.'])
-        }
-        setIsFetching(false)
-      }
-    }
-    fetchData();
-  }, [currentUser]);
+  //       if (data) {
+  //         setUnits(data)
+  //       } else {
+  //         setErrorMessages(['Failed to fetch unit data.'])
+  //       }
+  //       setIsFetching(false)
+  //     }
+  //   }
+  //   fetchData();
+  // }, [currentUser]);
 
   const unitsList = units.map((unit) => <UnitLink key={unit.id} unit={unit} teacher_id={currentUser.id} />);
 
   const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
 
-  if (isFetching || loading) {
+  if (userLoading || unitsLoading) {
     return <div>Loading...</div>;
   }
 

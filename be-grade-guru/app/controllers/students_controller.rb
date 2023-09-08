@@ -2,14 +2,14 @@ class StudentsController < ApplicationController
     skip_before_action :verify_authenticity_token
 
     # load_and_authorize_resource
-    # authorize_resource :user, class: 'User'
+    authorize_resource :user, class: 'User'
   
     def show
       student = User.find(params[:id])
       authorize! :read, student
       teacher_id = params[:teacher_id].to_i
       
-      feedbacks = student.feedbacks.where(teacher_id: teacher_id)
+      feedbacks = student.student_feedbacks.where(teacher_id: teacher_id)
       grades = student.grades
       
       skills = grades.map do |grade|

@@ -12,7 +12,7 @@ import '../styling/TeacherView.css'
 
 const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     const { teacher_id, unit_id } = useParams();
-    const { currentUser, loading } = useContext(UserContext);
+    const { currentUser, loading, users } = useContext(UserContext);
     const [isLoading, setIsLoading] = useState(true);
     const [errorMessages, setErrorMessages] = useState([]);
     const [editingSkills, setEditingSkills] = useState(false)
@@ -52,7 +52,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
         }
       }
       fetchData();
-    }, [currentUser]);
+    }, [currentUser, teacher_id, unit_id]);
 
     const handleUpdatedUnit = (updatedUnit) => {
       setUnitObj(updatedUnit)
@@ -80,7 +80,7 @@ const UnitDetails = ({ unitObj, setUnitObj, getUnitData} ) => {
     };
 
     const handleDeleteUnitSkill = async (deletedSkillId) => {
-      const resp = await deleteUnitSkill(teacher_id, unit_id, deletedSkillId)
+      await deleteUnitSkill(teacher_id, unit_id, deletedSkillId)
       const updatedUnitSkills = unitSkills.filter((skill) => skill.id !== deletedSkillId);
       setUnitSkills(updatedUnitSkills);
     };

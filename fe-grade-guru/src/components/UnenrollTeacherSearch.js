@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { UserContext } from "../contexts/UserContext"
 
 const UnenrollTeacherSearch = ({ handleTeacherSearch, handleSelectTeacherClick, handleUnselectTeacherClick, searchTeacher, filteredTeachers, selectedTeacher }) => {
-  const { currentUser, loading } = useContext(UserContext);
+  const { loading } = useContext(UserContext);
 
   const listFilteredTeachers = searchTeacher === '' ? [] : filteredTeachers.map((teacher) => (
     <tr key={teacher.id}>

@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   delete '/users/id/delete', to: 'users#destroy'
   post '/enroll-students', to: 'students#enroll_students'
+  post '/create-family', to: 'families#create'
   delete '/unenroll-students', to: 'students#unenroll_student'
 
   resources :users, only: [:index, :update]

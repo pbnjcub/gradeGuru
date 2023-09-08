@@ -1,5 +1,4 @@
 class UnitsController < ApplicationController
-    # skip_before_action :confirm_authentication
     skip_before_action :verify_authenticity_token
     load_and_authorize_resource
 

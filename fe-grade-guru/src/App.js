@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { UserContext} from "./contexts/UserContext"
+import { AdminContext } from './contexts/AdminContext'; 
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './components/Home';
 import Signup from './components/Signup';
@@ -20,39 +21,17 @@ import ParentDashboard from './components/ParentDashboard';
 import ParentViewStudentData from './components/ParentViewStudentData';
 import Enrollments from './components/Enrollments';
 import Unenrollments from './components/Unenrollments'
+import FamilyCreation from './components/FamilyCreation'
 import { getDataForUnit } from './actions/units';
 import { getUsers } from './actions/users';
 import { getDataForStudent} from './actions/students'
 import { getGradesAndFeedbacksForStudent } from './actions/students';
 
 function App() {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const { currentUser, setCurrentUser, handleCurrentUser, logoutCurrentUser } = useContext(UserContext);
+  const { allUsers, setAllUsers } = useContext(AdminContext);
   const [studentObj, setStudentObj] = useState(null);
   const [unitObj, setUnitObj] = useState(null);
-  const [users, setUsers] = useState([]);
-  const [units, setUnits] = useState([])
-
-  const handleCurrentUser = (user) => {
-    console.log(user)
-    if (user && user.email) {
-      setCurrentUser(user);
-    } else {
-      setCurrentUser(null);
-    }
-  };
-
-  const logoutCurrentUser = () => {
-    setCurrentUser(null);
-  };
-
-  const getAllUsers = async () => {
-    const resp = await getUsers()
-    if (resp.errors) {
-      return null
-    } else {
-      setUsers(resp)
-    }
-  }
 
   const getStudentData = async (userId, studentId) => {
     const resp = await getGradesAndFeedbacksForStudent(userId, studentId)
@@ -82,12 +61,13 @@ function App() {
 
   }
 
-  const handleNewUser = (updatedUsers) => {
-    setUsers(updatedUsers)
-  }
+  const handleNewUser = (newUser) => {
+    const updatedUsersObj = [...allUsers, newUser ];
+    setAllUsers(updatedUsersObj);
+}
 
-  const handleUpdatedEnrollments = (updatedUsers) => {
-    const updatedUsersObj = users.map(user => {
+const handleUpdatedEnrollments = (updatedUsers) => {
+    const updatedUsersObj = allUsers.map(user => {
       const updatedUser = updatedUsers.find(updatedUser => updatedUser.id === user.id);
       if (updatedUser) {
         return updatedUser;
@@ -95,30 +75,35 @@ function App() {
         return user;
       }
     })
-    setUsers(updatedUsersObj)
-  }
+    setAllUsers(updatedUsersObj);
+}
 
-  const handleUpdatedUnenrollments = (updatedStudent) => {
-    const updatedUsersObj = users.map(user => {
+
+
+const handleUpdatedUnenrollments = (updatedStudent) => {
+    const updatedUsersObj = allUsers.map(user => {
       if (user.id === updatedStudent.id) {
         return updatedStudent;
       } else {
         return user;
       }
     })
-    setUsers(updatedUsersObj)
-  }
+    setAllUsers(updatedUsersObj);
+}
 
-  const handleEditUser = (updatedUser) => {
-    const updatedUsers = users.map((user) => {
+
+
+const handleEditUser = (updatedUser) => {
+    const updatedUsers = allUsers.map((user) => {
       if (user.id === updatedUser.id) {
         return updatedUser;
       } else {
         return user;
       }
     });
-    setUsers(updatedUsers);
-  };
+    setAllUsers(updatedUsers);
+};
+
   
 
   const handleEditFeedback = (unitId, updatedFeedbacks) => {
@@ -156,10 +141,11 @@ function App() {
               <Route exact path="/signup" element={<Signup  handleCurrentUser={handleCurrentUser} handleNewUser={handleNewUser} />} />
               <Route exact path="/login" element={<Login handleCurrentUser={handleCurrentUser} />} />
               <Route exact path="/logout" element={<Logout logoutCurrentUser={logoutCurrentUser} />} />
-              <Route exact path="/admin" element={<AdminDashboard users={users} setUsers={setUsers} getAllUsers={getAllUsers} />} />
-              <Route exact path="/edit-user" element={<UserEditForm users={users} setUsers={setUsers} handleEditUser={handleEditUser}/>} />
-              <Route exact path="/enroll-students" element={<Enrollments users={users} handleUpdatedEnrollments={handleUpdatedEnrollments}/>}/>
-              <Route exact path="/unenroll-students" element={<Unenrollments users={users} handleUpdatedUnenrollments={handleUpdatedUnenrollments}/>}/>
+              <Route exact path="/admin" element={<AdminDashboard />} />
+              <Route exact path="/edit-user" element={<UserEditForm handleEditUser={handleEditUser}/>} />
+              <Route exact path="/enroll-students" element={<Enrollments handleUpdatedEnrollments={handleUpdatedEnrollments}/>}/>
+              <Route exact path="/unenroll-students" element={<Unenrollments handleUpdatedUnenrollments={handleUpdatedUnenrollments}/>}/>
+              <Route exact path="/create-family" element={<FamilyCreation />}/>
               <Route path="/teachers/:id" element={<TeacherDashboard  />} />
               <Route path="teachers/:teacher_id/units/:unit_id" element={<UnitDetails unitObj={unitObj} setUnitObj={setUnitObj} getUnitData={getUnitData} />} />
               <Route path="/teachers/:teacher_id/units/create" element={<CreateUnitForm />} />
@@ -176,7 +162,6 @@ function App() {
 
       </Router>
     </div>
-
   );
 }
 

@@ -1,38 +1,52 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, createContext } from "react";
+import { getCurrentUser } from '../actions/auth';
 
-const UserContext = React.createContext();
+const UserContext = createContext();
 
-function UserProvider({children}) {
+function UserProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
-    const [loading, setLoading] = useState(true); // Add this line
+    const [loading, setLoading] = useState(true);
+    const [loggedIn, setLoggedIn] = useState(false)
 
-    const getCurrentUser = () => {
-        fetch('/current-user', {
-          headers: {
-            "Content-Type": "application/json",
-            "Accept": "application/json"
-          },
-          credentials: 'include',
-          mode: 'cors'
-        })
-        .then((resp) => {
-            if(resp.ok) {
-                return resp.json()
-                .then((user) => {
-                    setCurrentUser(user);
-                    setLoading(false)
-                })
-            } 
-        })
+    const handleCurrentUser = (user) => {
+        if (user && user.email) {
+            setCurrentUser(user);
+            setLoggedIn(true);
+        } else {
+            setCurrentUser(null);
+            setLoggedIn(false);
+        }
     };
-
-    useEffect(getCurrentUser, []);
     
+    const logoutCurrentUser = () => {
+        setCurrentUser(null);
+        setLoggedIn(false);
+    };
+    
+
+    useEffect(() => {
+        async function loadCurrentUser() {
+            const user = await getCurrentUser();
+            
+            if (user) {
+                setCurrentUser(user);
+                setLoggedIn(true)
+            } else {
+                console.error("Error fetching user.");
+                setLoggedIn(false)
+            }
+            
+            setLoading(false);
+        }
+
+        loadCurrentUser();
+    }, []);
+
     return (
-        <UserContext.Provider value={{ currentUser, setCurrentUser, getCurrentUser, loading, loggedIn: Boolean(currentUser) }}>
-          {children}
+        <UserContext.Provider value={{ currentUser, setCurrentUser, handleCurrentUser, logoutCurrentUser, loading, loggedIn }}>
+            {children}
         </UserContext.Provider>
     );
 }
 
-export { UserContext, UserProvider};
+export { UserContext, UserProvider };

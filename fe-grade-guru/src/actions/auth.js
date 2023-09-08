@@ -55,19 +55,24 @@ await fetch('/logout', {
 logoutCurrentUser();
 };
 
-export const getCurrentUser = async (handleCurrentUser) => {
-  const resp = await fetch('/current-user', {
-    headers: {
-      "Content-Type": "application/json",
-      "Accept": "application/json"
-    },
-    credentials: 'include',
-    mode: 'cors'
-  });
-
-  const data = await resp.json();
-  handleCurrentUser(data);
+export const getCurrentUser = async () => {
+  try {
+    const resp = await fetch('/current-user', {
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      credentials: 'include',
+      mode: 'cors'
+    });
+    const data = await resp.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching the current user:", error);
+    return null;
+  }
 };
+
 
 
               

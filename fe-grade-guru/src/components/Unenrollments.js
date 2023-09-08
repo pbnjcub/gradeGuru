@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from "../contexts/UserContext"
-import '../styling/TablesForms.css'
+import { AdminContext } from "../contexts/AdminContext";
 import UnenrollTeacherSearch from './UnenrollTeacherSearch';
 import StudentEnrollmentList from './StudentEnrollmentList';
 import {unenrollStudent} from '../actions/students';
+import '../styling/TablesForms.css'
 
-const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
-  const { currentUser, loading } = useContext(UserContext);
+const Unenrollments = ({ handleUpdatedUnenrollments }) => {
+  const { currentUser, setCurrentUser, loading: userLoading } = useContext(UserContext);
+  const { allUsers, loading: adminLoading } = useContext(AdminContext);
   const [searchTeacher, setSearchTeacher] = useState('');
   const [filteredTeachers, setFilteredTeachers] = useState([])
   const [allStudents, setAllStudents] = useState([]);
@@ -17,14 +19,14 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
   const [studentsUnenrolled, setStudentsUnenrolled] = useState(false)
 
   useEffect(() => {
-    if (users) {
-      const students = users.filter(user => user.role === 'student');
-      const teachers = users.filter(user => user.role === 'teacher');
+    if (allUsers.length) {
+      const students = allUsers.filter(user => user.role === 'student');
+      const teachers = allUsers.filter(user => user.role === 'teacher');
 
       setAllStudents(students);
       setAllTeachers(teachers);
     }
-  }, [users])
+  }, [allUsers])
 
   const showSuccessMessage = () => {
     setStudentsUnenrolled(true)
@@ -51,8 +53,8 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
     }
   }
 
-  const sortUsers = (users) => {
-    const sorted = users.sort((a,b) => {
+  const sortUsers = (unsorted) => {
+    const sorted = unsorted.sort((a,b) => {
       const sortByLastName = a.last_name.localeCompare(b.last_name);
       if (sortByLastName !== 0) {
         return sortByLastName;
@@ -66,6 +68,8 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
   const handleTeacherSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchTeacher(query);
+
+    setSelectedTeacher(null); 
     const filtered = allTeachers.filter((teacher) => teacher.last_name.toLowerCase().includes(query));
     setFilteredTeachers(sortUsers(filtered));
     setFilteredStudents([]);
@@ -75,14 +79,16 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
     setSelectedTeacher(addedTeacher)
 
     const enrolledStudents = allStudents.filter(student =>
-      student.feedbacks.some(feedback => feedback.teacher_id === addedTeacher.id))
+      student.student_feedbacks.some(feedback => feedback.teacher_id === addedTeacher.id))
     setFilteredStudents(sortUsers(enrolledStudents))
     setSearchTeacher('')
     }
 
   const filteredStudentList = filteredStudents.map((student) => <StudentEnrollmentList key={student.id} student={student} confirmUnenrollmentClick={confirmUnenrollmentClick}/>);
 
-  if (loading) {
+  const renderErrors = errorMessages.map((message, index) => <p key={index} id="error">{message}</p>);
+
+  if (userLoading || adminLoading) { 
     return <div>Loading...</div>;
   }
 
@@ -94,8 +100,9 @@ const Unenrollments = ({ users, handleUpdatedUnenrollments }) => {
       <p>
         Please use the tools below to unenroll a student or students to a teacher's class.
       </p>
+      <br />
+      {renderErrors}
       <div className="flex-container">
-        
         <UnenrollTeacherSearch
           handleTeacherSearch={handleTeacherSearch}
           handleSelectTeacherClick={handleSelectTeacherClick}

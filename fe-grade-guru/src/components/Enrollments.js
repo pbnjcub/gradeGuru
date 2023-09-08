@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from "../contexts/UserContext"
-import '../styling/TablesForms.css'
+import { AdminContext } from "../contexts/AdminContext";
 import EnrollStudentSearch from './EnrollStudentSearch';
 import EnrollTeacherSearch from './EnrollTeacherSearch';
 import {enrollStudents} from '../actions/students';
+import '../styling/TablesForms.css'
 
-const Enrollments = ({ users, handleUpdatedEnrollments }) => {
-  const { currentUser, setCurrentUser } = useContext(UserContext);
+const Enrollments = ({ handleUpdatedEnrollments }) => {
+  const { currentUser, setCurrentUser, loading: userLoading } = useContext(UserContext);
+  const { allUsers, loading: adminLoading } = useContext(AdminContext);
   const [searchStudent, setSearchStudent] = useState('');
   const [searchTeacher, setSearchTeacher] = useState('');
   const [filteredStudents, setFilteredStudents] = useState([]);
@@ -19,14 +21,14 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
   const [studentsEnrolled, setStudentsEnrolled] = useState(false)
 
   useEffect(() => {
-    if (users) {
-      const students = users.filter(user => user.role === 'student');
-      const teachers = users.filter(user => user.role === 'teacher');
+    if (allUsers.length) {
+      const students = allUsers.filter(user => user.role === 'student');
+      const teachers = allUsers.filter(user => user.role === 'teacher');
 
       setAllStudents(students);
       setAllTeachers(teachers);
     }
-  }, [users])
+  }, [allUsers])
 
   const showSuccessMessage = () => {
     setStudentsEnrolled(true)
@@ -39,6 +41,7 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
   const confirmEnrollmentClick = async () => {
     const studentIds = selectedStudents.map(student => student.id)
     const resp = await enrollStudents(selectedTeacher.id, studentIds);
+    console.log(resp)
     if (resp.errors) {
       setErrorMessages(resp.errors);
     } else {
@@ -51,8 +54,8 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
     }
   }
 
-  const sortUsers = (users) => {
-    const sorted = users.sort((a,b) => {
+  const sortUsers = (unsorted) => {
+    const sorted = unsorted.sort((a,b) => {
       const sortByLastName = a.last_name.localeCompare(b.last_name);
       if (sortByLastName !== 0) {
         return sortByLastName;
@@ -74,14 +77,13 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
     const updatedFilteredTeachers = sortUsers(filteredTeachers.filter(teacher => teacher.id !== addedTeacher.id))
     setSelectedTeacher(addedTeacher)
     setFilteredTeachers(updatedFilteredTeachers)
-
     enrolledStudentCheck(addedTeacher)
   }
 
   const enrolledStudentCheck = (addedTeacher) => {
     const studentsWithFeedback = []
     const notEnrolled = selectedStudents.filter((student) => {
-      const hasFeedback = student.feedbacks.some((feedback) => feedback.teacher_id === addedTeacher.id);
+      const hasFeedback = student.student_feedbacks.some((feedback) => feedback.teacher_id === addedTeacher.id);
       if (hasFeedback) {
         studentsWithFeedback.push(student);
       } else {
@@ -91,7 +93,7 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
     setFilteredStudents(sortUsers([...filteredStudents, ...studentsWithFeedback]));
     setSelectedStudents(notEnrolled);
   } 
-
+  console.log(filteredStudents)
   const handleUnselectTeacherClick = (unselectedTeacher) => {
     if (!unselectedTeacher) return;
     const updatedFilteredTeachers = sortUsers([...filteredTeachers, unselectedTeacher])
@@ -124,9 +126,10 @@ const Enrollments = ({ users, handleUpdatedEnrollments }) => {
     setSelectedStudents(updatedSelectedStudents)
   }
 
-  if (loading) {
+  if (userLoading || adminLoading) { 
     return <div>Loading...</div>;
-}
+  }
+
   return (
     <div className="container">
       <h1>Enrollments</h1>

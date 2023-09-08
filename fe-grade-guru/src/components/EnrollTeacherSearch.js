@@ -4,7 +4,7 @@ import '../styling/TablesForms.css'
 
 
 const EnrollTeacherSearch = ({ handleTeacherSearch, handleAddTeacherClick, handleUnselectTeacherClick, searchTeacher, filteredTeachers, selectedTeacher }) => {
-    const { currentUser, setCurrentUser } = useContext(UserContext);
+    const { loading } = useContext(UserContext);
 
   const listFilteredTeachers = searchTeacher === '' ? [] : filteredTeachers.map((teacher) => (
     <tr key={teacher.id}>

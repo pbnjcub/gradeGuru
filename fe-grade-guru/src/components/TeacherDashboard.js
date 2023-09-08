@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { UserContext } from "../contexts/UserContext"
-import { getStudentsForTeacher } from '../actions/teachers';
+import { StudentsContext } from "../contexts/StudentsForTeacherContext"
 import StudentLink from './StudentLink';
 import '../styling/TeacherView.css'
 
 
 const TeacherDashboard = () => {
-  const { currentUser, loading } = useContext(UserContext);
-  const [students, setStudents] = useState([]);
+  const { currentUser, loading: userLoading } = useContext(UserContext);
+  const {students, loading: studentsLoading } = useContext(StudentsContext)
   const [errorMessages, setErrorMessages] = useState([]);
-  const [isFetching, setIsFetching] = useState(true)
-
+  
+ console.log(students)
   const sortUsers = (users) => {
     const sorted = users.sort((a,b) => {
       const sortByLastName = a.last_name.localeCompare(b.last_name);
@@ -23,30 +23,11 @@ const TeacherDashboard = () => {
     return sorted
   } 
 
-  useEffect(() => {
-    async function fetchData() {
-      if (currentUser) {
-        setIsFetching(true);
-        setErrorMessages([])
-        
-        const data = await getStudentsForTeacher(currentUser.id);
-
-        if (data) {
-          setStudents(sortUsers(data));
-        } else {
-          setErrorMessages(['Failed to fetch students.']);
-        }
-        setIsFetching(false)
-    }
-  }
-  fetchData()
-}, [currentUser]);
-
   const studentList = students.map((student) => <StudentLink key={student.id} student={student} />);
   
   const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
-  if (loading) {
+  if (userLoading || studentsLoading) {
     return <div>Loading...</div>;
   }
 

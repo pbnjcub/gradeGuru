@@ -5,7 +5,7 @@ import { getDataForStudent } from '../actions/students';
 import StudentDataView from './StudentDataView';
 import jsPDF from 'jspdf'
 
-const ParentViewStudentData = ({ }) => {
+const ParentViewStudentData = () => {
   const { currentUser, loading } = useContext(UserContext);
   const { id } = useParams()
   const [isLoading, setIsLoading] = useState(true);
@@ -31,7 +31,7 @@ const ParentViewStudentData = ({ }) => {
       }
     }
     fetchData();
-  }, []);
+  }, [currentUser]);
 
   const unitList = currentStudentUnits.map(unit => (
     <StudentDataView key={unit.id} unit={unit} currentStudent={currentStudent} />

@@ -1,4 +1,5 @@
 class TeachersController < ApplicationController
+  skip_before_action :verify_authenticity_token
 
   def get_students
     teacher = User.find(params[:id])

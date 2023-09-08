@@ -3,7 +3,7 @@ import { UserContext } from "../contexts/UserContext"
 import '../styling/TablesForms.css'
 
 const UpdateSkillItem = ({ unitSkill, updatingSkill, updatingSkillId, handleSkillChange, updateSkill, toggleEditSkills, handleUpdateSkillClick, setErrorMessages }) => {
-  const { currentUser, loading } = useContext(UserContext);
+  const { loading } = useContext(UserContext);
 
   const handleCancelClick = () => {
     toggleEditSkills();

@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { UserContext } from "../contexts/UserContext"
+// import { StudentsContext } from "../contexts/StudentsForTeacherContext"
 import { useParams } from 'react-router-dom';
 import UnitGradesAndFeedbacks from './UnitGradesAndFeedbacks';
 import '../styling/TeacherView.css'
-
 import jsPDF from 'jspdf';
 
 const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSkillsGrade }) => {
 
   const { teacher_id, student_id } = useParams();
   const { currentUser, loading } = useContext(UserContext);
+  // const {students, loading: studentsLoading, selectedStudentDetails, setSelectedStudentDetails, setSelectedStudentId } = useContext(StudentsContext)
+
   const [isFetching, setIsFetching] = useState(true);
   const [errorMessages, setErrorMessages] = useState([])
   const [currentStudent, setCurrentStudent] = useState(null);
   const [currentStudentUnits, setCurrentStudentUnits] = useState([]);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -36,11 +39,18 @@ const StudentDetail = ({ studentObj, setStudentObj, getStudentData, handleEditSk
     fetchData();
   }, [currentUser]);
 
+//  useEffect(() => {
+//     if(!userLoading) {
+//       setSelectedStudentId(student_id); 
+//     }
+//   }, [currentUser, student_id]);
+ 
+  // console.log(selectedStudentDetails)
   const unitList = currentStudentUnits.map(unit => (
     <UnitGradesAndFeedbacks key={unit.unit.id} unit={unit} studentObj={studentObj} handleEditSkillsGrade={handleEditSkillsGrade} />
   ));
 
-  if (isFetching || loading) {
+  if (loading || isFetching) {
     return <p>Loading...</p>;
   }
 

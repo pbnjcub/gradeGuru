@@ -41,12 +41,30 @@ const NavBar = () => {
     return null;
   };
 
-  if (loading) {
-    return <div className="loading-navbar">Loading...</div>; // or any appropriate loading UI for your navbar
+  if (loading && !currentUser) {
+    return (
+      <div className="pure-menu pure-menu-horizontal">
+        <a href="/" className="pure-menu-heading pure-menu-link">
+          <img src="/GradeGuruLogo2.png" alt="GradeGuru Logo" width="75" height="auto" />
+        </a>
+        <ul className="pure-menu-list">
+          <li className="pure-menu-item">
+            <NavLink className="pure-menu-link" to="/">
+              Home
+            </NavLink>
+          </li>
+          <li className="pure-menu-item">
+            <NavLink className="pure-menu-link" to="/login">
+              Login
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+    );
   }
-  console.log(loggedIn)
-    if (loggedIn) {
-        const role = currentUser.role;
+
+  if (loggedIn && currentUser) {
+    const role = currentUser.role;
     return (
       <div className="pure-menu pure-menu-horizontal">
         <a href="/" className="pure-menu-heading pure-menu-link">
@@ -74,25 +92,30 @@ const NavBar = () => {
           )}
           {role === 'teacher' && (
             <React.Fragment>
-            <li className="pure-menu-item">
-              <NavLink className="pure-menu-link has-sub-menu" to={`/teachers/${currentUser.id}`}>
-                Teacher Dashboard
-              </NavLink>
-            </li>
-            <li className="pure-menu-item">
-              <div className="pure-menu-link has-sub-menu">
-              <span>
-                <NavLink className="pure-menu-link" to={`/teachers/${currentUser.id}/units`}>
-                  Manage Units
+              <li className="pure-menu-item">
+                <NavLink className="pure-menu-link has-sub-menu" to={`/teachers/${currentUser.id}`}>
+                  Teacher Dashboard
                 </NavLink>
-                {renderManageUnitsSubMenu()}
-              </span>
-              </div>
-            </li>
+              </li>
+              <li className="pure-menu-item">
+                <div className="pure-menu-link has-sub-menu">
+                  <span>
+                    <NavLink className="pure-menu-link" to={`/teachers/${currentUser.id}/units`}>
+                      Manage Units
+                    </NavLink>
+                    {renderManageUnitsSubMenu()}
+                  </span>
+                </div>
+              </li>
             </React.Fragment>
           )}
           {role === 'admin' && (
             <React.Fragment>
+              <li className="pure-menu-item">
+                <NavLink className="pure-menu-link" to="/admin">
+                  Admin Dashboard
+                </NavLink>
+              </li>
               <li className="pure-menu-item">
                 <NavLink className="pure-menu-link" to="/signup">
                   Create Account
@@ -107,11 +130,16 @@ const NavBar = () => {
                 <div className="pure-menu-link has-sub-menu">
                   <span>
                     <NavLink className="pure-menu-link" to="#">
-                    Enrollments
-                  </NavLink>
-                  {renderEnrollmentSubMenu()}
+                      Enrollments
+                    </NavLink>
+                    {renderEnrollmentSubMenu()}
                   </span>
                 </div>
+              </li>
+              <li className="pure-menu-item">
+                <NavLink className="pure-menu-link" to="/create-family">
+                  Create Family
+                </NavLink>
               </li>
             </React.Fragment>
           )}
@@ -126,7 +154,7 @@ const NavBar = () => {
   } else {
     return (
       <div className="pure-menu pure-menu-horizontal">
-         <a href="/" className="pure-menu-heading pure-menu-link">
+        <a href="/" className="pure-menu-heading pure-menu-link">
           <img src="/GradeGuruLogo2.png" alt="GradeGuru Logo" width="75" height="auto" />
         </a>
         <ul className="pure-menu-list">
@@ -144,6 +172,6 @@ const NavBar = () => {
       </div>
     );
   }
-};
+}  
 
 export default NavBar;

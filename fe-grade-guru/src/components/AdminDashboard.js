@@ -1,22 +1,17 @@
 import React, { useContext } from 'react';
 import { UserContext } from "../contexts/UserContext"
-import { useEffect } from 'react';
+import { AdminContext } from "../contexts/AdminContext";
+// import { useEffect } from 'react';
 
-
-
-
-const AdminDashboard = ({ getAllUsers}) => {
-  const { currentUser, loading } = useContext(UserContext);
+const AdminDashboard = () => {
+  const { currentUser, loading: userLoading } = useContext(UserContext);
+  const { allUsers, loading: adminLoading } = useContext(AdminContext); 
+  
+  console.log(allUsers)
  
-  useEffect(() => {
-    if (currentUser && currentUser.role === 'admin') {
-      getAllUsers();
-    }
-  }, [currentUser]);
-
-  if (loading) {
+  if (userLoading || adminLoading) {
     return <div>Loading...</div>;
-}
+  }
 
   return (
     <div style={{marginLeft: '50px'}}>
