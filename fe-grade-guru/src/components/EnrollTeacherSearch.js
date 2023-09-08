@@ -11,7 +11,7 @@ const EnrollTeacherSearch = ({ handleTeacherSearch, handleAddTeacherClick, handl
         <td>{teacher.first_name}</td>
         <td>{teacher.last_name}</td>
         <td>
-            {teacher.teacher_feedbacks && teacher.teacher_feedbacks.length === 0 ? (
+            {teacher.units && teacher.units.length === 0 ? (
                 <span>No assigned sections</span>
                 ) : (
                 <button className="pure-button" onClick={() => handleAddTeacherClick(teacher)}>+</button>

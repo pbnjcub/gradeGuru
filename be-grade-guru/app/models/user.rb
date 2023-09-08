@@ -47,4 +47,6 @@ class User < ApplicationRecord
     has_many :students, through: :parent_families, source: :student
     has_many :parents, through: :student_families, source: :parent
 
+    has_many :units, class_name: 'Unit', foreign_key: :teacher_id, dependent: :destroy
+
 end

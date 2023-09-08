@@ -1,4 +1,5 @@
-export const createUnit = async (teacher_id, details) => {
+export const createUnit = async (details) => {
+  const teacher_id = details.teacher_id
     const resp = await fetch(`/teachers/${teacher_id}/units/create`, {
         method: 'POST',
         mode: 'cors',
@@ -39,6 +40,7 @@ export const createUnit = async (teacher_id, details) => {
             return { errors: errorData.errors };
           }
         };
+    
 
     export const getDataForUnit = async (teacher_id, unit_id) => {
         const resp = await fetch(`/teachers/${teacher_id}/units/${unit_id}`, {

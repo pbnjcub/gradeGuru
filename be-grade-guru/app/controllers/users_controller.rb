@@ -3,7 +3,7 @@ class UsersController < ApplicationController
     load_and_authorize_resource except: :get_current_user
   
     def index
-        users = User.includes(:grades, :student_feedbacks, :teacher_feedbacks).all
+        users = User.includes(:grades, :student_feedbacks, :teacher_feedbacks, :units).all
         render json: users
     end
 

@@ -26,8 +26,12 @@ function UnitsProvider({ children }) {
         fetchUnits();
     }, [currentUser]);
 
+    const addUnit = (newUnit) => {
+        setUnits(prevUnits => [...prevUnits, newUnit]);
+      }
+
     return (
-        <UnitsContext.Provider value={{ units, setUnits, loading }}>
+        <UnitsContext.Provider value={{ units, setUnits, addUnit, loading, setLoading }}>
             {children}
         </UnitsContext.Provider>
     );

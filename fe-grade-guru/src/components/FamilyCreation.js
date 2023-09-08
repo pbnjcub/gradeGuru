@@ -85,6 +85,11 @@ const FamilyCreation = () => {
     setSearchParent(query);
     const filtered = allParents.filter((parent) => parent.last_name.toLowerCase().includes(query));
     setFilteredParents(sortUsers(filtered));
+    setSearchParent(null)
+
+    if (selectedParent) {
+        setSelectedParent(null)
+    }
   };
   
   const handleAddParentClick = (addedParent) => {

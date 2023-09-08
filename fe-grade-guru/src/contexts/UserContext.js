@@ -42,8 +42,25 @@ function UserProvider({ children }) {
         loadCurrentUser();
     }, []);
 
+    const refreshCurrentUser = async () => {
+        setLoading(true);
+        const user = await getCurrentUser();
+    
+        if (user) {
+            setCurrentUser(user);
+            setLoggedIn(true);
+        } else {
+            console.error("Error fetching user.");
+            setCurrentUser(null);
+            setLoggedIn(false);
+        }
+    
+        setLoading(false);
+    };
+    
+
     return (
-        <UserContext.Provider value={{ currentUser, setCurrentUser, handleCurrentUser, logoutCurrentUser, loading, loggedIn }}>
+        <UserContext.Provider value={{ currentUser, setCurrentUser, handleCurrentUser, logoutCurrentUser, refreshCurrentUser, loading, loggedIn }}>
             {children}
         </UserContext.Provider>
     );

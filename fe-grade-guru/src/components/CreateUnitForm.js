@@ -1,21 +1,22 @@
 import React, {useState, useContext} from 'react';
 import { UserContext } from "../contexts/UserContext"
+import { UnitsContext } from "../contexts/UnitsForTeacherContext"
 import { createUnit} from '../actions/units';
 import { useNavigate } from 'react-router-dom';
 import '../styling/TeacherView.css'
 import '../styling/SimpleForms.css'
 
-
-
 const CreateUnitForm = () => {
   const { currentUser, loading } = useContext(UserContext);
-    const teacher_id = currentUser.id
-    const navigate = useNavigate();
+  const { addUnit } = useContext(UnitsContext)
+  const teacher_id = currentUser.id
+  const navigate = useNavigate();
 
 
     const [newUnit, setNewUnit] = useState({
       title: "",
       description: "",
+      teacher_id: teacher_id,
     });
 
     const [errorMessages, setErrorMessages] = useState([]);
@@ -24,14 +25,16 @@ const CreateUnitForm = () => {
       setNewUnit({ ...newUnit, [e.target.name]: e.target.value})
   };
   
+  console.log(newUnit)
 
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const resp = await createUnit(teacher_id, newUnit);
+      const resp = await createUnit(newUnit);
       if (resp.errors) {
         setErrorMessages(resp.errors);
       } else {
         setErrorMessages([]);
+        addUnit(resp)
         navigate(`/teachers/${teacher_id}/units`);
       }
     };

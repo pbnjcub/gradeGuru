@@ -81,7 +81,7 @@ class StudentsController < ApplicationController
 
     @teacher = User.find(@teacher_id)
 
-    if @teacher.teacher_feedbacks.pluck(:unit_id).uniq.empty?
+    if @teacher.units.empty?
       render json: { error: "The teacher doesn't have any units assigned. Assign units to the teacher before enrolling students." }, status: :unprocessable_entity
       return
     end
@@ -91,7 +91,8 @@ class StudentsController < ApplicationController
     students = User.where(id: @student_ids)    
    
     render json: students
-  end
+end
+
 
   def unenroll_student
     authorize! :unenroll, User
@@ -120,7 +121,7 @@ class StudentsController < ApplicationController
   end
 
   def create_empty_feedbacks
-    teacher_unit_ids = @teacher.teacher_feedbacks.pluck(:unit_id).uniq
+    teacher_unit_ids = @teacher.units.pluck(:id)
 
     @student_ids.each do |student_id|
       teacher_unit_ids.each do |unit_id|
@@ -130,7 +131,7 @@ class StudentsController < ApplicationController
   end
 
   def create_empty_grades
-    teacher_unit_ids = @teacher.teacher_feedbacks.pluck(:unit_id).uniq
+    teacher_unit_ids = @teacher.units.pluck(:id)
 
     teacher_skill_ids = Skill.where(unit_id: teacher_unit_ids).pluck(:id)
 

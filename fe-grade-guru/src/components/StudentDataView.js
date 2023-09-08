@@ -37,11 +37,11 @@ const StudentDataView = ({ unit }) => {
         <td>{unitFeedbacks.comment}</td>
         <td>
           {showSkillsAndGrades ? (
-            <button className="pure-button pure-button-primary" onClick={toggleSkillsAndGrades}>
+            <button className="pure-button" onClick={toggleSkillsAndGrades}>
               Close Skills
             </button>
           ) : 
-            <button className="pure-button pure-button-primary" onClick={toggleSkillsAndGrades}>
+            <button className="pure-button" onClick={toggleSkillsAndGrades}>
               View Skills
             </button>
           }

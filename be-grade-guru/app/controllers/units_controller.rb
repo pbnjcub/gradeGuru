@@ -1,33 +1,23 @@
 class UnitsController < ApplicationController
     skip_before_action :verify_authenticity_token
-    load_and_authorize_resource
+    # load_and_authorize_resource
+    skip_before_action :confirm_authentication
 
     def index
-        teacher_id = params[:teacher_id].to_i
-
-        teacher_feedbacks = Feedback.where(teacher_id: teacher_id)
-
-        unit_ids_taught = teacher_feedbacks.pluck(:unit_id).uniq
-
-        teacher_units = unit_ids_taught.map do |unit_id|
-            Unit.find(unit_id)
-        end
-
-        render json: teacher_units
+        teacher = User.find(params[:teacher_id])
+        render json: teacher.units
     end
-
+    
     def create
         @unit = Unit.new(unit_params)
       
-        @teacher_id = params[:teacher_id].to_i
-      
         if @unit.save
-          create_empty_feedbacks
-          render json: @unit, status: :created
+            create_empty_feedbacks
+            render json: @unit, status: :created
         else
-          render json: {errors: @unit.errors.full_messages}, status: :unprocessable_entity
+            render json: {errors: @unit.errors.full_messages}, status: :unprocessable_entity
         end
-      end
+    end
 
     def show
         unit = Unit.find(params[:id])
@@ -69,16 +59,16 @@ class UnitsController < ApplicationController
     end
 
     def create_empty_feedbacks
-        teacher = Teacher.find(@teacher_id)
+        teacher = User.find(@teacher_id)
         
-        teacher_feedbacks = Feedback.where(teacher_id: teacher.id)
-
-        student_ids_taught = teacher_feedbacks.pluck(:student_id).uniq
-
-
-        student_ids_taught.each do |student_id|
-            Feedback.create(unit_id: @unit.id, teacher_id: @teacher_id, student_id: student_id, written_work: 0, classwork: 0, homework: 0)
+        if Feedback.exists?(teacher_id: teacher.id)
+            teacher_feedbacks = Feedback.where(teacher_id: teacher.id)
+            student_ids_taught = teacher_feedbacks.pluck(:student_id).uniq
+    
+            student_ids_taught.each do |student_id|
+                Feedback.create(unit_id: @unit.id, teacher_id: @teacher_id, student_id: student_id, written_work: 0, classwork: 0, homework: 0)
+            end
         end
-
     end
+    
 end

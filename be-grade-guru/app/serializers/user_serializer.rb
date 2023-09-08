@@ -7,4 +7,5 @@ class UserSerializer < ActiveModel::Serializer
   has_many :teacher_feedbacks, if: -> { object.role == 'teacher'}
   has_many :parent_families, if: -> {object.role == 'parent'}
   has_many :student_families, if: -> {object.role == 'student'}
+  has_many :units, if: -> { object.role == 'teacher'}
 end

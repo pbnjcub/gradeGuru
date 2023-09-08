@@ -27,6 +27,9 @@ const TeacherDashboard = () => {
   
   const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);
 
+  const noStudents = students.length === 0;
+
+  
   if (userLoading || studentsLoading) {
     return <div>Loading...</div>;
   }
@@ -45,8 +48,9 @@ const TeacherDashboard = () => {
             </tr>
           </thead>
           <tbody>
-            {studentList}
+            {noStudents ? <tr><td>No Enrolled Students</td></tr> : studentList}
           </tbody>
+
         </table>
       </div>
     </div>

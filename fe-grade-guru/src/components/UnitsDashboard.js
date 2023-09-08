@@ -7,29 +7,36 @@ import '../styling/TeacherView.css'
 
 
 const UnitsDashboard = () => {
-  const { currentUser, loading: userLoading} = useContext(UserContext);
-  const { units, setUnits, loading: unitsLoading } = useContext(UnitsContext);
+  const { currentUser, loading: userLoading, refreshCurrentUser} = useContext(UserContext);
+  const { units, setUnits, loading: unitsLoading, setLoading } = useContext(UnitsContext);
   const [errorMessages, setErrorMessages] = useState([]);
   
-  //   useEffect(() => {
-  //   async function fetchData() {
-  //     if (currentUser) {
-  //       setIsFetching(true);
-  //       setErrorMessages([])
+  console.log(units)
 
-  //       const data = await getUnitsForTeacher(currentUser.id)
+    // useEffect(() => {
+    //     refreshCurrentUser();
+    // }, []);
+
+    useEffect(() => {
+    async function fetchData() {
+      if (currentUser) {
+        setLoading(true);
+        setErrorMessages([])
+
+        const data = await getUnitsForTeacher(currentUser.id)
      
-  //       if (data) {
-  //         setUnits(data)
-  //       } else {
-  //         setErrorMessages(['Failed to fetch unit data.'])
-  //       }
-  //       setIsFetching(false)
-  //     }
-  //   }
-  //   fetchData();
-  // }, [currentUser]);
+        if (data) {
+          setUnits(data)
+        } else {
+          setErrorMessages(['Failed to fetch unit data.'])
+        }
+        setLoading(false)
+      }
+    }
+    fetchData();
+  }, [currentUser]);
 
+  console.log(units)
   const unitsList = units.map((unit) => <UnitLink key={unit.id} unit={unit} teacher_id={currentUser.id} />);
 
   const renderErrors = errorMessages.map((message, index) => <div className="container"><h3 key={index} className="error">{message}</h3></div>);

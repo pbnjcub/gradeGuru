@@ -7,7 +7,7 @@ import {enrollStudents} from '../actions/students';
 import '../styling/TablesForms.css'
 
 const Enrollments = ({ handleUpdatedEnrollments }) => {
-  const { currentUser, setCurrentUser, loading: userLoading } = useContext(UserContext);
+  const { currentUser, loading: userLoading } = useContext(UserContext);
   const { allUsers, loading: adminLoading } = useContext(AdminContext);
   const [searchStudent, setSearchStudent] = useState('');
   const [searchTeacher, setSearchTeacher] = useState('');
@@ -39,9 +39,10 @@ const Enrollments = ({ handleUpdatedEnrollments }) => {
   }
 
   const confirmEnrollmentClick = async () => {
+
     const studentIds = selectedStudents.map(student => student.id)
     const resp = await enrollStudents(selectedTeacher.id, studentIds);
-    console.log(resp)
+
     if (resp.errors) {
       setErrorMessages(resp.errors);
     } else {
